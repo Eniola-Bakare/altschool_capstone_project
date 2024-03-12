@@ -8,7 +8,7 @@ function LandingPage() {
     <div className="flex flex-col items-center">
       <Header />
       <section
-        className="w-full hero-section bg-cover bg-center h-[746px] flex flex-col justify-center"
+        className="w-full hero-section bg-cover bg-left-top h-screen flex flex-col justify-center"
         style={{
           backgroundImage:
             "linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),url('./src/assets/heroImage.png')",
@@ -35,7 +35,7 @@ function LandingPage() {
       <section className="about-sec flex py-16 px-20 justify-between">
         <div className="about-text w-[50%] flex flex-col gap-8 text-black">
           <h1 className="text-5xl font-bold ">About Chatter</h1>
-          <p className="">
+          <p className="text-lg">
             Chatter is a multi-functional platform where authors and readers can
             have access to their own content. It aims to be a traditional
             bookworm’s heaven and a blog to get access to more text based
@@ -45,17 +45,18 @@ function LandingPage() {
             beliefs. By promoting dialogue and understanding, we strive{" "}
           </p>
         </div>
-        <div className="about-image">
+        <div className="about-image w-[35%]">
           <img
             src="./src/assets/aboutImage.png"
             alt="a group of people on a stair way"
+            className="w-[100%]"
           />
         </div>
       </section>
 
       <section className="why-sec py-16 px-20 flex flex-col items-center gap-8 w-[75%]">
         <h1 className="text-5xl font-bold ">Why you should join chatter</h1>
-        <p className="">
+        <p className="w-[70%]">
           Our goal is to make writers and readers see our platform as their next
           heaven for blogging, ensuring ease in interactions, connecting with
           like-minded peers, have access to favorite content based on interests
@@ -104,7 +105,7 @@ function LandingPage() {
             className="rounded-full w-[70%]"
           />
         </div>
-        <div className="testimonial-text w-[50%] flex flex-col gap-9 ">
+        <div className="testimonial-text justify-center w-[60%] py-16 px-20 flex flex-col gap-9 ">
           <p className="text-lg leading-7 text-black">
             "Chatter has become an integral part of my online experience. As a
             user of this incredible blogging platform, I have discovered a

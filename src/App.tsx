@@ -1,10 +1,16 @@
+import SignInPage from "./pages/SignInPage";
 import LandingPage from "./pages/LandingPage";
 
 function App() {
   return (
-    <div className="w-[1440px] bg-orange-950/5 flex flex-col">
-      <LandingPage />
-    </div>
+    <>
+      {/* <div className="flex flex-col">
+        <LandingPage />
+      </div> */}
+      <div className="app-auth w-full">
+        <SignInPage />
+      </div>
+    </>
   );
 }
 
