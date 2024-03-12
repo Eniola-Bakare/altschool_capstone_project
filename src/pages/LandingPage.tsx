@@ -4,12 +4,10 @@ import Header from "../components/Header";
 // type LandingPageProps = {}
 function LandingPage() {
   return (
-    <>
-      {/* <div className="w-full  bg-yellow-800/10 flex justify-center"> */}
-      {/* </div> */}
+    <div className="flex flex-col items-center">
       <Header />
       <section
-        className="bg-cover bg-center h-[746px] flex flex-col justify-center"
+        className="w-full hero-section bg-cover bg-center h-[746px] flex flex-col justify-center"
         style={{
           backgroundImage:
             "linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),url('./src/assets/heroImage.png')",
@@ -22,8 +20,8 @@ function LandingPage() {
             Based Content
           </h1>
           <p className="text-white text-2xl font-medium w-[75%] leading-[36px]">
-            Unleash the Power of Words, Connect with Like-minded Readers 
-            and Writers
+            Unleash the Power of Words, Connect with Like-minded Readers and
+            Writers
           </p>
           <Button
             name="Get started"
@@ -32,7 +30,71 @@ function LandingPage() {
           />
         </div>
       </section>
-    </>
+
+      <section className="about-sec flex py-16 px-20 justify-between">
+        <div className="about-text w-[50%] flex flex-col gap-8 text-black">
+          <h1 className="text-5xl font-bold ">About Chatter</h1>
+          <p className="">
+            Chatter is a multi-functional platform where authors and readers can
+            have access to their own content. It aims to be a traditional
+            bookworm’s heaven and a blog to get access to more text based
+            content. Our vision is to foster an inclusive and vibrant community
+            where diversity is celebrated. We encourage open-mindedness and
+            respect for all individuals, regardless of their backgrounds or
+            beliefs. By promoting dialogue and understanding, we strive{" "}
+          </p>
+        </div>
+        <div className="about-image">
+          <img
+            src="./src/assets/aboutImage.png"
+            alt="a group of people on a stair way"
+          />
+        </div>
+      </section>
+
+      <section className="why-sec py-16 px-20 flex flex-col items-center gap-8 w-[75%]">
+        <h1 className="text-5xl font-bold ">Why you should join chatter</h1>
+        <p className="">
+          Our goal is to make writers and readers see our platform as their next
+          heaven for blogging, ensuring ease in interactions, connecting with
+          like-minded peers, have access to favorite content based on interests
+          and able to communicate your great ideas with people
+        </p>
+      </section>
+
+      <section className="card-sec pb-20 flex gap-12">
+        <div className="each-card w-[306px] h-[324px] py-4 px-5 rounded-lg border border-boderGrey flex flex-col justify-center  items-start gap-3">
+          <img src="./src/assets/iconOne.png" alt="anlytic icon" />
+          <header className="text-2xl font-medium leading-[36px]">
+            Analytics
+          </header>
+          <p className="text-lg text-grey">
+            Analytics to track the number of views, likes and comment and also
+            analyze the performance of your articles over a period of time
+          </p>
+        </div>
+        <div className="each-card w-[306px] h-[324px] py-4 px-5 rounded-lg border border-boderGrey flex flex-col justify-center  items-start gap-3">
+          <img src="./src/assets/iconTwo.png" alt="anlytic icon" />
+          <header className="text-2xl font-medium leading-[36px]">
+            Social interactions
+          </header>
+          <p className="text-lg text-grey">
+            Users on the platform can interact with posts they like, comment and
+            engage in discussions
+          </p>
+        </div>
+        <div className="each-card w-[306px] h-[324px] py-4 px-5 rounded-lg border border-boderGrey flex flex-col justify-center  items-start gap-3">
+          <img src="./src/assets/iconThree.png" alt="anlytic icon" />
+          <header className="text-2xl font-medium leading-[36px]">
+            Content creation
+          </header>
+          <p className="text-lg text-grey">
+            Write nice and appealing with our in-built markdown, a rich text
+            editor
+          </p>
+        </div>
+      </section>
+    </div>
   );
 }
 

@@ -8,6 +8,7 @@ export default {
         black: "#111",
         white: "#FFF",
         grey: "#626262",
+        boderGrey: '#D0D0D0'
       },
       fontFamily: {
         sans: ["DM Sans", "sans-serif"],
