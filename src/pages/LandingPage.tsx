@@ -1,4 +1,5 @@
 import Button from "../components/Button";
+import Footer from "../components/Footer";
 import Header from "../components/Header";
 
 // type LandingPageProps = {}
@@ -153,14 +154,12 @@ function LandingPage() {
               Share people your great ideas, and also read write-ups based on
               your interests connect with people of same interests and goals
             </p>
-            <Button
-              name="Get started"
-              type="primary"
-              onClick={() => onclick()}
-            />
+            <Button name="Get started" type="primary" onClick={() => onclick} />
           </div>
         </div>
       </section>
+
+      <Footer />
     </div>
   );
 }
