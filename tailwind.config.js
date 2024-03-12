@@ -15,6 +15,9 @@ export default {
       screens: {
         "2xl": "1440px",
       },
+      backgroundImage: () => ({
+        image: "url('srcassetsheroImage.png)",
+      }),
     },
   },
   plugins: [],

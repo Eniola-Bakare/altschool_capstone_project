@@ -2,7 +2,7 @@ import Button from "./Button";
 
 function Header() {
   return (
-    <header className="w-[90%] bg-white flex justify-between items-center py-4">
+    <header className="w-full bg-white flex justify-between items-center py-4 px-20">
       <p className="logo-text text-blue font-bold text-5xl">CHATTER</p>
       <ul className="navLinks flex gap-4">
         <li className="text-black font-bold ">Home</li>
