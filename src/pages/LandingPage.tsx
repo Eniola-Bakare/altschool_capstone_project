@@ -94,6 +94,73 @@ function LandingPage() {
           </p>
         </div>
       </section>
+
+      <section className="testimony bg-rgba flex items-center justify-center w-full h-[492px]">
+        <div className="review-image">
+          <img
+            src="./src/assets/reviewImage.png"
+            alt="a man"
+            className="rounded-full w-[70%]"
+          />
+        </div>
+        <div className="testimonial-text w-[50%] flex flex-col gap-9 ">
+          <p className="text-lg leading-7 text-black">
+            "Chatter has become an integral part of my online experience. As a
+            user of this incredible blogging platform, I have discovered a
+            vibrant community of individuals who are passionate about sharing
+            their ideas and engaging in thoughtful discussions.”
+          </p>
+
+          <p className="font-medium text-4xl">
+            Adebobola Muhydeen,{" "}
+            <span className="font font-normal text-2xl">
+              Software developer at Apple
+            </span>
+          </p>
+          <Button type="primary" name="Join chatter" onClick={() => onclick} />
+        </div>
+      </section>
+
+      <section className="profiles w-full bg-white flex items-center justify-center h-[492px]">
+        <div className="profile-text flex w-[70%] gap-20">
+          <div className="all-three-profiles flex gap-8 items-center">
+            <div className="two-profiles flex flex-col gap-14 justify-between items-center ">
+              <img
+                src="./src/assets/profileOne.png"
+                className="rounded-full"
+                alt="a woman"
+              />
+              <img
+                src="./src/assets/profileTwo.png"
+                className="rounded-full"
+                alt="a man"
+              />
+            </div>
+            <div className="oneProfile">
+              <img
+                src="./src/assets/profileThree.png"
+                className="rounded-full"
+                alt="a man"
+              />
+            </div>
+          </div>
+
+          <div className="profiles-text flex flex-col gap-6">
+            <h1 className="text-black text-5xl font-bold leading-[72px]">
+              Write, read and connect <br /> with great minds on chatter{" "}
+            </h1>
+            <p className="text-lg">
+              Share people your great ideas, and also read write-ups based on
+              your interests connect with people of same interests and goals
+            </p>
+            <Button
+              name="Get started"
+              type="primary"
+              onClick={() => onclick()}
+            />
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
