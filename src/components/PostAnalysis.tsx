@@ -1,7 +1,9 @@
-function EachPost() {
+import Button from "./Button";
+
+function PostAnalysis() {
   return (
-    <section className="flex flex-col pl-[50px] pr-[190px] pb-8 border-x border-t border-b-borderGrey">
-      <div className="profile-details flex items-center gap-3 py-[30px] ">
+    <section className="post-details flex flex-col pl-[50px] pr-[190px] pb-4">
+      <div className="profile-details flex items-center gap-3 py-[10px] ">
         <div className="profile-image w-[80px]">
           <img
             src="./src/assets/profileOne.png"
@@ -17,8 +19,8 @@ function EachPost() {
         </div>
       </div>
 
-      <div className="flex flex-col ">
-        <h1 className="font-bold text-4xl pb-2">
+      <div className="post-content flex flex-col ">
+        <h1 className="font-bold text-2xl pb-2">
           Starting out as a Product designer
         </h1>
         <p className="est-read-time flex items-center gap-3 pb-6">
@@ -44,9 +46,6 @@ function EachPost() {
             opportunity to shape the way people interact with the world around
             them.
           </p>
-          <div className="feed-image">
-            <img src="./src/assets/feedImage.png" alt="an image" />
-          </div>
 
           <div className="interactions w-[50%] flex justify-between items-center">
             <p className="flex items-center text-grey gap-2">
@@ -95,10 +94,17 @@ function EachPost() {
               <span>200</span>
             </p>
           </div>
+
+          <Button
+            name="View post activity"
+            type="primary"
+            width="w-fit"
+            onClick={() => console.log("sixth")}
+          />
         </div>
       </div>
     </section>
   );
 }
 
-export default EachPost;
+export default PostAnalysis;

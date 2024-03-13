@@ -2,7 +2,7 @@ import LogoText from "./LogoText";
 
 function SidebarFS() {
   return (
-    <aside className="w-[20%] h-screen flex flex-col justify-evenly items-center border-r border-borderGrey">
+    <aside className="w-[24%] h-screen flex flex-col justify-evenly items-center border-r border-borderGrey">
       <LogoText />
 
       <div className="sidebar-first">

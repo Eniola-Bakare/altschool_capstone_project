@@ -1,11 +1,10 @@
 import AllPosts from "./AllPosts";
-import HeaderFS from "./HeaderFS";
 
 function TimelineFS() {
   return (
-    <section className="timeline w-[95%] border-x border-t border-borderGrey flex justify-center ">
+    <section className="timeline w-[95%] h-screen  overflow-hidden border-x border-y border-borderGrey flex justify-center  ">
       <div className="w-[85%] flex flex-col">
-        <div className="feed+post flex justify-between items-center py-20 ">
+        <div className="feed+post flex justify-between items-center pt-12 pb-8 ">
           <div className="flex flex-col gap-2">
             <p className="text-3xl font-medium">FEED</p>
             <p className="text-lg text-grey">
@@ -51,7 +50,7 @@ function TimelineFS() {
           </button>
         </div>
 
-        <div className="tab border border-borderGrey h-[58px] px-[50px] flex justify-between rounded-lg items-center ">
+        <div className="tab border border-borderGrey h-[58px] px-[50px] py-7 flex justify-between rounded-lg items-center ">
           <p className="font-semibold text-lg cursor-pointer hover:pb-[30px] hover:border-b-2 hover:border-blue">
             For you
           </p>
