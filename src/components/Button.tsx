@@ -13,7 +13,7 @@ function Button({ name, onClick, type, width }: ButtonProps): ReactElement {
         onClick={onClick}
         className={
           width
-            ? `${width} py-2 px-4 bg-blue border-2 border-blue text-white rounded-lg font-bold`
+            ? `${width} h-[56px] py-2 px-4 bg-blue border-2 border-blue text-white rounded-lg font-bold`
             : "w-[157px] py-2 px-4 bg-blue border-2 border-blue text-white rounded-lg font-bold"
         }
       >

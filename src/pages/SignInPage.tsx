@@ -26,7 +26,7 @@ function SignInPage() {
               className="h-[56px] py-[10px] px-[16px] border borde-[#CED4DA] shadow-md rounded-lg"
             />
           </div>
-          <div className="password-field flex flex-col gap-3">
+          <div className="password-field flex flex-col gap-3 relative">
             <label htmlFor="password" className="text-[#3B3B3B]">
               Password
             </label>
@@ -35,6 +35,7 @@ function SignInPage() {
               placeholder="e.g: Johndoe@gmail.com"
               className="h-[56px] py-[10px] px-[16px] border borde-[#CED4DA] shadow-md rounded-lg"
             />
+            <img src="./src/assets/eyeIcon.png" alt="eye icon" className="w-[5%] absolute inset-y-[50%] right-5 "/>
           </div>
 
           <Button
