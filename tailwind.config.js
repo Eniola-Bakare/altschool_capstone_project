@@ -8,7 +8,7 @@ export default {
         black: "#111",
         white: "#FFF",
         grey: "#626262",
-        boderGrey: "#D0D0D0",
+        borderGrey: "#D0D0D0",
         rgba: "rgba(255, 237, 204, 0.50)",
         danger: "#FF1400",
       },

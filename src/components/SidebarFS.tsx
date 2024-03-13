@@ -1,14 +1,13 @@
-import React from "react";
 import LogoText from "./LogoText";
 
 function SidebarFS() {
   return (
-    <aside className="w-268px flex flex-col justify-center">
+    <aside className="w-[20%] h-screen flex flex-col justify-evenly items-center border-r border-borderGrey">
       <LogoText />
 
       <div className="sidebar-first">
-        <p className="text-lg text-black">Overview</p>
-        <ul className="flex flex-col gap-4">
+        <p className="text-lg text-black pb-4 font-medium">Overview</p>
+        <ul className="flex flex-col gap-4 pl-7">
           <li className="flex gap-3 text-grey hover:text-blue ">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -84,7 +83,7 @@ function SidebarFS() {
       </div>
 
       <div className="sidebar-second">
-        <p className="text-lg text-black flex gap-3">
+        <p className="text-lg text-black flex gap-3 pb-4 font-medium">
           Trending Tags
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -100,7 +99,7 @@ function SidebarFS() {
           </svg>
         </p>
 
-        <ul className="flex flex-col gap-4">
+        <ul className="flex flex-col gap-4 pl-7">
           <li className="text-lg text-grey hover:text-blue">Programming</li>
           <li className="text-lg text-grey hover:text-blue">Data science</li>
           <li className="text-lg text-grey hover:text-blue">Technology</li>
@@ -113,9 +112,9 @@ function SidebarFS() {
       </div>
 
       <div className="sidebar-third">
-        <p className="text-lg text-black"> Personal</p>
+        <p className="text-lg text-black pb-4 font-medium"> Personal</p>
 
-        <ul className="flex flex-col gap-4">
+        <ul className="flex flex-col gap-4 pl-7">
           <li className="text-lg text-grey hover:text-blue flex gap-3">
             <svg
               xmlns="http://www.w3.org/2000/svg"
