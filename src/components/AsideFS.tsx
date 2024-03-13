@@ -1,7 +1,7 @@
 import HeaderFS from "./HeaderFS";
 import TimelineFS from "./TimelineFS";
 
-function Feed() {
+function AsideFS() {
   return (
     <section className="w-[80%] flex flex-col items-center gap-12">
       <HeaderFS />
@@ -10,4 +10,4 @@ function Feed() {
   );
 }
 
-export default Feed;
+export default AsideFS;

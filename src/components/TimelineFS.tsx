@@ -1,13 +1,16 @@
-import Button from "./Button";
+import AllPosts from "./AllPosts";
+import HeaderFS from "./HeaderFS";
 
 function TimelineFS() {
   return (
-    <section className="w-[90%] border-x border-t border-borderGrey flex justify-center ">
-      <div className="w-[90%] flex flex-col gap-10">
-        <div className="feed+post flex justify-between items-center pt-20 ">
+    <section className="timeline w-[95%] border-x border-t border-borderGrey flex justify-center ">
+      <div className="w-[85%] flex flex-col">
+        <div className="feed+post flex justify-between items-center py-20 ">
           <div className="flex flex-col gap-2">
             <p className="text-3xl font-medium">FEED</p>
-            <p className="text-lg text-grey">Explore different content you love</p>
+            <p className="text-lg text-grey">
+              Explore different content you love
+            </p>
           </div>
 
           <button className=" h-[56px] py-2 px-4 bg-blue border-2 border-blue text-white rounded-lg font-bold flex gap-3 items-center justify-center">
@@ -49,10 +52,17 @@ function TimelineFS() {
         </div>
 
         <div className="tab border border-borderGrey h-[58px] px-[50px] flex justify-between rounded-lg items-center ">
-          <p className="font-semibold text-lg cursor-pointer hover:pb-[30px] hover:border-b-2 hover:border-blue">For you</p>
-          <p className="font-semibold text-lg cursor-pointer hover:pb-[30px] hover:border-b-2 hover:border-blue">Featured</p>
-          <p className="font-semibold text-lg cursor-pointer hover:pb-[30px] hover:border-b-2 hover:border-blue">Recent</p>
+          <p className="font-semibold text-lg cursor-pointer hover:pb-[30px] hover:border-b-2 hover:border-blue">
+            For you
+          </p>
+          <p className="font-semibold text-lg cursor-pointer hover:pb-[30px] hover:border-b-2 hover:border-blue">
+            Featured
+          </p>
+          <p className="font-semibold text-lg cursor-pointer hover:pb-[30px] hover:border-b-2 hover:border-blue">
+            Recent
+          </p>
         </div>
+        <AllPosts />
       </div>
     </section>
   );
