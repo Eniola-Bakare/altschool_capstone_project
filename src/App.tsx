@@ -1,4 +1,5 @@
 // import SignInPage from "./pages/SignInPage";
+import SidebarFS from "./components/SidebarFS";
 import SignUpConfirm from "./pages/SignUpConfirm";
 import SignUpPage from "./pages/SignUpPage";
 // import LandingPage from "./pages/LandingPage";
@@ -16,9 +17,10 @@ function App() {
         <SignUpPage />
       </div> */}
 
-      <div className="auth-confirm w-[full]">
+      {/* <div className="auth-confirm w-[full]">
         <SignUpConfirm />
-      </div>
+      </div> */}
+      <SidebarFS />
     </>
   );
 }

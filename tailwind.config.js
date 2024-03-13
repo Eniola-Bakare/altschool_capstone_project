@@ -10,6 +10,7 @@ export default {
         grey: "#626262",
         boderGrey: "#D0D0D0",
         rgba: "rgba(255, 237, 204, 0.50)",
+        danger: "#FF1400",
       },
       fontFamily: {
         sans: ["DM Sans", "sans-serif"],

@@ -3,12 +3,12 @@ import Button from "../components/Button";
 
 function SignUpConfirm() {
   return (
-    <section className="flex justify-between w-full items-center ">
+    <section className="flex justify-between w-full items-center relative">
       <AuthSidebar />
-      <aside className="signin-side w-[70%] flex flex-col justify-between items-center gap-5">
-        <div className="back-arrow">
+      <aside className="signin-side w-[70%] flex flex-col justify-between items-center gap-5 ">
+        <div className="back-arrow absolute top-10 left-[35%] flex items-center gap-3 cursor-pointer">
           <img src="./src/assets/arrowcircleleft.png" alt="arrow circle" />
-          <p>Back</p>
+          <p className="text-[#55524F] text-sm">Back</p>
         </div>
 
         <h1 className="text-4xl font-medium ">Enter confirmation code</h1>

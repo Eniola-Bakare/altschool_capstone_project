@@ -1,9 +1,10 @@
 import Button from "./Button";
+import LogoText from "./LogoText";
 
 function Header() {
   return (
     <header className="w-full bg-white flex justify-between items-center py-4 px-20">
-      <p className="logo-text text-blue font-bold text-5xl">CHATTER</p>
+      <LogoText />
       <ul className="navLinks flex gap-4">
         <li className="text-black font-bold ">Home</li>
         <li className="text-black font-bold ">About us</li>
