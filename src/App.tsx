@@ -17,7 +17,6 @@ function App() {
             {/* <Route path="*" element={<SignInPage />} /> */}
             <Route path="signin" element={<SignInPage />} />
             <Route path="signup" element={<SignUpPage />} />
-            <Route path="feed" element={<FeedScreen />} />
             <Route path="app/feed" element={<FeedScreen />} />
           </Routes>
           {/* <div className="flex flex-col">

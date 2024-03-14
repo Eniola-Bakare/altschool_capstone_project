@@ -1,4 +1,12 @@
-import { ReactNode, createContext, useContext, useState } from "react";
+import { User } from "firebase/auth";
+import {
+  Dispatch,
+  ReactNode,
+  SetStateAction,
+  createContext,
+  useContext,
+  useState,
+} from "react";
 
 type AuthContextTYPE = {
   email: string;
@@ -15,6 +23,10 @@ type AuthContextTYPE = {
   setLName: (lName: string) => void;
   signedIn: boolean;
   setSignedIn: (signedIn: boolean) => void;
+  authUser: null | object;
+  setAuthUser: Dispatch<SetStateAction<User | null>>;
+  errorMessage: boolean;
+  setErrorMessage: (errorMessage: boolean) => void;
 };
 const AuthContext = createContext<AuthContextTYPE | undefined>(undefined);
 
@@ -30,6 +42,9 @@ export default function AuthContextProvider({
   const [category, setCategory] = useState("reader");
   const [confirmPassword, setConfirmPassword] = useState("kkkk");
   const [signedIn, setSignedIn] = useState(false);
+  const [authUser, setAuthUser] = useState<User | null>(null);
+
+  const [errorMessage, setErrorMessage] = useState(false);
 
   return (
     <AuthContext.Provider
@@ -48,6 +63,10 @@ export default function AuthContextProvider({
         setConfirmPassword,
         signedIn,
         setSignedIn,
+        authUser,
+        setAuthUser,
+        errorMessage,
+        setErrorMessage,
       }}
     >
       {children}

@@ -1,11 +1,17 @@
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+} from "firebase/auth";
 import AuthSidebar from "../components/AuthSidebar";
 import Button from "../components/Button";
 import LoginSignUpTab from "../components/LoginSignUpTab";
 import { useAuthContext } from "../components/contexts/AuthContext";
 import { auth } from "../components/firebase/config";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 function SignUpPage() {
+  const navigate = useNavigate();
   const {
     email,
     setEmail,
@@ -19,14 +25,20 @@ function SignUpPage() {
     setCategory,
     confirmPassword,
     setConfirmPassword,
+    authUser,
+    setAuthUser,
   } = useAuthContext();
+
+ 
 
   function handleSignUp(e: React.FormEvent<HTMLElement>): void {
     e.preventDefault();
     console.log(email, password, fName, lName, category, confirmPassword);
 
     createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredentials) => console.log(userCredentials.user))
+      .then((userCredentials) => {
+        userCredentials.user && navigate("/app/feed");
+      })
       .catch((error) => console.log(error.code));
   }
 

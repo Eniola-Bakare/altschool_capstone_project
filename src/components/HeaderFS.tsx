@@ -40,7 +40,7 @@ function HeaderFS() {
 
           {/* <div className="headerImage flex gap-3 "> */}
           <img
-            src="./src/assets/headerImage.png"
+            src="../src/assets/headerImage.png"
             alt="a profile picture"
             className="rounded-full"
           />

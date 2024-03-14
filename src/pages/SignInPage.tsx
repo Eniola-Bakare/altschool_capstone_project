@@ -1,28 +1,51 @@
-import React from "react";
+import React, { useEffect } from "react";
 import AuthSidebar from "../components/AuthSidebar";
 import Button from "../components/Button";
 import LoginSignUpTab from "../components/LoginSignUpTab";
 import { useAuthContext } from "../components/contexts/AuthContext";
 import { auth } from "../components/firebase/config";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 
 function SignInPage() {
   const navigate = useNavigate();
-  const { email, password, setEmail, setPassword, setSignedIn } =
-    useAuthContext();
+  const {
+    email,
+    password,
+    setEmail,
+    setPassword,
+    authUser,
+    setAuthUser,
+    errorMessage,
+    setErrorMessage,
+  } = useAuthContext();
 
+  useEffect(() => {
+    const listen = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        console.log(typeof user);
+        setAuthUser(user);
+        navigate("/app/feed");
+      } else {
+        console.log("user signed out");
+      }
+    });
+    return () => {
+      listen();
+    };
+  }, [authUser, setAuthUser, navigate]);
   const handleSignIn = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
 
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         console.log(userCredential);
-        setSignedIn(true);
-        navigate("/app/feed");
+        setErrorMessage(false);
       })
-      .catch((error) => console.log(error.message));
-    // console.log(email, password);
+      .catch((error) => {
+        if (error.message === "Firebase: Error (auth/invalid-credential).")
+          setErrorMessage(true);
+      });
   };
   return (
     <section className="flex w-full items-center justify-between">
@@ -46,7 +69,7 @@ function SignInPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="e.g: Johndoe@gmail.com"
-              className="h-[56px] py-[10px] px-[16px] border borde-[#CED4DA] shadow-md rounded-lg"
+              className="h-[56px] py-[10px] px-[16px] border outline-[#CED4DA] shadow-md rounded-lg"
             />
           </div>
           <div className="password-field flex flex-col gap-3 relative">
@@ -58,7 +81,7 @@ function SignInPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="e.g: Johndoe@gmail.com"
-              className="h-[56px] py-[10px] px-[16px] border borde-[#CED4DA] shadow-md rounded-lg"
+              className="h-[56px] py-[10px] px-[16px] border outline-[#CED4DA] shadow-md rounded-lg"
             />
             <img
               src="./src/assets/eyeIcon.png"
@@ -68,6 +91,11 @@ function SignInPage() {
           </div>
 
           <Button type="primary" name="Log in" width="w-full" />
+          {errorMessage && (
+            <h1 className="text-xl font-medium text-center text-danger ">
+              Invalid credentials, please try again
+            </h1>
+          )}
         </form>
       </aside>
     </section>

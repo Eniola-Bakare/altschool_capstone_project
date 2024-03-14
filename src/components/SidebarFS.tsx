@@ -2,12 +2,17 @@ import LogoText from "./LogoText";
 import { auth } from "../components/firebase/config";
 import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+import { useAuthContext } from "./contexts/AuthContext";
 
 function SidebarFS() {
+  const { setSignedIn } = useAuthContext();
   const navigate = useNavigate();
   function handleLogOut() {
     signOut(auth)
-      .then(() => navigate("/"))
+      .then(() => {
+        setSignedIn(false);
+        navigate("/");
+      })
       .catch((error) => console.log("an error occured", error));
   }
   return (
