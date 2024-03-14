@@ -13,6 +13,7 @@ function SignUpPage() {
         <h1 className="text-4xl font-medium ">Register as a Writer/Reader</h1>
         <form
           action=""
+          
           className="form-welcome flex flex-col justify-center w-[50%] gap-3"
         >
           <div className="name-fields flex gap-3">
