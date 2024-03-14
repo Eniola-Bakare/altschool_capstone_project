@@ -1,8 +1,35 @@
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import AuthSidebar from "../components/AuthSidebar";
 import Button from "../components/Button";
 import LoginSignUpTab from "../components/LoginSignUpTab";
+import { useAuthContext } from "../components/contexts/AuthContext";
+import { auth } from "../components/firebase/config";
 
 function SignUpPage() {
+  const {
+    email,
+    setEmail,
+    password,
+    setPassword,
+    fName,
+    setFName,
+    lName,
+    setLName,
+    category,
+    setCategory,
+    confirmPassword,
+    setConfirmPassword,
+  } = useAuthContext();
+
+  function handleSignUp(e: React.FormEvent<HTMLElement>): void {
+    e.preventDefault();
+    console.log(email, password, fName, lName, category, confirmPassword);
+
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredentials) => console.log(userCredentials.user))
+      .catch((error) => console.log(error.code));
+  }
+
   return (
     <section className="flex w-full items-center justify-between">
       <AuthSidebar />
@@ -12,8 +39,7 @@ function SignUpPage() {
 
         <h1 className="text-4xl font-medium ">Register as a Writer/Reader</h1>
         <form
-          action=""
-          
+          onSubmit={handleSignUp}
           className="form-welcome flex flex-col justify-center w-[50%] gap-3"
         >
           <div className="name-fields flex gap-3">
@@ -24,6 +50,8 @@ function SignUpPage() {
               <input
                 type="text"
                 id="fName"
+                value={fName}
+                onChange={(e) => setFName(e.target.value)}
                 placeholder="e.g: John"
                 className="h-[56px] py-[10px] px-[16px] border borde-[#CED4DA] shadow-md rounded-lg hover:shadow-xl focus:outline-blue"
               />
@@ -35,6 +63,8 @@ function SignUpPage() {
               <input
                 type="text"
                 id="lName"
+                value={lName}
+                onChange={(e) => setLName(e.target.value)}
                 placeholder="e.g: Doe"
                 className="h-[56px] py-[10px] px-[16px] border borde-[#CED4DA] shadow-md rounded-lg hover:shadow-xl focus:outline-blue"
               />
@@ -48,6 +78,8 @@ function SignUpPage() {
               <select
                 name="title"
                 id="title"
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
                 className="w-full focus:outline-0 active:outline-0 "
               >
                 <option value="writer">Writer</option>
@@ -62,6 +94,8 @@ function SignUpPage() {
             <input
               type="email"
               id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               placeholder="e.g: Johndoe@gmail.com"
               className="h-[56px] py-[10px] px-[16px] border borde-[#CED4DA] shadow-md rounded-lg hover:shadow-xl focus:outline-blue"
             />
@@ -72,6 +106,8 @@ function SignUpPage() {
             </label>
             <input
               type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               placeholder="min 8 characters of alphanumerics"
               className="h-[56px] py-[10px] px-[16px] border borde-[#CED4DA] shadow-md rounded-lg hover:shadow-xl focus:outline-blue"
             />
@@ -88,6 +124,8 @@ function SignUpPage() {
             <input
               type="password"
               id="confirmPassword"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
               placeholder="must match with the password"
               className="h-[56px] py-[10px] px-[16px] border borde-[#CED4DA] shadow-md rounded-lg hover:shadow-xl focus:outline-blue"
             />
@@ -98,12 +136,7 @@ function SignUpPage() {
             />
           </div>
 
-          <Button
-            type="primary"
-            name="Create account"
-            onClick={() => console.log("fifth")}
-            width="w-full"
-          />
+          <Button type="primary" name="Create account" width="w-full" />
         </form>
 
         <div className="google-auth flex w-[50%] justify-center items-center gap-11 rounded-lg py-2 px-4 shadow-md border border-[#CED4DA]">

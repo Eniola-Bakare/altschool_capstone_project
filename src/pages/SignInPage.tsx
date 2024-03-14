@@ -5,15 +5,21 @@ import LoginSignUpTab from "../components/LoginSignUpTab";
 import { useAuthContext } from "../components/contexts/AuthContext";
 import { auth } from "../components/firebase/config";
 import { signInWithEmailAndPassword } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 
 function SignInPage() {
-  const { email, password, setEmail, setPassword } = useAuthContext();
+  const navigate = useNavigate();
+  const { email, password, setEmail, setPassword, setSignedIn } =
+    useAuthContext();
 
   const handleSignIn = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
+
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         console.log(userCredential);
+        setSignedIn(true);
+        navigate("/app/feed");
       })
       .catch((error) => console.log(error.message));
     // console.log(email, password);

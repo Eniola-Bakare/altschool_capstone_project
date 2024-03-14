@@ -5,7 +5,7 @@ import SignUpPage from "./pages/SignUpPage";
 import LandingPage from "./pages/LandingPage";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import AuthContextProvider from "./components/contexts/AuthContext";
-import Config from "./components/firebase/config";
+import AppLayout from "./components/AppLayout";
 
 function App() {
   return (
@@ -17,6 +17,8 @@ function App() {
             {/* <Route path="*" element={<SignInPage />} /> */}
             <Route path="signin" element={<SignInPage />} />
             <Route path="signup" element={<SignUpPage />} />
+            <Route path="feed" element={<FeedScreen />} />
+            <Route path="app/feed" element={<FeedScreen />} />
           </Routes>
           {/* <div className="flex flex-col">
           <LandingPage />
