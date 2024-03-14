@@ -47,16 +47,15 @@ function PublishScreen() {
         </div> */}
 
         {/* publish screen three */}
-          <div className="publish-screen-three w-full h-full flex flex-col items-start gap-4">
+          <div className="publish-screen-three w-full h-full flex flex-col items-start gap-5">
             <img
               src="./src/assets/publishImage.png"
               alt="an attached image"
               className=""
             />
-          <textarea placeholder="Write a post......" className="w-full h-full focus:outline-0 " />
+          <textarea placeholder="Write a post......" className="w-full h-full focus:outline-0 text-lg font-medium" />
           </div>
 
-        {/* publish screen 4 */}
       </div>
     </section>
   );

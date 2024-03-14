@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import Button from "../components/Button";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
@@ -24,15 +25,20 @@ function LandingPage() {
             Unleash the Power of Words, Connect with Like-minded Readers and
             Writers
           </p>
-          <Button
-            name="Get started"
-            type="primary"
-            onClick={() => console.log("third -- get started")}
-          />
+          <Link to="/signup">
+            <Button
+              name="Get started"
+              type="primary"
+              onClick={() => console.log("third -- get started")}
+            />
+          </Link>
         </div>
       </section>
 
-      <section className="about-sec flex py-16 px-20 justify-between">
+      <section
+        className="about-sec flex py-16 px-20 justify-between"
+        id="about"
+      >
         <div className="about-text w-[50%] flex flex-col gap-8 text-black">
           <h1 className="text-5xl font-bold ">About Chatter</h1>
           <p className="text-lg">
@@ -119,7 +125,13 @@ function LandingPage() {
               Software developer at Apple
             </span>
           </p>
-          <Button type="primary" name="Join chatter" onClick={() => onclick} />
+          <Link to="/signup">
+            <Button
+              type="primary"
+              name="Join chatter"
+              onClick={() => console.log("join chatter")}
+            />
+          </Link>
         </div>
       </section>
 
@@ -155,7 +167,13 @@ function LandingPage() {
               Share people your great ideas, and also read write-ups based on
               your interests connect with people of same interests and goals
             </p>
-            <Button name="Get started" type="primary" onClick={() => onclick} />
+            <Link to="/signup">
+              <Button
+                name="Get started"
+                type="primary"
+                onClick={() => console.log("get started 2")}
+              />
+            </Link>
           </div>
         </div>
       </section>
