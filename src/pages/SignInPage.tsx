@@ -6,6 +6,7 @@ import { useAuthContext } from "../components/contexts/AuthContext";
 import { auth } from "../components/firebase/config";
 import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+import SignUpPortals from "../components/SignUpPortals";
 
 function SignInPage() {
   const navigate = useNavigate();
@@ -105,6 +106,9 @@ function SignInPage() {
             </h1>
           )}
         </form>
+
+
+        <SignUpPortals />
       </aside>
     </section>
   );

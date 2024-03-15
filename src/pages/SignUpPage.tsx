@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import emailjs from "emailjs-com";
 import firebase from "firebase/compat/app";
+import SignUpPortals from "../components/SignUpPortals";
 
 function SignUpPage() {
   const passwordPattern =
@@ -244,15 +245,7 @@ function SignUpPage() {
 
           <Button type="primary" name="Create account" width="w-full" />
         </form>
-
-        <div className="google-auth flex w-[50%] justify-center items-center gap-11 rounded-lg py-2 px-4 shadow-md border border-[#CED4DA]">
-          <img src="./src/assets/google.png" alt="google logo" />
-          <p>Sign up with Google</p>
-        </div>
-        <div className="linked-auth flex w-[50%] justify-center items-center gap-11 rounded-lg py-2 px-4 shadow-md border border-[#CED4DA]">
-          <img src="./src/assets/linkedin.png" alt="google logo" />
-          <p>Sign up with Linkedin</p>
-        </div>
+        <SignUpPortals />
       </aside>
     </section>
   );
