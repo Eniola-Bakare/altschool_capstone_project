@@ -1,10 +1,14 @@
-import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import {
+  signInWithPopup,
+  GoogleAuthProvider,
+  TwitterAuthProvider,
+} from "firebase/auth";
 
 import { auth } from "../components/firebase/config";
 
-const provider = new GoogleAuthProvider();
 function SignUpPortals() {
   function handleGoogleSDK() {
+    const provider = new GoogleAuthProvider();
     console.log("im up and running");
     signInWithPopup(auth, provider)
       .then((result) => {
@@ -24,6 +28,35 @@ function SignUpPortals() {
       });
   }
 
+  function handleFBSDK() {
+    const provider = new TwitterAuthProvider();
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        console.log(" heree");
+
+        const credential = TwitterAuthProvider.credentialFromResult(result);
+        const token = credential.accessToken;
+        const secret = credential.secret;
+        // IdP data available using getAdditionalUserInfo(result)
+        const user = result.user;
+      })
+      .catch((error) => {
+        // Handle Errors here.
+        console.log("or heree");
+        console.log(error);
+
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        alert(error.message);
+        // The email of the user's account used.
+        const email = error.customData.email;
+        // The AuthCredential type that was used.
+        const credential = TwitterAuthProvider.credentialFromError(error);
+
+        // ...
+      });
+  }
+
   return (
     <div className="w-full flex flex-col items-center gap-5">
       <div
@@ -33,13 +66,16 @@ function SignUpPortals() {
         <img src="./src/assets/google.png" alt="google logo" />
         <p>Sign in with Google</p>
       </div>
-      <div className="linked-auth flex w-[50%] justify-center items-center gap-11 rounded-lg py-2 px-4 shadow-md border border-[#CED4DA]">
+      <div
+        className="linked-auth flex w-[50%] justify-center items-center gap-11 rounded-lg py-2 px-4 shadow-md border border-[#CED4DA] cursor-pointer"
+        onClick={handleFBSDK}
+      >
         <img
-          src="./src/assets/facebook.png"
-          alt="facebook logo"
-          className="w-[4%]"
+          src="./src/assets/twitterLogo.avif"
+          alt="twitter logo"
+          className="w-[6%]"
         />
-        <p>Sign in with Facebook</p>
+        <p>Sign in with Twitter</p>
       </div>
     </div>
   );
