@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import AuthSidebar from "../components/AuthSidebar";
 import Button from "../components/Button";
 import LoginSignUpTab from "../components/LoginSignUpTab";
@@ -16,8 +16,8 @@ function SignInPage() {
     setPassword,
     authUser,
     setAuthUser,
-    errorMessage,
-    setErrorMessage,
+    errorMessageSignIn,
+    setErrorMessageSignIn,
   } = useAuthContext();
 
   useEffect(() => {
@@ -40,11 +40,11 @@ function SignInPage() {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         console.log(userCredential);
-        setErrorMessage(false);
+        setErrorMessageSignIn(false);
       })
       .catch((error) => {
-        if (error.message === "Firebase: Error (auth/invalid-credential).")
-          setErrorMessage(true);
+        console.log(error);
+        setErrorMessageSignIn(true);
       });
   };
   return (
@@ -69,7 +69,11 @@ function SignInPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="e.g: Johndoe@gmail.com"
-              className="h-[56px] py-[10px] px-[16px] border outline-[#CED4DA] shadow-md rounded-lg"
+              className={`h-[56px] py-[10px] px-[16px] border ${
+                errorMessageSignIn
+                  ? "border-danger outline-danger"
+                  : "outline-[#CED4DA] border-[#CED4DA"
+              } shadow-md rounded-lg`}
             />
           </div>
           <div className="password-field flex flex-col gap-3 relative">
@@ -81,7 +85,11 @@ function SignInPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="e.g: Johndoe@gmail.com"
-              className="h-[56px] py-[10px] px-[16px] border outline-[#CED4DA] shadow-md rounded-lg"
+              className={`h-[56px] py-[10px] px-[16px] border ${
+                errorMessageSignIn
+                  ? "border-danger outline-danger"
+                  : "outline-[#CED4DA] border-[#CED4DA"
+              } shadow-md rounded-lg`}
             />
             <img
               src="./src/assets/eyeIcon.png"
@@ -91,8 +99,8 @@ function SignInPage() {
           </div>
 
           <Button type="primary" name="Log in" width="w-full" />
-          {errorMessage && (
-            <h1 className="text-xl font-medium text-center text-danger ">
+          {errorMessageSignIn && (
+            <h1 className="text-xl font-bold text-center text-danger ">
               Invalid credentials, please try again
             </h1>
           )}

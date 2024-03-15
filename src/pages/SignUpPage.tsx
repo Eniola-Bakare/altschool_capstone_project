@@ -1,6 +1,10 @@
 import {
+  SignInMethod,
   createUserWithEmailAndPassword,
+  fetchSignInMethodsForEmail,
+  getAuth,
   onAuthStateChanged,
+  signInWithEmailAndPassword,
 } from "firebase/auth";
 import AuthSidebar from "../components/AuthSidebar";
 import Button from "../components/Button";
@@ -8,10 +12,17 @@ import LoginSignUpTab from "../components/LoginSignUpTab";
 import { useAuthContext } from "../components/contexts/AuthContext";
 import { auth } from "../components/firebase/config";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import emailjs from "emailjs-com";
+import firebase from "firebase/compat/app";
 
 function SignUpPage() {
+  const passwordPattern =
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*?&]{6,}$/;
   const navigate = useNavigate();
+  const [confirmPasswordError, setconfirmPasswordError] = useState("");
+  const [fNameError, setfNameError] = useState("");
+  const [lNameError, setLNameError] = useState("");
   const {
     email,
     setEmail,
@@ -27,19 +38,68 @@ function SignUpPage() {
     setConfirmPassword,
     authUser,
     setAuthUser,
+    errorMessageSignUp,
+    setErrorMessageSignUp,
+    oTP,
+    generateOTP,
   } = useAuthContext();
 
- 
+  useEffect(() => {
+    generateOTP();
+    console.log(oTP);
+  }, []);
+  // console.log(oTP);
 
   function handleSignUp(e: React.FormEvent<HTMLElement>): void {
     e.preventDefault();
-    console.log(email, password, fName, lName, category, confirmPassword);
+    // console.log(email, password, fName, lName, category, confirmPassword);
 
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredentials) => {
-        userCredentials.user && navigate("/app/feed");
-      })
-      .catch((error) => console.log(error.code));
+    if (fName.trim().length < 3) {
+      setfNameError("At least 3 characters");
+    } else {
+      setfNameError("");
+    }
+    if (lName.trim().length < 3) {
+      setLNameError("At least 3 characters");
+    } else {
+      setLNameError("");
+    }
+    if (password.length < 6) {
+      setconfirmPasswordError("Password must be at least than 6 characters");
+      return;
+    } else if (!passwordPattern.test(password)) {
+      setconfirmPasswordError("Pastword must match given pattern");
+    } else if (confirmPassword === password) {
+      setconfirmPasswordError("");
+
+      fetchSignInMethodsForEmail(auth, email)
+        .then((SignInMethod) => {
+          if (SignInMethod && SignInMethod.length > 0) {
+            console.log("user exist");
+            setErrorMessageSignUp(true);
+          } else {
+            setErrorMessageSignUp(false);
+            emailjs
+              .sendForm(
+                "service_y2gkibt",
+                "template_ojzoraj",
+                e.target as HTMLFormElement,
+                "3B4VcurV0Wevkm-hy"
+              )
+              .then(() => {
+                navigate("/confirmation");
+              })
+              .catch((error) => console.log(error));
+          }
+        })
+        .catch((error) => console.log(error));
+
+      console.log("entered herre");
+    } else {
+      console.log("well");
+      setconfirmPasswordError("Passwords do not match");
+      return;
+    }
   }
 
   return (
@@ -50,27 +110,43 @@ function SignUpPage() {
         <LoginSignUpTab />
 
         <h1 className="text-4xl font-medium ">Register as a Writer/Reader</h1>
+        {errorMessageSignUp && (
+          <h1 className="text-xl font-bold text-center text-danger ">
+            User already exist, login instead
+          </h1>
+        )}
         <form
           onSubmit={handleSignUp}
           className="form-welcome flex flex-col justify-center w-[50%] gap-3"
         >
           <div className="name-fields flex gap-3">
             <div className="first-name flex flex-col gap-3 w-[50%]">
-              <label htmlFor="fName" className="text-[#3B3B3B]">
-                First name
+              <label
+                htmlFor="fName"
+                className={`${fNameError ? "text-danger" : "text-[#3B3B3B]"}`}
+              >
+                {fNameError || " Last name"}
               </label>
               <input
                 type="text"
                 id="fName"
+                name="name"
                 value={fName}
                 onChange={(e) => setFName(e.target.value)}
                 placeholder="e.g: John"
-                className="h-[56px] py-[10px] px-[16px] border borde-[#CED4DA] shadow-md rounded-lg hover:shadow-xl focus:outline-blue"
+                className={`h-[56px] py-[10px] px-[16px] border ${
+                  fNameError === "At least 3 characters"
+                    ? "border-danger"
+                    : "borde-[#CED4DA]"
+                } shadow-md rounded-lg hover:shadow-xl focus:outline-blue`}
               />
             </div>
             <div className="last-name flex flex-col gap-3 w-[50%]">
-              <label htmlFor="lName" className="text-[#3B3B3B]">
-                Last name
+              <label
+                htmlFor="lName"
+                className={`${lNameError ? "text-danger" : "text-[#3B3B3B]"}`}
+              >
+                {lNameError || " Last name"}
               </label>
               <input
                 type="text"
@@ -78,7 +154,11 @@ function SignUpPage() {
                 value={lName}
                 onChange={(e) => setLName(e.target.value)}
                 placeholder="e.g: Doe"
-                className="h-[56px] py-[10px] px-[16px] border borde-[#CED4DA] shadow-md rounded-lg hover:shadow-xl focus:outline-blue"
+                className={`h-[56px] py-[10px] px-[16px] border ${
+                  lNameError === "At least 3 characters"
+                    ? "border-danger"
+                    : "borde-[#CED4DA]"
+                } shadow-md rounded-lg hover:shadow-xl focus:outline-blue`}
               />
             </div>
           </div>
@@ -106,6 +186,7 @@ function SignUpPage() {
             <input
               type="email"
               id="email"
+              name="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="e.g: Johndoe@gmail.com"
@@ -113,14 +194,21 @@ function SignUpPage() {
             />
           </div>
           <div className="password-field flex flex-col gap-3 relative">
-            <label htmlFor="password" className="text-[#3B3B3B]">
-              Password
+            <label
+              htmlFor="password"
+              className={`${
+                confirmPasswordError.length > 0
+                  ? "text-danger"
+                  : " text-[#3B3B3B]"
+              }`}
+            >
+              {confirmPasswordError || "Password"}
             </label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="min 8 characters of alphanumerics"
+              placeholder="at least 6 with one of A-Z-a-z1-0-"
               className="h-[56px] py-[10px] px-[16px] border borde-[#CED4DA] shadow-md rounded-lg hover:shadow-xl focus:outline-blue"
             />
             <img
@@ -130,7 +218,12 @@ function SignUpPage() {
             />
           </div>
           <div className="confirm-password-field flex flex-col gap-3 relative">
-            <label htmlFor="confirmPassword" className="text-[#3B3B3B]">
+            <label
+              htmlFor="confirmPassword"
+              className={`${
+                confirmPasswordError ? "text-danger" : " text-[#3B3B3B]"
+              }`}
+            >
               Confirm password
             </label>
             <input
@@ -147,6 +240,7 @@ function SignUpPage() {
               className="w-[5%] absolute inset-y-[50%] right-5 "
             />
           </div>
+          <input type="hidden" name="otp" value={oTP.join("")} />
 
           <Button type="primary" name="Create account" width="w-full" />
         </form>

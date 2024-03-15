@@ -25,8 +25,13 @@ type AuthContextTYPE = {
   setSignedIn: (signedIn: boolean) => void;
   authUser: null | object;
   setAuthUser: Dispatch<SetStateAction<User | null>>;
-  errorMessage: boolean;
-  setErrorMessage: (errorMessage: boolean) => void;
+  errorMessageSignIn: boolean;
+  setErrorMessageSignIn: (errorMessage: boolean) => void;
+  errorMessageSignUp: boolean;
+  setErrorMessageSignUp: (errorMessage: boolean) => void;
+  oTP: number[];
+  setOTP: (oTP: number[]) => void;
+  generateOTP: () => void;
 };
 const AuthContext = createContext<AuthContextTYPE | undefined>(undefined);
 
@@ -36,15 +41,25 @@ export default function AuthContextProvider({
   children: ReactNode;
 }) {
   const [email, setEmail] = useState("eebakare@gmail.com");
-  const [password, setPassword] = useState("kkkkkkkk");
+  const [password, setPassword] = useState("123Ab!");
   const [fName, setFName] = useState("eniola");
   const [lName, setLName] = useState("bakare");
   const [category, setCategory] = useState("reader");
-  const [confirmPassword, setConfirmPassword] = useState("kkkk");
+  const [confirmPassword, setConfirmPassword] = useState("123Ab!");
   const [signedIn, setSignedIn] = useState(false);
   const [authUser, setAuthUser] = useState<User | null>(null);
 
-  const [errorMessage, setErrorMessage] = useState(false);
+  const [errorMessageSignIn, setErrorMessageSignIn] = useState(false);
+  const [errorMessageSignUp, setErrorMessageSignUp] = useState(false);
+
+  const [oTP, setOTP] = useState<number[]>([]);
+  function generateOTP() {
+    const newOTP = [];
+    for (let i = 0; i < 4; i++) {
+      newOTP.push(Math.floor(Math.random() * 10)); // Generate random digit between 0 and 9
+    }
+    setOTP(newOTP);
+  }
 
   return (
     <AuthContext.Provider
@@ -65,8 +80,13 @@ export default function AuthContextProvider({
         setSignedIn,
         authUser,
         setAuthUser,
-        errorMessage,
-        setErrorMessage,
+        errorMessageSignIn,
+        setErrorMessageSignIn,
+        errorMessageSignUp,
+        setErrorMessageSignUp,
+        oTP,
+        setOTP,
+        generateOTP,
       }}
     >
       {children}
