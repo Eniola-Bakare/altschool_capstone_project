@@ -12,7 +12,7 @@ function LandingPage() {
         className="w-full hero-section bg-cover bg-left-top h-screen flex flex-col justify-center"
         style={{
           backgroundImage:
-            "linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),url('./src/assets/heroImage.png')",
+            "linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),url('heroImage.png')",
         }}
       >
         <div className="hero-text self-center  flex flex-col gap-10">
@@ -53,7 +53,7 @@ function LandingPage() {
         </div>
         <div className="about-image w-[35%]">
           <img
-            src="./src/assets/aboutImage.png"
+            src="aboutImage.png"
             alt="a group of people on a stair way"
             className="w-[100%]"
           />
@@ -72,7 +72,7 @@ function LandingPage() {
 
       <section className="card-sec pb-20 flex gap-12">
         <div className="each-card w-[306px] h-[324px] py-4 px-5 rounded-lg border border-boderGrey flex flex-col justify-center  items-start gap-3">
-          <img src="./src/assets/iconOne.png" alt="anlytic icon" />
+          <img src="iconOne.png" alt="anlytic icon" />
           <header className="text-2xl font-medium leading-[36px]">
             Analytics
           </header>
@@ -82,7 +82,7 @@ function LandingPage() {
           </p>
         </div>
         <div className="each-card w-[306px] h-[324px] py-4 px-5 rounded-lg border border-boderGrey flex flex-col justify-center  items-start gap-3">
-          <img src="./src/assets/iconTwo.png" alt="anlytic icon" />
+          <img src="iconTwo.png" alt="anlytic icon" />
           <header className="text-2xl font-medium leading-[36px]">
             Social interactions
           </header>
@@ -92,7 +92,7 @@ function LandingPage() {
           </p>
         </div>
         <div className="each-card w-[306px] h-[324px] py-4 px-5 rounded-lg border border-boderGrey flex flex-col justify-center  items-start gap-3">
-          <img src="./src/assets/iconThree.png" alt="anlytic icon" />
+          <img src="iconThree.png" alt="anlytic icon" />
           <header className="text-2xl font-medium leading-[36px]">
             Content creation
           </header>
@@ -106,7 +106,7 @@ function LandingPage() {
       <section className="testimony bg-rgba flex items-center justify-center w-full h-[492px]">
         <div className="review-image">
           <img
-            src="./src/assets/reviewImage.png"
+            src="reviewImage.png"
             alt="a man"
             className="rounded-full w-[70%]"
           />
@@ -140,19 +140,19 @@ function LandingPage() {
           <div className="all-three-profiles flex gap-8 items-center">
             <div className="two-profiles flex flex-col gap-14 justify-between items-center ">
               <img
-                src="./src/assets/profileOne.png"
+                src="profileOne.png"
                 className="rounded-full"
                 alt="a woman"
               />
               <img
-                src="./src/assets/profileTwo.png"
+                src="profileTwo.png"
                 className="rounded-full"
                 alt="a man"
               />
             </div>
             <div className="oneProfile">
               <img
-                src="./src/assets/profileThree.png"
+                src="profileThree.png"
                 className="rounded-full"
                 alt="a man"
               />

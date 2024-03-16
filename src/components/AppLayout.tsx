@@ -7,7 +7,6 @@ import SignInPage from "../pages/SignInPage";
 
 function AppLayout() {
   const [authenticated, setAuthenticated] = useState(false);
-
   onAuthStateChanged(auth, (user) => {
     if (user) setAuthenticated(true);
     setAuthenticated(false);

@@ -93,7 +93,7 @@ function SignInPage() {
               } shadow-md rounded-lg`}
             />
             <img
-              src="./src/assets/eyeIcon.png"
+              src="eyeIcon.png"
               alt="eye icon"
               className="w-[5%] absolute inset-y-[50%] right-5 "
             />

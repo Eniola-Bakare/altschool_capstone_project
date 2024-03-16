@@ -1,5 +1,4 @@
 import SignInPage from "./pages/SignInPage";
-import FeedScreen from "./pages/FeedScreen";
 import SignUpConfirm from "./pages/SignUpConfirm";
 import SignUpPage from "./pages/SignUpPage";
 import LandingPage from "./pages/LandingPage";

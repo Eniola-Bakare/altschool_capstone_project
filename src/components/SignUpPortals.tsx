@@ -63,7 +63,7 @@ function SignUpPortals() {
         className="google-auth flex w-[50%] justify-center items-center gap-11 rounded-lg py-2 px-4 shadow-md border border-[#CED4DA] cursor-pointer"
         onClick={handleGoogleSDK}
       >
-        <img src="./src/assets/google.png" alt="google logo" />
+        <img src="/google.png" alt="google logo" />
         <p>Sign in with Google</p>
       </div>
       <div
@@ -71,7 +71,7 @@ function SignUpPortals() {
         onClick={handleFBSDK}
       >
         <img
-          src="./src/assets/twitterLogo.avif"
+          src="/twitterLogo.avif"
           alt="twitter logo"
           className="w-[6%]"
         />

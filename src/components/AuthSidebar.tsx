@@ -3,7 +3,7 @@ function AuthSidebar() {
     <aside
       style={{
         backgroundImage:
-          "linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('./src/assets/authSidebar.png')",
+          "linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('/authSidebar.png')",
       }}
       className="bg-cover w-[35%] h-screen bg-center flex justify-center items-center "
     >
