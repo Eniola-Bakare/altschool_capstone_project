@@ -10,7 +10,7 @@ import AuthSidebar from "../components/AuthSidebar";
 import Button from "../components/Button";
 import LoginSignUpTab from "../components/LoginSignUpTab";
 import { useAuthContext } from "../components/contexts/AuthContext";
-import { auth } from "../components/firebase/config";
+import { auth } from "../firebase/config";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import emailjs from "emailjs-com";
@@ -37,8 +37,6 @@ function SignUpPage() {
     setCategory,
     confirmPassword,
     setConfirmPassword,
-    authUser,
-    setAuthUser,
     errorMessageSignUp,
     setErrorMessageSignUp,
     oTP,

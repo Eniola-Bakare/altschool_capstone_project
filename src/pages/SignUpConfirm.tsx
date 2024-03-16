@@ -9,10 +9,25 @@ import React, {
 } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useAuthContext } from "../components/contexts/AuthContext";
-import { auth } from "../components/firebase/config";
+import { auth, db } from "../firebase/config";
+import { addDoc, collection, doc, getDoc, setDoc } from "firebase/firestore";
+import swal from "sweetalert";
+import { CreateNewUseronDB } from "../firebase/fireStoreActions";
+import { set } from "firebase/database";
 
 function SignUpConfirm() {
-  const { email, password, setErrorMessageSignUp, oTP } = useAuthContext();
+  const {
+    email,
+    password,
+    oTP,
+    authUser,
+    setAuthUser,
+    newUser,
+    fName,
+    lName,
+    category,
+    setCurrentUser,
+  } = useAuthContext();
   const navigate = useNavigate();
 
   const [oTP1, setOTP1] = useState("");
@@ -23,6 +38,43 @@ function SignUpConfirm() {
   const [otpError, setOtpError] = useState<boolean>(false);
   console.log(oTP);
   console.log(otpLocal);
+
+  function newUserFunc(user) {
+    const userRef = collection(db, "users");
+    // creates a new user first,
+    // then adds new user to firestore db - collection (users)
+    const { displayName, photoURL, tenantId, uid } = user;
+    const newUser = {
+      displayName,
+      photoURL,
+      tenantId,
+      fName,
+      lName,
+      email,
+      category,
+      uid,
+      otp: otpLocal.join(""),
+    };
+    // eebakare@gmail.com
+    // ebakare343@stu.ui.edu.org
+    addDoc(userRef, { ...newUser })
+      .then((res) => {
+        console.log(res, "user created successfully");
+        console.log(res.id);
+        setCurrentUser({ ...newUser, userDocRef: res.id });
+        navigate(`/app/feed/:${newUser.uid}`);
+        // getDoc(doc(db, "users", res.id))
+        //   .then((resp) => {
+        //     console.log("in this block now", resp);
+
+        //   })
+        //   .catch((err) => console.log("now, this errorr", err));
+      })
+      .catch((err) => {
+        console.log(err, "unsuccessfulll");
+      });
+    return newUser;
+  }
   useEffect(() => {
     setOtpLocal(oTP);
   }, []);
@@ -33,16 +85,20 @@ function SignUpConfirm() {
     if (otpLocal.join("") == [oTP1, oTP2, oTP3, oTP4].join("")) {
       createUserWithEmailAndPassword(auth, email, password)
         .then((userCredentials) => {
-          userCredentials.user && navigate("/app/feed");
+          console.log(userCredentials.user);
+          // setAuthUser(userCredentials.user);
+          // navigate(`/app/feed/:${userCredentials.user.uid}`);
+          newUserFunc(userCredentials.user);
         })
         .catch((error) => {
           if (error.code === "auth/email-already-in-use") {
             console.log(error.code);
           } else {
+            console.log(error);
             console.log("what error?");
           }
           setTimeout(() => {
-            // navigate("/signin");
+            navigate("/signin");
           }, 2000);
         });
     } else {
@@ -74,7 +130,11 @@ function SignUpConfirm() {
         </div>
 
         <h1 className="text-4xl font-medium ">Enter confirmation code</h1>
-        <p className={otpError ? "text-danger font-bold text-lg" : "text-[#626262]"}>
+        <p
+          className={
+            otpError ? "text-danger font-bold text-lg" : "text-[#626262]"
+          }
+        >
           {otpError
             ? "Invalid otp"
             : " We emailed you a code. Please input the code here for account          verification"}

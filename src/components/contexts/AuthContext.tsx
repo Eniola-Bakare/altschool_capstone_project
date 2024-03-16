@@ -1,12 +1,16 @@
 import { User } from "firebase/auth";
+import { collection, getDoc } from "firebase/firestore";
 import {
   Dispatch,
   ReactNode,
   SetStateAction,
   createContext,
   useContext,
+  useEffect,
+  useRef,
   useState,
 } from "react";
+import { db } from "../../firebase/config";
 
 type AuthContextTYPE = {
   email: string;
@@ -32,6 +36,10 @@ type AuthContextTYPE = {
   oTP: number[];
   setOTP: (oTP: number[]) => void;
   generateOTP: () => void;
+  newUser: null | object;
+  setNewUser: Dispatch<SetStateAction<null>>;
+  currentUser: object | null;
+  setCurrentUser: Dispatch<SetStateAction<object | null>>;
 };
 const AuthContext = createContext<AuthContextTYPE | undefined>(undefined);
 
@@ -48,6 +56,11 @@ export default function AuthContextProvider({
   const [confirmPassword, setConfirmPassword] = useState("123Ab!");
   const [signedIn, setSignedIn] = useState(false);
   const [authUser, setAuthUser] = useState<User | null>(null);
+
+  const [currentUser, setCurrentUser] = useState<object | null>(null);
+  console.log(currentUser, 'current user')
+
+  const [newUser, setNewUser] = useState(null);
 
   const [errorMessageSignIn, setErrorMessageSignIn] = useState(false);
   const [errorMessageSignUp, setErrorMessageSignUp] = useState(false);
@@ -87,6 +100,10 @@ export default function AuthContextProvider({
         oTP,
         setOTP,
         generateOTP,
+        newUser,
+        setNewUser,
+        currentUser,
+        setCurrentUser,
       }}
     >
       {children}

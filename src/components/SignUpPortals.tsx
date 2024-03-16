@@ -4,7 +4,7 @@ import {
   TwitterAuthProvider,
 } from "firebase/auth";
 
-import { auth } from "../components/firebase/config";
+import { auth } from "../firebase/config";
 
 function SignUpPortals() {
   function handleGoogleSDK() {

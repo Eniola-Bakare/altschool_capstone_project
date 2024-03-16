@@ -1,12 +1,14 @@
 import AllPosts from "./AllPosts";
+import { useAuthContext } from "./contexts/AuthContext";
 
 function TimelineFS() {
+  const {  newUser, currentUser, } = useAuthContext();
   return (
     <section className="timeline w-[95%] h-screen  overflow-hidden border-x border-y border-borderGrey flex justify-center  ">
       <div className="w-[85%] flex flex-col">
         <div className="feed+post flex justify-between items-center pt-12 pb-8 ">
           <div className="flex flex-col gap-2">
-            <p className="text-3xl font-medium">FEED</p>
+            <p className="text-3xl font-medium"> {currentUser ? currentUser?.email: 'FEED'}</p>
             <p className="text-lg text-grey">
               Explore different content you love
             </p>

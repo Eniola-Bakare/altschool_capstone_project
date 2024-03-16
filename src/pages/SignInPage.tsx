@@ -3,7 +3,7 @@ import AuthSidebar from "../components/AuthSidebar";
 import Button from "../components/Button";
 import LoginSignUpTab from "../components/LoginSignUpTab";
 import { useAuthContext } from "../components/contexts/AuthContext";
-import { auth } from "../components/firebase/config";
+import { auth } from "../firebase/config";
 import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import SignUpPortals from "../components/SignUpPortals";
@@ -106,7 +106,6 @@ function SignInPage() {
             </h1>
           )}
         </form>
-
 
         <SignUpPortals />
       </aside>

@@ -1,5 +1,5 @@
 import LogoText from "./LogoText";
-import { auth } from "../components/firebase/config";
+import { auth } from "../firebase/config";
 import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "./contexts/AuthContext";
