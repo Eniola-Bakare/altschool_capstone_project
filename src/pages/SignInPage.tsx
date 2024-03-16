@@ -8,9 +8,7 @@ import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import SignUpPortals from "../components/SignUpPortals";
 import {
-  QuerySnapshot,
   collection,
-  doc,
   getDocs,
   query,
   where,

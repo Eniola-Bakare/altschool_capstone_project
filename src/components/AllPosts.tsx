@@ -12,38 +12,25 @@ function AllPosts() {
       getDocs(usersRef).then((userData) => {
         let userDoc;
         let post;
+        let userAndPost = [];
 
         userData.forEach((eachUser) => {
           const postsRef = collection(db, "users", eachUser.id, "posts");
           getDocs(postsRef).then((allPosts) => {
             allPosts.forEach((eachPost) => {
               if (eachPost.data()) {
-                userDoc = eachUser.data();
-                console.log(eachUser.id);
-                post = eachPost.data();
+                userDoc = { ...eachUser.data(), userDocRef: eachUser.id };
+                // console.log(eachUser.id);
+                post = { ...eachPost.data(), postDocRef: eachPost.id };
+                // console.log(post);
+                userAndPost.push({ postData: post, userData: userDoc });
 
-                setAllPosts((prev) => [...prev, { ...post, ...userDoc }]);
-
-                // setAllPosts((prev) => {
-                //   const index = prev.findIndex(
-                //     (item) => item.uid === userDoc.uid
-                //   );
-                //   if (index !== -1) {
-                //     return prev.map((item) =>
-                //       item.uid === userDoc.uid
-                //         ? { ...item, ...userDoc, post }
-                //         : item
-                //     );
-                //   } else {
-                //     return [...prev, { ...userDoc, post }];
-                //   }
-                // });
+                setAllPosts(userAndPost);
               }
             });
           });
         });
-        console.log(userDoc, post);
-        // setAllPosts((prev) => [...prev, { userDoc, post }]);
+        // console.log(userAndPost);
       });
     };
 
@@ -53,7 +40,7 @@ function AllPosts() {
   return (
     <div className="all-posts tab flex flex-col justify-between items-center h-screen overflow-y-auto">
       {allPosts.map((post) => (
-        <EachPost key={post.id} />
+        <EachPost key={post.id} post={post} />
       ))}
     </div>
   );
