@@ -16,7 +16,7 @@ function SignInPage() {
     setEmail,
     setPassword,
     authUser,
-    setAuthUser,
+    setCurrentUser,
     errorMessageSignIn,
     setErrorMessageSignIn,
   } = useAuthContext();
@@ -25,8 +25,9 @@ function SignInPage() {
     const listen = onAuthStateChanged(auth, (user) => {
       if (user) {
         console.log(typeof user);
-        setAuthUser(user);
-        navigate("/app/feed");
+        console.log(user)
+        setCurrentUser(user);
+        navigate(`/app/feed/:${user.uid}`);
       } else {
         console.log("user signed out");
       }
@@ -34,7 +35,7 @@ function SignInPage() {
     return () => {
       listen();
     };
-  }, [authUser, setAuthUser, navigate]);
+  }, [authUser, setCurrentUser, navigate]);
   const handleSignIn = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
 
