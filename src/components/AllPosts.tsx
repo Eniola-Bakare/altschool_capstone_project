@@ -19,24 +19,25 @@ function AllPosts() {
             allPosts.forEach((eachPost) => {
               if (eachPost.data()) {
                 userDoc = eachUser.data();
-                console.log(typeof eachPost.data());
-                console.log(userDoc);
+                console.log(eachUser.id);
                 post = eachPost.data();
 
-                setAllPosts((prev) => {
-                  const index = prev.findIndex(
-                    (item) => item.uid === userDoc.uid
-                  );
-                  if (index !== -1) {
-                    return prev.map((item) =>
-                      item.uid === userDoc.uid
-                        ? { ...item, ...userDoc, post }
-                        : item
-                    );
-                  } else {
-                    return [...prev, { ...userDoc, post }];
-                  }
-                });
+                setAllPosts((prev) => [...prev, { ...post, ...userDoc }]);
+
+                // setAllPosts((prev) => {
+                //   const index = prev.findIndex(
+                //     (item) => item.uid === userDoc.uid
+                //   );
+                //   if (index !== -1) {
+                //     return prev.map((item) =>
+                //       item.uid === userDoc.uid
+                //         ? { ...item, ...userDoc, post }
+                //         : item
+                //     );
+                //   } else {
+                //     return [...prev, { ...userDoc, post }];
+                //   }
+                // });
               }
             });
           });

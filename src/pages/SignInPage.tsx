@@ -3,10 +3,18 @@ import AuthSidebar from "../components/AuthSidebar";
 import Button from "../components/Button";
 import LoginSignUpTab from "../components/LoginSignUpTab";
 import { useAuthContext } from "../components/contexts/AuthContext";
-import { auth } from "../firebase/config";
+import { auth, db } from "../firebase/config";
 import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import SignUpPortals from "../components/SignUpPortals";
+import {
+  QuerySnapshot,
+  collection,
+  doc,
+  getDocs,
+  query,
+  where,
+} from "firebase/firestore";
 
 function SignInPage() {
   const navigate = useNavigate();
@@ -14,19 +22,42 @@ function SignInPage() {
     email,
     password,
     setEmail,
+    fName,
+    lName,
+    category,
     setPassword,
     authUser,
     setCurrentUser,
     errorMessageSignIn,
     setErrorMessageSignIn,
+    currentUser,
   } = useAuthContext();
 
   useEffect(() => {
     const listen = onAuthStateChanged(auth, (user) => {
       if (user) {
-        console.log(typeof user);
-        console.log(user)
-        setCurrentUser(user);
+        getDocs(query(collection(db, "users"), where("uid", "==", user.uid)))
+          .then((resp) =>
+            resp.forEach((currentUser) => {
+              console.log(user);
+              console.log("current user", currentUser);
+              const { displayName, photoURL, tenantId, uid } = user;
+              const newUser = {
+                displayName,
+                photoURL,
+                tenantId,
+                fName,
+                lName,
+                email,
+                category,
+                uid,
+              };
+
+              setCurrentUser({ ...newUser, userDocRef: currentUser.id });
+            })
+          )
+          .catch((err) => console.log(err));
+
         navigate(`/app/feed/:${user.uid}`);
       } else {
         console.log("user signed out");
@@ -35,7 +66,7 @@ function SignInPage() {
     return () => {
       listen();
     };
-  }, [authUser, setCurrentUser, navigate]);
+  }, [authUser, setCurrentUser, currentUser, navigate]);
   const handleSignIn = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
 
