@@ -15,6 +15,7 @@ function PublishScreen({ closePublish }: PublishProps) {
   const fileInputRefImg = useRef<HTMLInputElement>(null);
 
   const [imgUrl, setimgUrl] = useState("");
+  const [vidUrl, setvidUrl] = useState("");
 
   const openScreenOne = (e: React.MouseEvent<HTMLElement>) => {
     // e.stopPropagation();
@@ -29,7 +30,7 @@ function PublishScreen({ closePublish }: PublishProps) {
       setScreenOne(false);
     }
   };
-  const openFileInput = () => {
+  const openFileInputVid = () => {
     console.log("here now");
     if (fileInputRef.current) {
       fileInputRef.current.click();
@@ -42,21 +43,22 @@ function PublishScreen({ closePublish }: PublishProps) {
     if (attachment && attachment.length > 0) {
       setScreenTwo(false);
       setScreenThree(true);
-      setimgUrl(URL.createObjectURL(attachment[0]))
+      setimgUrl(URL.createObjectURL(attachment[0]));
     }
   };
   // console.log(imgUrl, 'urllllllllllllllllllllllllllllllllllll')
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeVid = (e: React.ChangeEvent<HTMLInputElement>) => {
     const attachment = e.target.files;
     if (attachment && attachment.length > 0) {
       console.log(attachment);
       setScreenTwo(false);
       setScreenThree(true);
+      setvidUrl(URL.createObjectURL(attachment[0]));
     }
   };
   return (
     <section
-      className="w-[90%] h-[85%] border border-borderGrey rounded-lg flex flex-col py-14 px-16 gap-12"
+      className="w-[90%] h-[80%] border border-borderGrey rounded-lg flex flex-col py-14 px-16 gap-12 overflow-hidden"
       // onClick={(e) => openScreenOne(e)}
     >
       <div className="publish-buttn-div self-end flex gap-6">
@@ -133,28 +135,33 @@ function PublishScreen({ closePublish }: PublishProps) {
                 src="/vidIcon.png"
                 alt="a video icon"
                 className="cursor-pointer"
-                onClick={() => openFileInput()}
+                onClick={() => openFileInputVid()}
               />
             </div>
             <input
               type="file"
               ref={fileInputRef}
               className="hidden"
-              onChange={(e) => handleChange(e)}
+              onChange={(e) => handleChangeVid(e)}
+              accept="video/*"
             />
             <input
               type="file"
               ref={fileInputRefImg}
               className="hidden"
               onChange={(e) => handleChangeImg(e)}
+              accept="image/*"
             />
           </>
         )}
 
         {/* publish screen three */}
         {screenThree && (
-          <div className="publish-screen-three w-full h-full flex flex-col items-start gap-5">
-            {imgUrl && <img src={imgUrl} alt="an attached image" className="w-[50%]" />}
+          <div className="publish-screen-three w-full h-full flex flex-col items-start gap-5 ">
+            {imgUrl && (
+              <img src={imgUrl} alt="an attached image" className="w-[15%]" />
+            )}
+            {vidUrl && <video src={vidUrl} controls className="h-[35%]" />}
             <textarea
               placeholder="Write a post......"
               className="w-full h-full focus:outline-0 text-lg font-medium"

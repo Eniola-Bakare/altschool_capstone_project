@@ -11,7 +11,7 @@ function AsideFS() {
     setMakeAPostBtn(false);
   };
   return (
-    <section className="w-full h-screen flex flex-col items-center gap-10 ">
+    <section className="w-full h-screen flex flex-col items-center gap-10  ">
       <HeaderFS />
       {!makeAPostBtn && <TimelineFS setMakeAPostBtn={setMakeAPostBtn} />}
       {/* <PostsAnalytics /> */}
