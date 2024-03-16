@@ -3,8 +3,8 @@ import Button from "./Button";
 
 type PublishProps = {
   closePublish: () => void;
-  screenTwo: boolean;
-  setScreenTwo: (screenTwo: boolean) => void;
+  // screenTwo: boolean;
+  // setScreenTwo: (screenTwo: boolean) => void;
 };
 
 function PublishScreen({ closePublish }: PublishProps) {

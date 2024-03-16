@@ -1,20 +1,29 @@
 import AllPosts from "./AllPosts";
 import { useAuthContext } from "./contexts/AuthContext";
 
-function TimelineFS() {
-  const {  newUser, currentUser, } = useAuthContext();
+type TimelineFSProps = {
+  setMakeAPostBtn: (makeAPostBtn: boolean) => void;
+};
+function TimelineFS({ setMakeAPostBtn }: TimelineFSProps) {
+  const { newUser, currentUser } = useAuthContext();
   return (
     <section className="timeline w-[95%] h-screen  overflow-hidden border-x border-y border-borderGrey flex justify-center  ">
       <div className="w-[85%] flex flex-col">
         <div className="feed+post flex justify-between items-center pt-12 pb-8 ">
           <div className="flex flex-col gap-2">
-            <p className="text-3xl font-medium"> {currentUser ? currentUser?.email: 'FEED'}</p>
+            <p className="text-3xl font-medium">
+              {" "}
+              {currentUser ? currentUser?.email : "FEED"}
+            </p>
             <p className="text-lg text-grey">
               Explore different content you love
             </p>
           </div>
 
-          <button className=" h-[56px] py-2 px-4 bg-blue border-2 border-blue text-white rounded-lg font-bold flex gap-3 items-center justify-center">
+          <button
+            className=" h-[56px] py-2 px-4 bg-blue border-2 border-blue text-white rounded-lg font-bold flex gap-3 items-center justify-center"
+            onClick={() => setMakeAPostBtn(true)}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"

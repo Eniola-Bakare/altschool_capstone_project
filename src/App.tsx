@@ -5,6 +5,7 @@ import LandingPage from "./pages/LandingPage";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import AuthContextProvider from "./components/contexts/AuthContext";
 import AppLayout from "./components/AppLayout";
+import FeedScreen from "./pages/FeedScreen";
 
 function App() {
   return (
@@ -16,7 +17,7 @@ function App() {
             {/* <Route path="*" element={<SignInPage />} /> */}
             <Route path="signin" element={<SignInPage />} />
             <Route path="signup" element={<SignUpPage />} />
-            <Route path="app/feed/:id" element={<AppLayout />} />
+            <Route path="app/feed/:id" element={<FeedScreen />} />
             <Route path="confirmation" element={<SignUpConfirm />} />
           </Routes>
           {/* <div className="flex flex-col">

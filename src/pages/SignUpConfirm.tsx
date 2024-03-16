@@ -61,14 +61,13 @@ function SignUpConfirm() {
       .then((res) => {
         console.log(res, "user created successfully");
         console.log(res.id);
-        setCurrentUser({ ...newUser, userDocRef: res.id });
         navigate(`/app/feed/:${newUser.uid}`);
-        // getDoc(doc(db, "users", res.id))
-        //   .then((resp) => {
-        //     console.log("in this block now", resp);
-
-        //   })
-        //   .catch((err) => console.log("now, this errorr", err));
+        getDoc(doc(db, "users", res.id))
+          .then((resp) => {
+            console.log("in this block now", resp);
+            setCurrentUser({ ...newUser, userDocRef: res.id });
+          })
+          .catch((err) => console.log("now, this errorr", err));
       })
       .catch((err) => {
         console.log(err, "unsuccessfulll");
