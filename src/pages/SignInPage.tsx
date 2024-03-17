@@ -73,11 +73,16 @@ function SignInPage() {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         console.log(userCredential);
-        setErrorMessageSignIn(false);
+        setErrorMessageSignIn("");
       })
       .catch((error) => {
-        console.log(error);
-        setErrorMessageSignIn(true);
+        console.log(error.code);
+        if (error.code === "auth/user-not-found") {
+          setErrorMessageSignIn("User not found");
+          setTimeout(() => {
+            navigate("/signup");
+          }, 2000);
+        }
       });
   };
   return (
@@ -132,9 +137,9 @@ function SignInPage() {
           </div>
 
           <Button type="primary" name="Log in" width="w-full" />
-          {errorMessageSignIn && (
+          {errorMessageSignIn.trim() && (
             <h1 className="text-xl font-bold text-center text-danger ">
-              Invalid credentials, please try again
+              {errorMessageSignIn}
             </h1>
           )}
         </form>

@@ -33,7 +33,6 @@ function EachPost({ post }: EachPostProps) {
     "December",
   ];
 
-
   const monthName = monthNames[date?.getMonth()];
   console.log(likedItems);
   function handleLike() {

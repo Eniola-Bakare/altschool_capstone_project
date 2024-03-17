@@ -30,8 +30,8 @@ type AuthContextTYPE = {
   setSignedIn: (signedIn: boolean) => void;
   authUser: null | object;
   setAuthUser: Dispatch<SetStateAction<User | null>>;
-  errorMessageSignIn: boolean;
-  setErrorMessageSignIn: (errorMessage: boolean) => void;
+  errorMessageSignIn: string;
+  setErrorMessageSignIn: Dispatch<SetStateAction<string>>;
   errorMessageSignUp: boolean;
   setErrorMessageSignUp: (errorMessage: boolean) => void;
   oTP: number[];
@@ -69,13 +69,12 @@ export default function AuthContextProvider({
   console.log(likedItems);
   // console.log(liked)
 
-
   const [currentUser, setCurrentUser] = useState<object | null>(null);
   console.log(currentUser, "current user");
 
   const [newUser, setNewUser] = useState(null);
 
-  const [errorMessageSignIn, setErrorMessageSignIn] = useState(false);
+  const [errorMessageSignIn, setErrorMessageSignIn] = useState("");
   const [errorMessageSignUp, setErrorMessageSignUp] = useState(false);
 
   const [oTP, setOTP] = useState<number[]>([]);
