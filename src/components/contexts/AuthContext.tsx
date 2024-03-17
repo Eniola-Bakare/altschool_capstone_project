@@ -64,7 +64,9 @@ export default function AuthContextProvider({
   const [signedIn, setSignedIn] = useState(false);
   const [authUser, setAuthUser] = useState<User | null>(null);
   const [likedItems, setLikedItems] = useState<LikedItem[]>([]);
+
   console.log(likedItems);
+  // console.log(liked)
 
   const [currentUser, setCurrentUser] = useState<object | null>(null);
   console.log(currentUser, "current user");
@@ -115,6 +117,8 @@ export default function AuthContextProvider({
         setCurrentUser,
         likedItems,
         setLikedItems,
+        // liked,
+        // setLiked,
       }}
     >
       {children}

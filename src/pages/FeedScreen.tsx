@@ -7,7 +7,7 @@ function FeedScreen() {
   return (
     <section className="w-full flex  ">
       <SidebarFS />
-      <AsideFS  />
+      <AsideFS />
     </section>
   );
 }

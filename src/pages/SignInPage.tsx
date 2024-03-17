@@ -35,11 +35,11 @@ function SignInPage() {
           .then((resp) =>
             resp.forEach((currentUser) => {
               console.log(user);
-              console.log("current user", );
-              const { displayName, tenantId, uid } = user;
+              console.log("current user");
+              const { displayName, photoURL: photoUrl, tenantId, uid } = user;
               const newUser = {
                 displayName,
-                photoURL: currentUser.data().photoURL,
+                photoURL: currentUser.data().photoURL || photoUrl,
                 tenantId,
                 fName,
                 lName,

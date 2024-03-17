@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuthContext } from "./contexts/AuthContext";
 
 type EachPostProps = {
@@ -12,6 +12,7 @@ function EachPost({ post }: EachPostProps) {
   const [liked, setLiked] = useState(false);
 
   const userDetails = post.userData;
+  const { postDocRef } = post.userData;
   const postDetails = post.postData;
   const date = post.postData?.datePublished?.toDate();
   const monthNames = [
@@ -30,16 +31,21 @@ function EachPost({ post }: EachPostProps) {
   ];
 
   const monthName = monthNames[date?.getMonth()];
-
+  console.log(likedItems)
   function handleLike() {
     const alreadyLiked = likedItems.findIndex(
       (items) => items.postDocRef == postDetails.postDocRef
     );
     console.log(alreadyLiked);
+    if (alreadyLiked == -1) {
+      setLiked(true);
+    } else {
+      setLiked(false);
+    }
+    console.log(liked, "is it liked at this ?");
+    // console.log(isLiked, "length of array of isliked");
 
     if (alreadyLiked == -1) {
-      console.log(liked)
-      setLiked(true);
       return setLikedItems((prev) => [
         ...prev,
         {
@@ -48,15 +54,15 @@ function EachPost({ post }: EachPostProps) {
         },
       ]);
     } else {
-      setLiked(false);
-      return setLikedItems((prev) =>
-        prev.filter((item) => {
+      setLikedItems((prev) => 
+           prev.filter((item) => {
           console.log(item);
-          item.postDocRef === postDetails.postDocRef;
-        })
-      );
+          return item.postDocRef !== postDetails.postDocRef;
+        }
+      ))
     }
   }
+  console.log(likedItems);
 
   return (
     <section className="flex w-full flex-col pl-[50px] pr-[190px] pb-8 border-x border-t border-b-borderGrey">
