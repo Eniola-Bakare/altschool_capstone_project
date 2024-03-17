@@ -40,6 +40,13 @@ type AuthContextTYPE = {
   setNewUser: Dispatch<SetStateAction<null>>;
   currentUser: object | null;
   setCurrentUser: Dispatch<SetStateAction<object | null>>;
+  likedItems: object | null;
+  setLikedItems: Dispatch<SetStateAction<LikedItem[]>>;
+};
+
+type LikedItem = {
+  userDocRef: any;
+  postDocRef: any;
 };
 const AuthContext = createContext<AuthContextTYPE | undefined>(undefined);
 
@@ -56,6 +63,8 @@ export default function AuthContextProvider({
   const [confirmPassword, setConfirmPassword] = useState("123Ab!");
   const [signedIn, setSignedIn] = useState(false);
   const [authUser, setAuthUser] = useState<User | null>(null);
+  const [likedItems, setLikedItems] = useState<LikedItem[]>([]);
+  console.log(likedItems);
 
   const [currentUser, setCurrentUser] = useState<object | null>(null);
   console.log(currentUser, "current user");
@@ -104,6 +113,8 @@ export default function AuthContextProvider({
         setNewUser,
         currentUser,
         setCurrentUser,
+        likedItems,
+        setLikedItems,
       }}
     >
       {children}

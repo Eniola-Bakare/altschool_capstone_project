@@ -36,7 +36,7 @@ function AllPosts() {
 
     fetchData();
   }, []);
-  console.log(allPosts);
+  // console.log(allPosts);
   return (
     <div className="all-posts tab flex flex-col justify-between items-center h-screen overflow-y-auto">
       {allPosts.map((post) => (

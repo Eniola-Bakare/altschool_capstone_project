@@ -34,8 +34,8 @@ function SignInPage() {
         getDocs(query(collection(db, "users"), where("uid", "==", user.uid)))
           .then((resp) =>
             resp.forEach((currentUser) => {
-              // console.log(user);
-              // // console.log("current user", );
+              console.log(user);
+              console.log("current user", );
               const { displayName, tenantId, uid } = user;
               const newUser = {
                 displayName,
