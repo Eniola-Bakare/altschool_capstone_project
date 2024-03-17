@@ -1,5 +1,5 @@
 import { User } from "firebase/auth";
-import { collection, getDoc } from "firebase/firestore";
+import { collection, doc, getDoc } from "firebase/firestore";
 import {
   Dispatch,
   ReactNode,
@@ -11,6 +11,7 @@ import {
   useState,
 } from "react";
 import { db } from "../../firebase/config";
+import { update } from "firebase/database";
 
 type AuthContextTYPE = {
   email: string;
@@ -67,6 +68,7 @@ export default function AuthContextProvider({
 
   console.log(likedItems);
   // console.log(liked)
+
 
   const [currentUser, setCurrentUser] = useState<object | null>(null);
   console.log(currentUser, "current user");

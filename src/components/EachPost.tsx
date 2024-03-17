@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAuthContext } from "./contexts/AuthContext";
+import { doc, updateDoc } from "firebase/firestore";
+import { db } from "../firebase/config";
 
 type EachPostProps = {
   post: {
@@ -8,11 +10,12 @@ type EachPostProps = {
   };
 };
 function EachPost({ post }: EachPostProps) {
-  const { likedItems, setLikedItems } = useAuthContext();
+  const { likedItems, setLikedItems, currentUser } = useAuthContext();
   const [liked, setLiked] = useState(false);
 
+  const { userDocRef } = post.userData;
   const userDetails = post.userData;
-  const { postDocRef } = post.userData;
+  const { postDocRef, likes } = post.postData;
   const postDetails = post.postData;
   const date = post.postData?.datePublished?.toDate();
   const monthNames = [
@@ -30,10 +33,11 @@ function EachPost({ post }: EachPostProps) {
     "December",
   ];
 
+
   const monthName = monthNames[date?.getMonth()];
-  console.log(likedItems)
+  console.log(likedItems);
   function handleLike() {
-    const alreadyLiked = likedItems.findIndex(
+    const alreadyLiked = likedItems?.findIndex(
       (items) => items.postDocRef == postDetails.postDocRef
     );
     console.log(alreadyLiked);
@@ -45,23 +49,49 @@ function EachPost({ post }: EachPostProps) {
     console.log(liked, "is it liked at this ?");
     // console.log(isLiked, "length of array of isliked");
 
+    console.log(postDocRef, userDocRef, "hereeeeeeeeeeeeeeeeeeeeee");
     if (alreadyLiked == -1) {
-      return setLikedItems((prev) => [
+      if (!currentUser?.uid) return;
+      updateDoc(doc(db, "users", userDocRef, "posts", postDocRef), {
+        likes: likes + 1,
+      })
+        .then((ref) => console.log(ref, "updated successfully"))
+        .catch((err) => console.log(err, "failed to upload"));
+
+      setLikedItems((prev) => [
         ...prev,
         {
           userDocRef: userDetails.userDocRef,
           postDocRef: postDetails.postDocRef,
         },
       ]);
+      updateDoc(doc(db, "users", currentUser?.userDocRef), {
+        likedItems: likedItems,
+      })
+        .then((ref) => console.log(ref, "liked Items update"))
+        .catch((err) => console.log(err, "not created"));
     } else {
-      setLikedItems((prev) => 
-           prev.filter((item) => {
+      if (!currentUser?.uid || likes === 0) return;
+      updateDoc(doc(db, "users", userDocRef, "posts", postDocRef), {
+        likes: likes - 1,
+      })
+        .then((ref) => console.log(ref, "deleted successfully"))
+        .catch((err) => console.log(err, "failed to upload"));
+
+      setLikedItems((prev) =>
+        prev.filter((item) => {
           console.log(item);
           return item.postDocRef !== postDetails.postDocRef;
-        }
-      ))
+        })
+      );
+      return updateDoc(doc(db, "users", currentUser?.userDocRef), {
+        likedItems: likedItems,
+      })
+        .then((ref) => console.log(ref, "liked Items update"))
+        .catch((err) => console.log(err, "not created"));
     }
   }
+
   console.log(likedItems);
 
   return (

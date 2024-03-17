@@ -52,7 +52,7 @@ function SignUpConfirm() {
       .catch((error) => console.log(error));
     // creates a new user first,
     // then adds new user to firestore db - collection (users)
-    const { displayName, tenantId, uid } = user;
+    const { displayName, tenantId, uid, likedItems } = user;
     const newUser = {
       displayName,
       photoURL: profileURL,
@@ -62,6 +62,7 @@ function SignUpConfirm() {
       email,
       category,
       uid,
+      likedItems,
       otp: otpLocal.join(""),
     };
     // eebakare@gmail.com
