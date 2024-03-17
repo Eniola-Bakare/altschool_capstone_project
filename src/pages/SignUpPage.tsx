@@ -173,8 +173,8 @@ function SignUpPage() {
                 onChange={(e) => setCategory(e.target.value)}
                 className="w-full focus:outline-0 active:outline-0 "
               >
-                <option value="writer">Writer</option>
-                <option value="reader">Reader</option>
+                <option value="Writer">Writer</option>
+                <option value="Reader">Reader</option>
               </select>
             </div>
           </div>

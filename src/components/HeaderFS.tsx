@@ -1,4 +1,7 @@
+import { useAuthContext } from "./contexts/AuthContext";
+
 function HeaderFS() {
+  const { currentUser } = useAuthContext();
   return (
     <section className="w-full flex justify-end items-center border-borderGrey border-x border-b py-[15px] pr-[129px] pl-[310px] ">
       <div className="serch+profile flex justify-end gap-56 w-full">
@@ -40,9 +43,9 @@ function HeaderFS() {
 
           {/* <div className="headerImage flex gap-3 "> */}
           <img
-            src="headerImage.png"
+            src={currentUser?.photoURL}
             alt="a profile picture"
-            className="rounded-full"
+            className="rounded-full w-12"
           />
           {/* </div> */}
         </div>

@@ -6,6 +6,24 @@ type EachPostProps = {
 };
 
 function EachPost({ post }: EachPostProps) {
+  const date = post.postData?.datePublished?.toDate();
+  const monthNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+
+  const monthName = monthNames[date?.getMonth()];
+  console.log(monthName, "monthName");
   return (
     <section className="flex w-full flex-col pl-[50px] pr-[190px] pb-8 border-x border-t border-b-borderGrey">
       <div className="profile-details flex items-center gap-3 py-[30px] ">
@@ -17,9 +35,16 @@ function EachPost({ post }: EachPostProps) {
           />
         </div>
         <div className="flex flex-col gap-2">
-          <p className="font-medium text-2xl">{post.userData.fName} {post.userData.lName}</p>
+          <p className="font-medium text-2xl">
+            {post.userData.fName} {post.userData.lName}
+          </p>
           <p className="text-lg text-grey">
-            Role here, <span> date</span>
+            I am a {post.userData.category}{" "}
+            <strong className="text-grey text-borderGrey">|</strong>{" "}
+            <span>
+              {monthNames[date?.getMonth()]} {date?.getDate()},
+              {date?.getFullYear()}
+            </span>
           </p>
         </div>
       </div>
@@ -43,10 +68,12 @@ function EachPost({ post }: EachPostProps) {
           </svg>
           10 mins reaad
         </p>
-        <div className="feed-post w-full flex flex-col gap-4">
-          <textarea className="content text-grey text-lg w-[90%] text-wrap ">
-            {post?.postData.postText}
-          </textarea>
+        <div className="feed-post w-full flex flex-col gap-4 each-post">
+          <textarea
+            className="content text-grey text-lg w-[90%] text-wrap overflow-clip outline-none cursor-auto resize-none"
+            readOnly
+            value={post?.postData.postText}
+          ></textarea>
           <div className="feed-image">
             <img
               src={post.postData.attachment}
@@ -55,7 +82,10 @@ function EachPost({ post }: EachPostProps) {
             />
           </div>
 
-          <div className="interactions w-[50%] flex justify-between items-center">
+          <div
+            className="interactions w-[50%] flex justify-between items-center"
+            onClick={(e) => e.stopPropagation()}
+          >
             <p className="flex items-center text-grey gap-2">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -73,7 +103,10 @@ function EachPost({ post }: EachPostProps) {
               <span>200</span>
             </p>
 
-            <p className="flex items-center text-grey gap-2">
+            <p
+              className="flex items-center text-grey gap-2"
+              onClick={() => handleClick()}
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"

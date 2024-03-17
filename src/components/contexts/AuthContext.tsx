@@ -52,13 +52,13 @@ export default function AuthContextProvider({
   const [password, setPassword] = useState("123Ab!");
   const [fName, setFName] = useState("eniola");
   const [lName, setLName] = useState("bakare");
-  const [category, setCategory] = useState("reader");
+  const [category, setCategory] = useState("Reader");
   const [confirmPassword, setConfirmPassword] = useState("123Ab!");
   const [signedIn, setSignedIn] = useState(false);
   const [authUser, setAuthUser] = useState<User | null>(null);
 
   const [currentUser, setCurrentUser] = useState<object | null>(null);
-  console.log(currentUser, 'current user')
+  console.log(currentUser, "current user");
 
   const [newUser, setNewUser] = useState(null);
 

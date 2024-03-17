@@ -2,7 +2,7 @@ import { useRef, useState, ChangeEvent, useId } from "react";
 import Button from "./Button";
 import { useAuthContext } from "./contexts/AuthContext";
 import { db, storageRef } from "../firebase/config";
-import { addDoc, collection, doc } from "firebase/firestore";
+import { Timestamp, addDoc, collection, doc, serverTimestamp } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 type PublishProps = {
@@ -39,7 +39,7 @@ function PublishScreen({ closePublish }: PublishProps) {
 
       const usersPostImages = ref(
         storageRef,
-        `users/postImages/${attachment.name + randomFileName.join('')}`
+        `users/postImages/${attachment.name + randomFileName.join("")}`
       );
 
       uploadBytes(usersPostImages, attachment)
@@ -48,7 +48,11 @@ function PublishScreen({ closePublish }: PublishProps) {
           return getDownloadURL(usersPostImages);
         })
         .then((downloadURL) => {
-          return addDoc(userRef, { ...newPost, attachment: downloadURL });
+          return addDoc(userRef, {
+            ...newPost,
+            attachment: downloadURL,
+            datePublished: serverTimestamp(),
+          });
         })
         .then((docRef) => {
           console.log(docRef, "new postssssss created !!!!");

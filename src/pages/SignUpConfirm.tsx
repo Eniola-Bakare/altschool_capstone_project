@@ -9,11 +9,12 @@ import React, {
 } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useAuthContext } from "../components/contexts/AuthContext";
-import { auth, db } from "../firebase/config";
+import { auth, db, storageRef } from "../firebase/config";
 import { addDoc, collection, doc, getDoc, setDoc } from "firebase/firestore";
 import swal from "sweetalert";
 import { CreateNewUseronDB } from "../firebase/fireStoreActions";
 import { set } from "firebase/database";
+import { getDownloadURL, ref } from "firebase/storage";
 
 function SignUpConfirm() {
   const {
@@ -39,14 +40,22 @@ function SignUpConfirm() {
   console.log(oTP);
   console.log(otpLocal);
 
-  function newUserFunc(user) {
-    const userRef = collection(db, "users");
+  const userRef = collection(db, "users");
+  
+  async function newUserFunc(user) {
+    const profileURL = await getDownloadURL(
+      ref(storageRef, "users/profileImages/profileImage.jpg")
+    )
+      .then((downloadURL) => {
+        return downloadURL;
+      })
+      .catch((error) => console.log(error));
     // creates a new user first,
     // then adds new user to firestore db - collection (users)
-    const { displayName, photoURL, tenantId, uid } = user;
+    const { displayName, tenantId, uid } = user;
     const newUser = {
       displayName,
-      photoURL,
+      photoURL: profileURL,
       tenantId,
       fName,
       lName,

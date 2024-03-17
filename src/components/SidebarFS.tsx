@@ -155,8 +155,8 @@ function SidebarFS() {
             </svg>
             Notification
           </li>
-          <li className="text-lg text-danger" onClick={handleLogOut}>
-            Log out{" "}
+          <li className="text-lg text-danger cursor-pointer" onClick={handleLogOut}>
+            Log out
           </li>
         </ul>
       </div>

@@ -7,12 +7,7 @@ import { auth, db } from "../firebase/config";
 import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import SignUpPortals from "../components/SignUpPortals";
-import {
-  collection,
-  getDocs,
-  query,
-  where,
-} from "firebase/firestore";
+import { collection, getDocs, query, where } from "firebase/firestore";
 
 function SignInPage() {
   const navigate = useNavigate();
@@ -33,7 +28,9 @@ function SignInPage() {
 
   useEffect(() => {
     const listen = onAuthStateChanged(auth, (user) => {
+      if (!user) return;
       if (user) {
+        console.log(user);
         getDocs(query(collection(db, "users"), where("uid", "==", user.uid)))
           .then((resp) =>
             resp.forEach((currentUser) => {
@@ -57,8 +54,6 @@ function SignInPage() {
           .catch((err) => console.log(err));
 
         navigate(`/app/feed/:${user.uid}`);
-      } else {
-        console.log("user signed out");
       }
     });
     return () => {
