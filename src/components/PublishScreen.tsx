@@ -39,7 +39,7 @@ function PublishScreen({ closePublish }: PublishProps) {
 
       const usersPostImages = ref(
         storageRef,
-        `users/postImages/${randomFileName}`
+        `users/postImages/${attachment.name + randomFileName.join('')}`
       );
 
       uploadBytes(usersPostImages, attachment)
@@ -86,7 +86,7 @@ function PublishScreen({ closePublish }: PublishProps) {
     if (attachment && attachment.length > 0) {
       setScreenTwo(false);
       setScreenThree(true);
-      setAttachment(attachment[0].name);
+      setAttachment(attachment[0]);
       setimgUrl(URL.createObjectURL(attachment[0]));
     }
   };
@@ -97,7 +97,7 @@ function PublishScreen({ closePublish }: PublishProps) {
       console.log(attachment);
       setScreenTwo(false);
       setScreenThree(true);
-      setAttachment(attachment[0].name);
+      setAttachment(attachment[0]);
       setvidUrl(URL.createObjectURL(attachment[0]));
     }
   };
