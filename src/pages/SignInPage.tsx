@@ -34,19 +34,14 @@ function SignInPage() {
         getDocs(query(collection(db, "users"), where("uid", "==", user.uid)))
           .then((resp) =>
             resp.forEach((currentUser) => {
-              console.log(user);
+              // console.log(user);
               console.log("current user");
-              const {
-                displayName,
-                photoURL: photoUrl,
-                likedItems,
-                tenantId,
-                uid,
-              } = user;
+              const likedItems = currentUser.data()?.likedItems;
+              const { displayName, photoURL: photoUrl, tenantId, uid } = user;
               const newUser = {
                 displayName,
                 photoURL: currentUser.data().photoURL || photoUrl,
-                likedItems,
+                likedItems: likedItems,
                 tenantId,
                 fName,
                 lName,
@@ -54,7 +49,8 @@ function SignInPage() {
                 category,
                 uid,
               };
-
+              console.log(currentUser.data());
+              console.log(likedItems);
               setCurrentUser({ ...newUser, userDocRef: currentUser.id });
             })
           )

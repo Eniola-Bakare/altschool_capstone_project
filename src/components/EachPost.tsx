@@ -10,9 +10,8 @@ type EachPostProps = {
   };
 };
 function EachPost({ post }: EachPostProps) {
-  const { likedItems, setLikedItems, currentUser } = useAuthContext();
+  const { setLikedItems, currentUser } = useAuthContext();
   const [liked, setLiked] = useState(false);
-
   const { userDocRef } = post.userData;
   const userDetails = post.userData;
   const { postDocRef, likes } = post.postData;
@@ -32,23 +31,43 @@ function EachPost({ post }: EachPostProps) {
     "November",
     "December",
   ];
+  let likedItems = currentUser?.likedItems;
+  let likedItemsLocal = [];
 
   const monthName = monthNames[date?.getMonth()];
-  console.log(likedItems);
+  console.log(likedItems[0].post);
+
+  // useEffect(() => {
+  // }, []);
+
+  useEffect(() => {
+    if (likedItems?.length > 0) {
+      const alreadyLiked = likedItems?.findIndex(
+        (items) => items?.post?.postData?.postDocRef == postDetails.postDocRef
+      );
+      console.log(alreadyLiked);
+      if (alreadyLiked >= 0) {
+        setLiked(true);
+      } else {
+        setLiked(false);
+      }
+    }
+  });
+
   function handleLike() {
     const alreadyLiked = likedItems?.findIndex(
       (items) => items.postDocRef == postDetails.postDocRef
     );
     console.log(alreadyLiked);
-    if (alreadyLiked == -1) {
-      setLiked(true);
-    } else {
+    if (alreadyLiked == -1 || undefined) {
       setLiked(false);
+    } else {
+      setLiked(true);
     }
     console.log(liked, "is it liked at this ?");
     // console.log(isLiked, "length of array of isliked");
 
-    console.log(postDocRef, userDocRef, "hereeeeeeeeeeeeeeeeeeeeee");
+    // console.log(postDocRef, userDocRef, "hereeeeeeeeeeeeeeeeeeeeee");
     if (alreadyLiked == -1) {
       if (!currentUser?.uid) return;
       updateDoc(doc(db, "users", userDocRef, "posts", postDocRef), {
@@ -57,15 +76,23 @@ function EachPost({ post }: EachPostProps) {
         .then((ref) => console.log(ref, "updated successfully"))
         .catch((err) => console.log(err, "failed to upload"));
 
-      setLikedItems((prev) => [
-        ...prev,
-        {
-          userDocRef: userDetails.userDocRef,
-          postDocRef: postDetails.postDocRef,
-        },
-      ]);
-      updateDoc(doc(db, "users", currentUser?.userDocRef), {
-        likedItems: likedItems,
+      likedItemsLocal = likedItemsLocal.map((item) => {
+        if (item.post.postData.postDocRef == postDocRef) {
+          return { ...item, post: post };
+        } else {
+          return item;
+        }
+      });
+
+      // setLikedItems((prev) => [
+      //   ...prev,
+      //   {
+      //     userDocRef: userDetails.userDocRef,
+      //     postDocRef: postDetails.postDocRef,
+      //   },
+      // ]);
+      return updateDoc(doc(db, "users", currentUser?.userDocRef), {
+        likedItems: likedItemsLocal,
       })
         .then((ref) => console.log(ref, "liked Items update"))
         .catch((err) => console.log(err, "not created"));
@@ -77,14 +104,17 @@ function EachPost({ post }: EachPostProps) {
         .then((ref) => console.log(ref, "deleted successfully"))
         .catch((err) => console.log(err, "failed to upload"));
 
-      setLikedItems((prev) =>
-        prev.filter((item) => {
-          console.log(item);
-          return item.postDocRef !== postDetails.postDocRef;
-        })
+      likedItemsLocal = likedItemsLocal.filter(
+        (item) => item.post.postData.postDocRef === postDocRef
       );
+      // setLikedItems((prev) =>
+      //   prev.filter((item) => {
+      //     console.log(item);
+      //     return item.postDocRef !== postDetails.postDocRef;
+      //   })
+      // );
       return updateDoc(doc(db, "users", currentUser?.userDocRef), {
-        likedItems: likedItems,
+        likedItems: likedItemsLocal,
       })
         .then((ref) => console.log(ref, "liked Items update"))
         .catch((err) => console.log(err, "not created"));
