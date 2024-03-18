@@ -41,7 +41,7 @@ function SignUpConfirm() {
   console.log(otpLocal);
 
   const userRef = collection(db, "users");
-  
+
   async function newUserFunc(user) {
     const profileURL = await getDownloadURL(
       ref(storageRef, "users/profileImages/profileImage.jpg")
@@ -62,6 +62,7 @@ function SignUpConfirm() {
       email,
       category,
       uid,
+      likedItems: [],
       otp: otpLocal.join(""),
     };
     // eebakare@gmail.com

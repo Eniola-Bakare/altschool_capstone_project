@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAuthContext } from "./contexts/AuthContext";
-import { doc, updateDoc } from "firebase/firestore";
+import { doc, onSnapshot, updateDoc } from "firebase/firestore";
 import { db } from "../firebase/config";
 
 type EachPostProps = {
@@ -10,7 +10,7 @@ type EachPostProps = {
   };
 };
 function EachPost({ post }: EachPostProps) {
-  const { setLikedItems, currentUser } = useAuthContext();
+  const { currentUser, setCurrentUser } = useAuthContext();
   const [liked, setLiked] = useState(false);
   const { userDocRef } = post.userData;
   const userDetails = post.userData;
@@ -31,92 +31,96 @@ function EachPost({ post }: EachPostProps) {
     "November",
     "December",
   ];
+
+  const [likesNoLocal, setLikesNoLocal] = useState(likes);
+
   let likedItems = currentUser?.likedItems;
+  // let [likedItemsLocal, setLikedItemsLocal] = useState([]);
   let likedItemsLocal = [];
-
   const monthName = monthNames[date?.getMonth()];
-  console.log(likedItems[0].post);
 
-  // useEffect(() => {
-  // }, []);
-
+  likedItemsLocal = likedItems;
   useEffect(() => {
+    console.log(likedItems);
     if (likedItems?.length > 0) {
       const alreadyLiked = likedItems?.findIndex(
         (items) => items?.post?.postData?.postDocRef == postDetails.postDocRef
       );
-      console.log(alreadyLiked);
-      if (alreadyLiked >= 0) {
-        setLiked(true);
-      } else {
+      console.log(alreadyLiked, likedItems, likedItems);
+      if (alreadyLiked < 0) {
         setLiked(false);
+      } else {
+        setLiked(true);
       }
     }
-  });
+  }, [likedItems]);
 
   function handleLike() {
-    const alreadyLiked = likedItems?.findIndex(
-      (items) => items.postDocRef == postDetails.postDocRef
+    let alreadyLiked = likedItemsLocal?.findIndex(
+      (item) => item?.post?.postData?.postDocRef == postDetails.postDocRef
     );
-    console.log(alreadyLiked);
-    if (alreadyLiked == -1 || undefined) {
-      setLiked(false);
-    } else {
-      setLiked(true);
-    }
-    console.log(liked, "is it liked at this ?");
-    // console.log(isLiked, "length of array of isliked");
 
-    // console.log(postDocRef, userDocRef, "hereeeeeeeeeeeeeeeeeeeeee");
+    console.log(alreadyLiked);
     if (alreadyLiked == -1) {
+      setLiked(true);
+    } else {
+      setLiked(false);
+    }
+
+    if (alreadyLiked == -1) {
+      console.log("wasnt there before");
       if (!currentUser?.uid) return;
       updateDoc(doc(db, "users", userDocRef, "posts", postDocRef), {
-        likes: likes + 1,
+        likes: likesNoLocal + 1,
       })
-        .then((ref) => console.log(ref, "updated successfully"))
+        .then((ref) => {
+          console.log(ref, "updated successfully");
+          onSnapshot(doc(db, "users", userDocRef, "posts", postDocRef), (doc) =>
+            setLikesNoLocal(doc.data().likes)
+          );
+        })
         .catch((err) => console.log(err, "failed to upload"));
+      likedItemsLocal.push({ post });
+      console.log(likedItems);
 
-      likedItemsLocal = likedItemsLocal.map((item) => {
-        if (item.post.postData.postDocRef == postDocRef) {
-          return { ...item, post: post };
-        } else {
-          return item;
-        }
-      });
-
-      // setLikedItems((prev) => [
-      //   ...prev,
-      //   {
-      //     userDocRef: userDetails.userDocRef,
-      //     postDocRef: postDetails.postDocRef,
-      //   },
-      // ]);
-      return updateDoc(doc(db, "users", currentUser?.userDocRef), {
+      updateDoc(doc(db, "users", currentUser?.userDocRef), {
         likedItems: likedItemsLocal,
       })
-        .then((ref) => console.log(ref, "liked Items update"))
+        .then((ref) => {
+          console.log(ref, "liked Items update");
+          return onSnapshot(doc(db, "users", userDocRef), (doc) =>
+            setCurrentUser({ ...doc.data() })
+          );
+        })
         .catch((err) => console.log(err, "not created"));
-    } else {
+    } else if (alreadyLiked >= 0) {
       if (!currentUser?.uid || likes === 0) return;
       updateDoc(doc(db, "users", userDocRef, "posts", postDocRef), {
         likes: likes - 1,
       })
-        .then((ref) => console.log(ref, "deleted successfully"))
+        .then((ref) => {
+          console.log(ref, "deleted successfully");
+          return onSnapshot(
+            doc(db, "users", userDocRef, "posts", postDocRef),
+            (doc) => setLikesNoLocal(doc.data().likes)
+          );
+        })
         .catch((err) => console.log(err, "failed to upload"));
 
-      likedItemsLocal = likedItemsLocal.filter(
-        (item) => item.post.postData.postDocRef === postDocRef
+      likedItemsLocal = likedItems?.filter(
+        (item) => item?.post?.postData?.postDocRef !== postDocRef
       );
-      // setLikedItems((prev) =>
-      //   prev.filter((item) => {
-      //     console.log(item);
-      //     return item.postDocRef !== postDetails.postDocRef;
-      //   })
-      // );
+      console.log(likedItemsLocal);
+
       return updateDoc(doc(db, "users", currentUser?.userDocRef), {
         likedItems: likedItemsLocal,
       })
-        .then((ref) => console.log(ref, "liked Items update"))
+        .then((ref) => {
+          console.log(ref, "liked Items update");
+          return onSnapshot(doc(db, "users", userDocRef), (doc) =>
+            setCurrentUser({ ...doc.data() })
+          );
+        })
         .catch((err) => console.log(err, "not created"));
     }
   }
@@ -202,7 +206,7 @@ function EachPost({ post }: EachPostProps) {
             </p>
 
             <p
-              className="flex items-center text-grey gap-2"
+              className="flex items-center text-grey gap-2 cursor-pointer"
               onClick={() => handleLike()}
             >
               <svg
@@ -219,7 +223,7 @@ function EachPost({ post }: EachPostProps) {
                 <path d="M12 20.9999L10.55 19.6999C8.86667 18.1832 7.475 16.8749 6.375 15.7749C5.275 14.6749 4.4 13.6872 3.75 12.8119C3.1 11.9372 2.646 11.1332 2.388 10.3999C2.13 9.66657 2.00067 8.91657 2 8.1499C2 6.58324 2.525 5.2749 3.575 4.2249C4.625 3.1749 5.93333 2.6499 7.5 2.6499C8.36667 2.6499 9.19167 2.83324 9.975 3.1999C10.7583 3.56657 11.4333 4.08324 12 4.7499C12.5667 4.08324 13.2417 3.56657 14.025 3.1999C14.8083 2.83324 15.6333 2.6499 16.5 2.6499C18.0667 2.6499 19.375 3.1749 20.425 4.2249C21.475 5.2749 22 6.58324 22 8.1499C22 8.91657 21.8707 9.66657 21.612 10.3999C21.3533 11.1332 20.8993 11.9372 20.25 12.8119C19.6 13.6872 18.725 14.6749 17.625 15.7749C16.525 16.8749 15.1333 18.1832 13.45 19.6999L12 20.9999ZM12 18.2999C13.6 16.8666 14.9167 15.6372 15.95 14.6119C16.9833 13.5866 17.8 12.6952 18.4 11.9379C19 11.1792 19.4167 10.5039 19.65 9.9119C19.8833 9.3199 20 8.73257 20 8.1499C20 7.1499 19.6667 6.31657 19 5.6499C18.3333 4.98324 17.5 4.6499 16.5 4.6499C15.7167 4.6499 14.9917 4.87057 14.325 5.3119C13.6583 5.75324 13.2 6.3159 12.95 6.9999H11.05C10.8 6.31657 10.3417 5.7539 9.675 5.3119C9.00833 4.8699 8.28333 4.64924 7.5 4.6499C6.5 4.6499 5.66667 4.98324 5 5.6499C4.33333 6.31657 4 7.1499 4 8.1499C4 8.73324 4.11667 9.3209 4.35 9.9129C4.58333 10.5049 5 11.1799 5.6 11.9379C6.2 12.6959 7.01667 13.5876 8.05 14.6129C9.08333 15.6382 10.4 16.8672 12 18.2999Z" />
               </svg>
 
-              <span>{postDetails.likes}</span>
+              <span>{likesNoLocal}</span>
             </p>
 
             <p className="flex items-center text-grey gap-2">

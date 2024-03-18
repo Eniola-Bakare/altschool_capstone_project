@@ -2,7 +2,13 @@ import { useRef, useState, ChangeEvent, useId } from "react";
 import Button from "./Button";
 import { useAuthContext } from "./contexts/AuthContext";
 import { db, storageRef } from "../firebase/config";
-import { Timestamp, addDoc, collection, doc, serverTimestamp } from "firebase/firestore";
+import {
+  Timestamp,
+  addDoc,
+  collection,
+  doc,
+  serverTimestamp,
+} from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 type PublishProps = {
@@ -25,11 +31,13 @@ function PublishScreen({ closePublish }: PublishProps) {
   const [postText, setPostText] = useState("");
   const handleNewPost = () => {
     console.log(currentUser);
-
+    console.log(attachment);
     if (postText.trim() && attachment && currentUser) {
       const userID = currentUser?.userDocRef;
       const userRef = collection(db, "users", userID, "posts");
+      console.log(attachment);
       const newPost = { attachment, postText, likes: 0, bookmark: false };
+      console.log(attachment);
 
       // for attachment uploads first, then we can attach the file's url to the newPost details
       const randomFileName = [];
