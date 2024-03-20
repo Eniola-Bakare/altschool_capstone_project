@@ -41,11 +41,14 @@ type AuthContextTYPE = {
   setNewUser: Dispatch<SetStateAction<null>>;
   currentUser: object | null;
   setCurrentUser: Dispatch<SetStateAction<object | null>>;
+  likedItemsLocal: [];
+  likedLocalItems: object;
+  setLikedLocalItems: (likedLocalItems: []) => void;
   // likedItems: object | null;
   // setLikedItems: Dispatch<SetStateAction<LikedItem[]>>;
 };
 
-type LikedItem = {
+type LikedItemLocal = {
   userDocRef: any;
   postDocRef: any;
 };
@@ -71,6 +74,13 @@ export default function AuthContextProvider({
 
   const [currentUser, setCurrentUser] = useState<object | null>(null);
   console.log(currentUser, "current user");
+  let likedItemsLocal = [];
+
+  const [likedLocalItems, setLikedLocalItems] = useState<LikedItemLocal[]>([]);
+  useEffect(() => {
+    setLikedLocalItems(currentUser?.likedItems);
+  }, [currentUser]);
+  likedItemsLocal = currentUser?.likedItems;
 
   const [newUser, setNewUser] = useState(null);
 
@@ -116,6 +126,9 @@ export default function AuthContextProvider({
         setNewUser,
         currentUser,
         setCurrentUser,
+        likedItemsLocal,
+        likedLocalItems,
+        setLikedLocalItems,
         // likedItems,
         // setLikedItems,
         // liked,

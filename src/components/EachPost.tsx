@@ -10,7 +10,8 @@ type EachPostProps = {
   };
 };
 function EachPost({ post }: EachPostProps) {
-  const { currentUser, setCurrentUser } = useAuthContext();
+  const { currentUser, setCurrentUser, likedLocalItems, setLikedLocalItems } =
+    useAuthContext();
   const [liked, setLiked] = useState(false);
   const { userDocRef } = post.userData;
   const userDetails = post.userData;
@@ -31,101 +32,53 @@ function EachPost({ post }: EachPostProps) {
     "November",
     "December",
   ];
+  const monthName = monthNames[date?.getMonth()];
 
   const [likesNoLocal, setLikesNoLocal] = useState(likes);
 
-  let likedItems = currentUser?.likedItems;
-  // let [likedItemsLocal, setLikedItemsLocal] = useState([]);
-  let likedItemsLocal = [];
-  const monthName = monthNames[date?.getMonth()];
+  // let likedItems = currentUser?.likedItems;
 
-  likedItemsLocal = likedItems;
+  console.log(likedLocalItems);
+
   useEffect(() => {
-    console.log(likedItems);
-    if (likedItems?.length > 0) {
-      const alreadyLiked = likedItems?.findIndex(
-        (items) => items?.post?.postData?.postDocRef == postDetails.postDocRef
-      );
-      console.log(alreadyLiked, likedItems, likedItems);
-      if (alreadyLiked < 0) {
-        setLiked(false);
-      } else {
-        setLiked(true);
-      }
+    const alreadyLiked = likedLocalItems?.findIndex(
+      (items) => items?.post?.postData?.postDocRef == postDetails.postDocRef
+    );
+    console.log(alreadyLiked, liked);
+    if (alreadyLiked < 0) {
+      setLiked(false);
+    } else {
+      setLiked(true);
     }
-  }, [likedItems]);
+  }, [likedLocalItems]);
 
   function handleLike() {
-    let alreadyLiked = likedItemsLocal?.findIndex(
-      (item) => item?.post?.postData?.postDocRef == postDetails.postDocRef
-    );
+    console.log(likedLocalItems);
 
+    const alreadyLiked = likedLocalItems.findIndex((item) => {
+      // console.log(item?.post?.postData?.postDocRef);
+      // console.log(postDocRef);
+      return item?.post?.postData?.postDocRef == postDocRef;
+    });
     console.log(alreadyLiked);
-    if (alreadyLiked == -1) {
-      setLiked(true);
-    } else {
-      setLiked(false);
-    }
 
-    if (alreadyLiked == -1) {
+    if (alreadyLiked < 0) {
       console.log("wasnt there before");
-      if (!currentUser?.uid) return;
-      updateDoc(doc(db, "users", userDocRef, "posts", postDocRef), {
-        likes: likesNoLocal + 1,
-      })
-        .then((ref) => {
-          console.log(ref, "updated successfully");
-          onSnapshot(doc(db, "users", userDocRef, "posts", postDocRef), (doc) =>
-            setLikesNoLocal(doc.data().likes)
-          );
-        })
-        .catch((err) => console.log(err, "failed to upload"));
-      likedItemsLocal.push({ post });
-      console.log(likedItems);
-
-      updateDoc(doc(db, "users", currentUser?.userDocRef), {
-        likedItems: likedItemsLocal,
-      })
-        .then((ref) => {
-          console.log(ref, "liked Items update");
-          return onSnapshot(doc(db, "users", userDocRef), (doc) =>
-            setCurrentUser({ ...doc.data() })
-          );
-        })
-        .catch((err) => console.log(err, "not created"));
+      setLikedLocalItems((prev) => [...prev, { post }]);
+      setLiked(true);
     } else if (alreadyLiked >= 0) {
-      if (!currentUser?.uid || likes === 0) return;
-      updateDoc(doc(db, "users", userDocRef, "posts", postDocRef), {
-        likes: likes - 1,
-      })
-        .then((ref) => {
-          console.log(ref, "deleted successfully");
-          return onSnapshot(
-            doc(db, "users", userDocRef, "posts", postDocRef),
-            (doc) => setLikesNoLocal(doc.data().likes)
-          );
-        })
-        .catch((err) => console.log(err, "failed to upload"));
-
-      likedItemsLocal = likedItems?.filter(
-        (item) => item?.post?.postData?.postDocRef !== postDocRef
-      );
-      console.log(likedItemsLocal);
-
-      return updateDoc(doc(db, "users", currentUser?.userDocRef), {
-        likedItems: likedItemsLocal,
-      })
-        .then((ref) => {
-          console.log(ref, "liked Items update");
-          return onSnapshot(doc(db, "users", userDocRef), (doc) =>
-            setCurrentUser({ ...doc.data() })
-          );
-        })
-        .catch((err) => console.log(err, "not created"));
+      console.log("there ");
+      setLiked(false);
+      setLikedLocalItems((likedLocalItemsPrev) => {
+        return likedLocalItemsPrev.filter((items) => {
+          return items?.post?.postData?.postDocRef !== postDocRef;
+        });
+      });
+      console.log(likedLocalItems);
     }
   }
 
-  console.log(likedItems);
+  console.log(likedLocalItems);
 
   return (
     <section className="flex w-full flex-col pl-[50px] pr-[190px] pb-8 border-x border-t border-b-borderGrey">
