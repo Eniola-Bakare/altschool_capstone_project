@@ -38,14 +38,17 @@ function EachPost({ post }: EachPostProps) {
 
   // let likedItems = currentUser?.likedItems;
 
-  console.log(likedLocalItems);
+  type LikedItemLocal = {
+    userDocRef: any;
+    postDocRef: any;
+  };
 
   useEffect(() => {
-    const alreadyLiked = likedLocalItems?.findIndex(
-      (items) => items?.post?.postData?.postDocRef == postDetails.postDocRef
+    const alreadyLiked = likedLocalItems.findIndex(
+      (items) => items?.postData == postDocRef
     );
     console.log(alreadyLiked, liked);
-    if (alreadyLiked < 0) {
+    if (alreadyLiked < 0 || alreadyLiked == undefined) {
       setLiked(false);
     } else {
       setLiked(true);
@@ -53,28 +56,31 @@ function EachPost({ post }: EachPostProps) {
   }, [likedLocalItems]);
 
   function handleLike() {
-    console.log(likedLocalItems);
+    const alreadyLiked = likedLocalItems?.findIndex(
+      (items) => items?.postDocRef == postDocRef
+    );
 
-    const alreadyLiked = likedLocalItems.findIndex((item) => {
-      // console.log(item?.post?.postData?.postDocRef);
-      // console.log(postDocRef);
-      return item?.post?.postData?.postDocRef == postDocRef;
-    });
     console.log(alreadyLiked);
-
     if (alreadyLiked < 0) {
-      console.log("wasnt there before");
-      setLikedLocalItems((prev) => [...prev, { post }]);
-      setLiked(true);
-    } else if (alreadyLiked >= 0) {
-      console.log("there ");
-      setLiked(false);
-      setLikedLocalItems((likedLocalItemsPrev) => {
-        return likedLocalItemsPrev.filter((items) => {
-          return items?.post?.postData?.postDocRef !== postDocRef;
-        });
+      console.log("adding now, not there beforeeeeeeeeeeeee");
+      setLikedLocalItems((prev) => {
+        const updated = [
+          ...prev,
+          { postDocRef: postDocRef, userDocRef: userDocRef },
+        ];
+        console.log(updated);
+
+        return updated;
       });
-      console.log(likedLocalItems);
+    } else if (alreadyLiked >= 0) {
+            console.log("removing now, not there beforeeeeeeeeeeeee");
+
+      setLikedLocalItems((prev) => {
+        const updated = prev.filter((item) => item.postDocRef !== postDocRef);
+
+        console.log(updated);
+        return updated;
+      });
     }
   }
 

@@ -42,8 +42,8 @@ type AuthContextTYPE = {
   currentUser: object | null;
   setCurrentUser: Dispatch<SetStateAction<object | null>>;
   likedItemsLocal: [];
-  likedLocalItems: object;
-  setLikedLocalItems: (likedLocalItems: []) => void;
+  // likedLocalItems: object;
+  // setLikedLocalItems: (likedLocalItems: []) => void;
   // likedItems: object | null;
   // setLikedItems: Dispatch<SetStateAction<LikedItem[]>>;
 };
@@ -73,14 +73,17 @@ export default function AuthContextProvider({
   // console.log(liked)
 
   const [currentUser, setCurrentUser] = useState<object | null>(null);
-  console.log(currentUser, "current user");
-  let likedItemsLocal = [];
-
+  // console.log(currentUser, "current user");
   const [likedLocalItems, setLikedLocalItems] = useState<LikedItemLocal[]>([]);
-  useEffect(() => {
-    setLikedLocalItems(currentUser?.likedItems);
-  }, [currentUser]);
-  likedItemsLocal = currentUser?.likedItems;
+  console.log(
+    likedLocalItems,
+    "from auth context ++++++++++++++++++++++++++++++++++++++++++"
+  );
+
+  // useEffect(() => {
+  //   setLikedLocalItems(currentUser?.likedItems);
+  // }, [currentUser?.likedItems]);
+  // console.log(likedLocalItems, currentUser);
 
   const [newUser, setNewUser] = useState(null);
 
@@ -126,7 +129,6 @@ export default function AuthContextProvider({
         setNewUser,
         currentUser,
         setCurrentUser,
-        likedItemsLocal,
         likedLocalItems,
         setLikedLocalItems,
         // likedItems,
