@@ -80,9 +80,9 @@ export default function AuthContextProvider({
     "from auth context ++++++++++++++++++++++++++++++++++++++++++"
   );
 
-  // useEffect(() => {
-  //   setLikedLocalItems(currentUser?.likedItems);
-  // }, [currentUser?.likedItems]);
+  useEffect(() => {
+    setLikedLocalItems(currentUser?.likedItems);
+  }, [currentUser?.likedItems]);
   // console.log(likedLocalItems, currentUser);
 
   const [newUser, setNewUser] = useState(null);

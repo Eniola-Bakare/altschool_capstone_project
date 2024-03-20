@@ -36,16 +36,14 @@ function EachPost({ post }: EachPostProps) {
 
   const [likesNoLocal, setLikesNoLocal] = useState(likes);
 
-  // let likedItems = currentUser?.likedItems;
-
   type LikedItemLocal = {
     userDocRef: any;
     postDocRef: any;
   };
 
   useEffect(() => {
-    const alreadyLiked = likedLocalItems.findIndex(
-      (items) => items?.postData == postDocRef
+    const alreadyLiked = likedLocalItems?.findIndex(
+      (items) => items?.postDocRef == postDocRef
     );
     console.log(alreadyLiked, liked);
     if (alreadyLiked < 0 || alreadyLiked == undefined) {
@@ -70,21 +68,58 @@ function EachPost({ post }: EachPostProps) {
         ];
         console.log(updated);
 
+        updateDoc(doc(db, "users", userDocRef, "posts", postDocRef), {
+          likes: likesNoLocal + 1,
+        })
+          .then((ref) => {
+            onSnapshot(
+              doc(db, "users", userDocRef, "posts", postDocRef),
+              (doc) => setLikesNoLocal(doc?.data().likes)
+            );
+            updateDoc(doc(db, "users", userDocRef), {
+              likedItems: updated,
+            }).then((ref) => {
+              return onSnapshot(doc(db, "users", userDocRef), (doc) =>
+                setCurrentUser({ ...doc?.data(), userDocRef })
+              );
+            });
+          })
+          .catch((error) => console.log("not updatedddddd+++++++", error));
+
         return updated;
       });
     } else if (alreadyLiked >= 0) {
-            console.log("removing now, not there beforeeeeeeeeeeeee");
+      console.log("removing now, not there beforeeeeeeeeeeeee");
 
       setLikedLocalItems((prev) => {
         const updated = prev.filter((item) => item.postDocRef !== postDocRef);
-
         console.log(updated);
+
+        updateDoc(doc(db, "users", userDocRef, "posts", postDocRef), {
+          likes: likesNoLocal - 1,
+        })
+          .then((ref) => {
+            onSnapshot(
+              doc(db, "users", userDocRef, "posts", postDocRef),
+              (doc) => setLikesNoLocal(doc?.data().likes)
+            );
+            return updateDoc(doc(db, "users", userDocRef), {
+              likedItems: updated,
+            }).then((ref) => {
+              return onSnapshot(doc(db, "users", userDocRef), (doc) =>
+                setCurrentUser({ ...doc?.data(), userDocRef })
+              );
+            });
+          })
+          .catch((error) => console.log("not updatedddddd+++++++", error));
+
         return updated;
       });
     }
   }
 
   console.log(likedLocalItems);
+  console.log(currentUser);
 
   return (
     <section className="flex w-full flex-col pl-[50px] pr-[190px] pb-8 border-x border-t border-b-borderGrey">
