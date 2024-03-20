@@ -35,12 +35,13 @@ function EachPost({ post }: EachPostProps) {
   const monthName = monthNames[date?.getMonth()];
 
   const [likesNoLocal, setLikesNoLocal] = useState(likes);
+  const currentUserDocRef = currentUser?.userDocRef;
 
   type LikedItemLocal = {
     userDocRef: any;
     postDocRef: any;
   };
-
+  console.log(currentUser?.userDocRef);
   useEffect(() => {
     const alreadyLiked = likedLocalItems?.findIndex(
       (items) => items?.postDocRef == postDocRef
@@ -76,11 +77,16 @@ function EachPost({ post }: EachPostProps) {
               doc(db, "users", userDocRef, "posts", postDocRef),
               (doc) => setLikesNoLocal(doc?.data().likes)
             );
-            updateDoc(doc(db, "users", userDocRef), {
+            updateDoc(doc(db, "users", currentUser?.userDocRef), {
               likedItems: updated,
             }).then((ref) => {
-              return onSnapshot(doc(db, "users", userDocRef), (doc) =>
-                setCurrentUser({ ...doc?.data(), userDocRef })
+              return onSnapshot(
+                doc(db, "users", currentUser?.userDocRef),
+                (doc) =>
+                  setCurrentUser({
+                    ...doc?.data(),
+                    userDocRef: currentUserDocRef,
+                  })
               );
             });
           })
@@ -103,11 +109,16 @@ function EachPost({ post }: EachPostProps) {
               doc(db, "users", userDocRef, "posts", postDocRef),
               (doc) => setLikesNoLocal(doc?.data().likes)
             );
-            return updateDoc(doc(db, "users", userDocRef), {
+            return updateDoc(doc(db, "users", currentUser?.userDocRef), {
               likedItems: updated,
             }).then((ref) => {
-              return onSnapshot(doc(db, "users", userDocRef), (doc) =>
-                setCurrentUser({ ...doc?.data(), userDocRef })
+              return onSnapshot(
+                doc(db, "users", currentUser?.userDocRef),
+                (doc) =>
+                  setCurrentUser({
+                    ...doc?.data(),
+                    userDocRef: currentUserDocRef,
+                  })
               );
             });
           })
