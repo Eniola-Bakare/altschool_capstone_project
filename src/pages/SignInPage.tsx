@@ -82,18 +82,18 @@ function SignInPage() {
       });
   };
   return (
-    <section className="flex w-full items-center justify-between">
+    <section className="flex flex-col md:flex-row w-full items-center justify-between">
       <AuthSidebar />
 
-      <aside className="signin-side w-[70%] flex flex-col justify-center items-center gap-14">
+      <aside className="signin-side w-full px-4 py-10 lg:py-0 lg:px-0 flex flex-col justify-center items-center gap-14">
         <LoginSignUpTab />
 
         <h1 className="text-4xl font-medium ">Welcome back</h1>
         <form
           onSubmit={handleSignIn}
-          className="form-welcome flex flex-col justify-center w-[50%] gap-6"
+          className="form-welcome w-full flex flex-col lg:px-0 justify-center lg:w-[50%] gap-6"
         >
-          <div className="email-field flex flex-col gap-3">
+          <div className="email-field  flex flex-col gap-3">
             <label htmlFor="email" className="text-[#3B3B3B]">
               Email
             </label>

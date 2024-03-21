@@ -58,9 +58,9 @@ function SignUpPortals() {
   }
 
   return (
-    <div className="w-full flex flex-col items-center gap-5">
+    <div className="w-full flex flex-col items-center gap-5 ">
       <div
-        className="google-auth flex w-full md:w-[85%] lg:w-[50%] justify-center items-center gap-11 rounded-lg py-2 px-4 shadow-md border border-[#CED4DA] cursor-pointer"
+        className="google-auth flex w-full md:w-[85%] lg:w-[50%]  justify-center items-center gap-11 rounded-lg py-2 px-4 shadow-md border border-[#CED4DA] cursor-pointer"
         onClick={handleGoogleSDK}
       >
         <img src="/google.png" alt="google logo" />

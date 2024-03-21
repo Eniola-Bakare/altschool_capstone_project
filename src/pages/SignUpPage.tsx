@@ -96,7 +96,7 @@ function SignUpPage() {
     <section className="flex flex-col md:flex-row w-full items-center justify-between ">
       <AuthSidebar />
 
-      <aside className="signin-side w-full px-5 sm:px-16 md:px-0 py-6 md:py-0 flex flex-col justify-center items-center gap-6 ">
+      <aside className="signin-side w-full px-4 lg:px-0 py-6 md:py-0 flex flex-col justify-center items-center gap-6 ">
         <LoginSignUpTab />
 
         <h1 className="text-2xl lg:text-3xl font-medium ">
@@ -236,6 +236,7 @@ function SignUpPage() {
 
           <Button type="primary" name="Create account" width="w-full" />
         </form>
+
         <SignUpPortals />
       </aside>
     </section>
