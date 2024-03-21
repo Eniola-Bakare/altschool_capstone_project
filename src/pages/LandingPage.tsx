@@ -6,7 +6,7 @@ import Header from "../components/Header";
 // type LandingPageProps = {}
 function LandingPage() {
   return (
-    <div className="flex flex-col items-center">
+    <div className="w-full flex flex-col items-center ">
       <Header />
       <section
         className="w-full hero-section bg-cover bg-left-top h-screen flex flex-col justify-center"
@@ -36,10 +36,10 @@ function LandingPage() {
       </section>
 
       <section
-        className="about-sec flex py-16 px-20 justify-between"
+        className="about-sec flex lg:px-10 lg:py-8 xl:py-16 xl:px-20 justify-between"
         id="about"
       >
-        <div className="about-text w-[50%] flex flex-col gap-8 text-black">
+        <div className="about-text lg:w-[58%] 2xl:w-[50%] flex flex-col gap-8 text-black">
           <h1 className="text-5xl font-bold ">About Chatter</h1>
           <p className="text-lg">
             Chatter is a multi-functional platform where authors and readers can
@@ -51,7 +51,7 @@ function LandingPage() {
             beliefs. By promoting dialogue and understanding, we strive{" "}
           </p>
         </div>
-        <div className="about-image w-[35%]">
+        <div className="about-image lg:w-[35%] 2xl:w-[35%]">
           <img
             src="aboutImage.png"
             alt="a group of people on a stair way"
@@ -60,9 +60,9 @@ function LandingPage() {
         </div>
       </section>
 
-      <section className="why-sec py-16 px-20 flex flex-col items-center gap-8 w-[75%]">
+      <section className="why-sec lg:px-10 lg:py-8 xl:py-16 xl:px-20 flex flex-col items-center gap-8 lg:w-[80%] 2xl:w-[75%]">
         <h1 className="text-5xl font-bold ">Why you should join chatter</h1>
-        <p className="w-[70%]">
+        <p className="xl:w-[85%] 2xl:w-[70%]">
           Our goal is to make writers and readers see our platform as their next
           heaven for blogging, ensuring ease in interactions, connecting with
           like-minded peers, have access to favorite content based on interests
@@ -70,7 +70,7 @@ function LandingPage() {
         </p>
       </section>
 
-      <section className="card-sec pb-20 flex gap-12">
+      <section className="card-sec sm:pb-20 flex lg:gap-7 xl:gap-12">
         <div className="each-card w-[306px] h-[324px] py-4 px-5 rounded-lg border border-boderGrey flex flex-col justify-center  items-start gap-3">
           <img src="iconOne.png" alt="anlytic icon" />
           <header className="text-2xl font-medium leading-[36px]">
@@ -108,10 +108,10 @@ function LandingPage() {
           <img
             src="reviewImage.png"
             alt="a man"
-            className="rounded-full w-[70%]"
+            className="rounded-full xl:w-[70%]"
           />
         </div>
-        <div className="testimonial-text justify-center w-[60%] py-16 px-20 flex flex-col gap-9 ">
+        <div className="testimonial-text justify-center w-[60%] lg:py-8 lg:px-10 xl:py-16 xl:px-20 flex flex-col gap-9 ">
           <p className="text-lg leading-7 text-black">
             "Chatter has become an integral part of my online experience. As a
             user of this incredible blogging platform, I have discovered a
@@ -120,7 +120,8 @@ function LandingPage() {
           </p>
 
           <p className="font-medium text-4xl">
-            Adebobola Muhydeen,{" "}
+            Adebobola Muhydeen,
+            <br />
             <span className="font font-normal text-2xl">
               Software developer at Apple
             </span>
@@ -136,19 +137,15 @@ function LandingPage() {
       </section>
 
       <section className="profiles w-full bg-white flex items-center justify-center h-[492px]">
-        <div className="profile-text flex w-[70%] gap-20">
-          <div className="all-three-profiles flex gap-8 items-center">
+        <div className="profile-text flex lg:w-[90%] xl:w-[70%] gap-20">
+          <div className="all-three-profiles flex lg:w-[55%] gap-8 items-center">
             <div className="two-profiles flex flex-col gap-14 justify-between items-center ">
               <img
                 src="profileOne.png"
                 className="rounded-full"
                 alt="a woman"
               />
-              <img
-                src="profileTwo.png"
-                className="rounded-full"
-                alt="a man"
-              />
+              <img src="profileTwo.png" className="rounded-full" alt="a man" />
             </div>
             <div className="oneProfile">
               <img
@@ -160,10 +157,10 @@ function LandingPage() {
           </div>
 
           <div className="profiles-text flex flex-col gap-6">
-            <h1 className="text-black text-5xl font-bold leading-[72px]">
+            <h1 className="text-black lg:text-4xl xl:text-5xl font-bold leading-[72px]">
               Write, read and connect <br /> with great minds on chatter{" "}
             </h1>
-            <p className="text-lg">
+            <p className="lg:text-xl xl:text-lg">
               Share people your great ideas, and also read write-ups based on
               your interests connect with people of same interests and goals
             </p>

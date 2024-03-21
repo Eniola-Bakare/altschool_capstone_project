@@ -8,7 +8,7 @@ function Header() {
     section.scrollIntoView({ behavior: "smooth" });
   }
   return (
-    <nav className="w-full bg-white flex justify-between items-center py-4 px-20">
+    <nav className="w-full bg-white flex justify-between items-center py-4 lg:px-10 xl:px-20">
       <Link to="/">
         <LogoText />
       </Link>
