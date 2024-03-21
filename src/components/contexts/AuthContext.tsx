@@ -41,17 +41,18 @@ type AuthContextTYPE = {
   setNewUser: Dispatch<SetStateAction<null>>;
   currentUser: object | null;
   setCurrentUser: Dispatch<SetStateAction<object | null>>;
-  likedItemsLocal: [];
-  // likedLocalItems: object;
-  // setLikedLocalItems: (likedLocalItems: []) => void;
-  // likedItems: object | null;
-  // setLikedItems: Dispatch<SetStateAction<LikedItem[]>>;
+  likedLocalItems: likedLocalItems[];
+  setLikedLocalItems: Dispatch<SetStateAction<likedLocalItems[]>>;
+  published: boolean;
+  setPublished: Dispatch<SetStateAction<boolean>>;
+  upDatePosts: () => void;
 };
 
-type LikedItemLocal = {
+type likedLocalItems = {
   userDocRef: any;
   postDocRef: any;
 };
+
 const AuthContext = createContext<AuthContextTYPE | undefined>(undefined);
 
 export default function AuthContextProvider({
@@ -67,14 +68,15 @@ export default function AuthContextProvider({
   const [confirmPassword, setConfirmPassword] = useState("123Ab!");
   const [signedIn, setSignedIn] = useState(false);
   const [authUser, setAuthUser] = useState<User | null>(null);
-  // const [likedItems, setLikedItems] = useState<LikedItem[]>([]);
+  const [published, setPublished] = useState<boolean>(false);
 
-  // console.log(likedItems);
-  // console.log(liked)
+  const upDatePosts = () => {
+    setPublished(true);
+  };
 
   const [currentUser, setCurrentUser] = useState<object | null>(null);
   // console.log(currentUser, "current user");
-  const [likedLocalItems, setLikedLocalItems] = useState<LikedItemLocal[]>([]);
+  const [likedLocalItems, setLikedLocalItems] = useState<likedLocalItems[]>([]);
   console.log(
     likedLocalItems,
     "from auth context ++++++++++++++++++++++++++++++++++++++++++"
@@ -131,6 +133,9 @@ export default function AuthContextProvider({
         setCurrentUser,
         likedLocalItems,
         setLikedLocalItems,
+        published,
+        setPublished,
+        upDatePosts,
         // likedItems,
         // setLikedItems,
         // liked,

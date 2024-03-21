@@ -7,6 +7,7 @@ import {
   addDoc,
   collection,
   doc,
+  onSnapshot,
   serverTimestamp,
 } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
@@ -18,7 +19,8 @@ type PublishProps = {
 };
 
 function PublishScreen({ closePublish }: PublishProps) {
-  const { currentUser } = useAuthContext();
+  const { currentUser, published, upDatePosts, setPublished } =
+    useAuthContext();
   const [screenTwo, setScreenTwo] = useState(false);
   const [screenOne, setScreenOne] = useState(true);
   const [screenThree, setScreenThree] = useState(false);
@@ -29,6 +31,7 @@ function PublishScreen({ closePublish }: PublishProps) {
   const [imgUrl, setimgUrl] = useState("");
   const [vidUrl, setvidUrl] = useState("");
   const [postText, setPostText] = useState("");
+
   const handleNewPost = () => {
     console.log(currentUser);
     console.log(attachment);
@@ -63,12 +66,9 @@ function PublishScreen({ closePublish }: PublishProps) {
           });
         })
         .then((docRef) => {
-          console.log(docRef, "new postssssss created !!!!");
           closePublish();
         })
         .catch((err) => console.log("error adding doc", err));
-
-      console.log("bbbbbb");
     }
   };
 

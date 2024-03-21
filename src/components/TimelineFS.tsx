@@ -1,11 +1,14 @@
+import { useEffect } from "react";
 import AllPosts from "./AllPosts";
 import { useAuthContext } from "./contexts/AuthContext";
 
 type TimelineFSProps = {
   setMakeAPostBtn: (makeAPostBtn: boolean) => void;
 };
+
 function TimelineFS({ setMakeAPostBtn }: TimelineFSProps) {
-  const { newUser, currentUser } = useAuthContext();
+  const { newUser, currentUser, published, setPublished } = useAuthContext();
+
   return (
     <section className="timeline w-[95%] h-screen  overflow-hidden border-x border-y border-borderGrey flex justify-center  ">
       <div className="w-[85%] flex flex-col">
@@ -13,7 +16,7 @@ function TimelineFS({ setMakeAPostBtn }: TimelineFSProps) {
           <div className="flex flex-col gap-2">
             <p className="text-3xl font-medium">
               {" "}
-              {currentUser ? `Welcome, ${ currentUser?.fName} !` : "FEED"}
+              {currentUser ? `Welcome, ${currentUser?.fName} !` : "FEED"}
             </p>
             <p className="text-lg text-grey">
               Explore different content you love

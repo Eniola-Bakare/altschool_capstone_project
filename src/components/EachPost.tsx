@@ -10,8 +10,14 @@ type EachPostProps = {
   };
 };
 function EachPost({ post }: EachPostProps) {
-  const { currentUser, setCurrentUser, likedLocalItems, setLikedLocalItems } =
-    useAuthContext();
+  const {
+    currentUser,
+    setCurrentUser,
+    likedLocalItems,
+    published,
+    setPublished,
+    setLikedLocalItems,
+  } = useAuthContext();
   const [liked, setLiked] = useState(false);
   const { userDocRef } = post.userData;
   const userDetails = post.userData;
@@ -37,11 +43,6 @@ function EachPost({ post }: EachPostProps) {
   const [likesNoLocal, setLikesNoLocal] = useState(likes);
   const currentUserDocRef = currentUser?.userDocRef;
 
-  type LikedItemLocal = {
-    userDocRef: any;
-    postDocRef: any;
-  };
-  console.log(currentUser?.userDocRef);
   useEffect(() => {
     const alreadyLiked = likedLocalItems?.findIndex(
       (items) => items?.postDocRef == postDocRef
