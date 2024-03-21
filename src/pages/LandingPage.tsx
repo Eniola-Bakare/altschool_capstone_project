@@ -9,16 +9,16 @@ function LandingPage() {
     <div className="w-full flex flex-col items-center ">
       <Header />
       <section
-        className="w-full hero-section bg-cover bg-left-top h-[90vh] flex flex-col justify-center px-8 lg:px-0"
+        className="w-full hero-section bg-cover bg-left-top h-[92vh] flex flex-col justify-center px-8 lg:px-0"
         style={{
           backgroundImage:
             "linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),url('heroImage.png')",
         }}
       >
-        <div className="hero-text w-ful md:w-[85%] lg:w-full self-center  flex flex-col gap-10">
+        <div className="hero-text w-full sm:w-[85%] lg:w-[70%]  self-center  flex flex-col gap-10">
           <h1 className=" text-[32px] md:text-5xl lg:text-5xl font-bold text-white leading-[40px] md:leading-[72px]">
             Welcome to Chatter: A Haven for Text-
-            <span className="md:hidden lg:visible">
+            <span className="sm:hidden lg:visible">
               <br />
             </span>
             Based Content
@@ -45,7 +45,7 @@ function LandingPage() {
           <h1 className="text-5xl font-bold text-center md:text-left ">
             About Chatter
           </h1>
-          <p className=" text-lg text-justify md:text-left ">
+          <p className=" text-lg text-justify lg:text-left ">
             Chatter is a multi-functional platform where authors and readers can
             have access to their own content. It aims to be a traditional
             bookworm’s heaven and a blog to get access to more text based
@@ -65,10 +65,10 @@ function LandingPage() {
       </section>
 
       <section className="why-sec md:px-12 py-12 lg:px-10 lg:py-8 xl:py-16 xl:px-20 flex flex-col items-center gap-8 lg:w-[80%] 2xl:w-[75%]">
-        <h1 className="w-[80%] md:w-full text-4xl md:text-5xl font-bold text-center md:text-left ">
+        <h1 className="w-[80%] md:w-full text-4xl md:text-5xl font-bold text-center ">
           Why you should join chatter
         </h1>
-        <p className="w-[95%] xl:w-[85%] 2xl:w-[70%] text-justify md:text-left ">
+        <p className="w-[95%] xl:w-[85%] 2xl:w-[70%] text-justify lg:text-center ">
           Our goal is to make writers and readers see our platform as their next
           heaven for blogging, ensuring ease in interactions, connecting with
           like-minded peers, have access to favorite content based on interests
@@ -76,7 +76,7 @@ function LandingPage() {
         </p>
       </section>
 
-      <section className="card-sec sm:pb-20 flex flex-col items-center lg:items-start gap-7 lg:flex-row lg:gap-7 xl:gap-12 py-12 lg:py-0">
+      <section className="card-sec sm:pb-20 flex flex-col items-center lg:items-start gap-7 lg:flex-row lg:gap-7 xl:gap-12">
         <div className="each-card w-[90%] md:w-[650px] lg:w-[306px] h-[324px] py-4 px-5 rounded-lg border border-boderGrey flex flex-col justify-center items-center md:items-start gap-3">
           <img src="iconOne.png" alt="anlytic icon" />
           <header className="text-2xl font-medium leading-[36px]">
@@ -121,7 +121,7 @@ function LandingPage() {
             their ideas and engaging in thoughtful discussions.”
           </p>
 
-          <p className="font-medium text-center md:text-center text-2xl md:text-4xl">
+          <p className="font-medium text-center md:text-start text-2xl md:text-4xl">
             Adebobola Muhydeen,
             <br />
             <span className="font font-normal text-lg md:text-center md:text-2xl">
@@ -140,7 +140,7 @@ function LandingPage() {
         </div>
       </section>
 
-      <section className="profiles w-full bg-white flex items-center justify-center md:h-[492px]">
+      <section className="profiles w-full bg-white flex items-center justify-center py-12 lg:h-[492px]">
         <div className="profile-text flex flex-col items-center md:flex-row w-full md:w-[85%] px-4 md:px-0 py-12 md:py-0 xl:w-[70%] gap-10 lg:gap-20">
           <div className="all-three-profiles flex w-[70%] lg:w-[55%] lg:gap-8 items-center">
             <div className="two-profiles flex flex-col gap-14 justify-between items-center ">
@@ -161,7 +161,7 @@ function LandingPage() {
           </div>
 
           <div className="profiles-text flex flex-col text-center md:text-left gap-6 justify-center">
-            <h1 className="text-black text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold leading-[30px] md:leading-[72px]">
+            <h1 className="text-black text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold leading-[30px] xl:leading-[72px]">
               Write, read and connect <br /> with great minds on chatter{" "}
             </h1>
             <p className="lg:text-xl xl:text-lg">
