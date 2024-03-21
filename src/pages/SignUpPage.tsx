@@ -1,11 +1,4 @@
-import {
-  SignInMethod,
-  createUserWithEmailAndPassword,
-  fetchSignInMethodsForEmail,
-  getAuth,
-  onAuthStateChanged,
-  signInWithEmailAndPassword,
-} from "firebase/auth";
+import { fetchSignInMethodsForEmail } from "firebase/auth";
 import AuthSidebar from "../components/AuthSidebar";
 import Button from "../components/Button";
 import LoginSignUpTab from "../components/LoginSignUpTab";
@@ -14,7 +7,6 @@ import { auth } from "../firebase/config";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import emailjs from "emailjs-com";
-import firebase from "firebase/compat/app";
 import SignUpPortals from "../components/SignUpPortals";
 
 function SignUpPage() {
@@ -51,7 +43,6 @@ function SignUpPage() {
 
   function handleSignUp(e: React.FormEvent<HTMLElement>): void {
     e.preventDefault();
-    // console.log(email, password, fName, lName, category, confirmPassword);
 
     if (fName.trim().length < 3) {
       setfNameError("At least 3 characters");
@@ -102,13 +93,15 @@ function SignUpPage() {
   }
 
   return (
-    <section className="flex w-full items-center justify-between">
+    <section className="flex flex-col md:flex-row w-full items-center justify-between ">
       <AuthSidebar />
 
-      <aside className="signin-side w-[70%] flex flex-col justify-center items-center gap-6">
+      <aside className="signin-side w-full px-5 sm:px-16 md:px-0 py-6 md:py-0 flex flex-col justify-center items-center gap-6 ">
         <LoginSignUpTab />
 
-        <h1 className="text-4xl font-medium ">Register as a Writer/Reader</h1>
+        <h1 className="text-2xl lg:text-3xl font-medium ">
+          Register as a Writer/Reader
+        </h1>
         {errorMessageSignUp && (
           <h1 className="text-xl font-bold text-center text-danger ">
             User already exist, login instead
@@ -116,10 +109,10 @@ function SignUpPage() {
         )}
         <form
           onSubmit={handleSignUp}
-          className="form-welcome flex flex-col justify-center w-[50%] gap-3"
+          className="form-welcome flex flex-col justify-center w-full md:w-[85%] lg:w-[50%] gap-3"
         >
-          <div className="name-fields flex gap-3">
-            <div className="first-name flex flex-col gap-3 w-[50%]">
+          <div className="name-fields flex flex-col md:flex-row gap-3">
+            <div className="first-name flex flex-col gap-3 md:w-[50%]">
               <label
                 htmlFor="fName"
                 className={`${fNameError ? "text-danger" : "text-[#3B3B3B]"}`}
@@ -140,7 +133,7 @@ function SignUpPage() {
                 } shadow-md rounded-lg hover:shadow-xl focus:outline-blue`}
               />
             </div>
-            <div className="last-name flex flex-col gap-3 w-[50%]">
+            <div className="last-name flex flex-col gap-3 md:w-[50%]">
               <label
                 htmlFor="lName"
                 className={`${lNameError ? "text-danger" : "text-[#3B3B3B]"}`}
