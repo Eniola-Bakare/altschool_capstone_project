@@ -10,14 +10,8 @@ type EachPostProps = {
   };
 };
 function EachPost({ post }: EachPostProps) {
-  const {
-    currentUser,
-    setCurrentUser,
-    likedLocalItems,
-    published,
-    setPublished,
-    setLikedLocalItems,
-  } = useAuthContext();
+  const { currentUser, setCurrentUser, likedLocalItems, setLikedLocalItems } =
+    useAuthContext();
   const [liked, setLiked] = useState(false);
   const { userDocRef } = post.userData;
   const userDetails = post.userData;
@@ -134,7 +128,10 @@ function EachPost({ post }: EachPostProps) {
   console.log(currentUser);
 
   return (
-    <section className="flex w-full flex-col pl-[50px] pr-[190px] pb-8 border-x border-t border-b-borderGrey">
+    <section
+      key={post?.id}
+      className="flex w-full flex-col pl-[50px] pr-[190px] pb-8 border-x border-t border-b-borderGrey"
+    >
       <div className="profile-details flex items-center gap-5 py-[30px] ">
         <div className="profile-image w-[70px]">
           <img

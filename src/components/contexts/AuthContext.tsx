@@ -1,5 +1,4 @@
 import { User } from "firebase/auth";
-import { collection, doc, getDoc } from "firebase/firestore";
 import {
   Dispatch,
   ReactNode,
@@ -7,11 +6,8 @@ import {
   createContext,
   useContext,
   useEffect,
-  useRef,
   useState,
 } from "react";
-import { db } from "../../firebase/config";
-import { update } from "firebase/database";
 
 type AuthContextTYPE = {
   email: string;

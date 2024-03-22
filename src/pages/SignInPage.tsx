@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import AuthSidebar from "../components/AuthSidebar";
 import Button from "../components/Button";
 import LoginSignUpTab from "../components/LoginSignUpTab";

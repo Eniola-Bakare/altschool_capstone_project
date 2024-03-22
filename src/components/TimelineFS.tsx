@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import AllPosts from "./AllPosts";
 import { useAuthContext } from "./contexts/AuthContext";
 
@@ -7,7 +6,7 @@ type TimelineFSProps = {
 };
 
 function TimelineFS({ setMakeAPostBtn }: TimelineFSProps) {
-  const { newUser, currentUser, published, setPublished } = useAuthContext();
+  const { currentUser } = useAuthContext();
 
   return (
     <section className="timeline w-[95%] h-screen  overflow-hidden border-x border-y border-borderGrey flex justify-center  ">

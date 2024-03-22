@@ -10,10 +10,7 @@ import React, {
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useAuthContext } from "../components/contexts/AuthContext";
 import { auth, db, storageRef } from "../firebase/config";
-import { addDoc, collection, doc, getDoc, setDoc } from "firebase/firestore";
-import swal from "sweetalert";
-import { CreateNewUseronDB } from "../firebase/fireStoreActions";
-import { set } from "firebase/database";
+import { addDoc, collection, doc, getDoc } from "firebase/firestore";
 import { getDownloadURL, ref } from "firebase/storage";
 
 function SignUpConfirm() {

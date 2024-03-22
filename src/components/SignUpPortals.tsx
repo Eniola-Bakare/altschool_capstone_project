@@ -14,17 +14,17 @@ function SignUpPortals() {
       .then((result) => {
         console.log("entered here");
         console.log(result);
-        const credential = GoogleAuthProvider.credentialFromResult(result);
-        const token = credential?.accessToken;
-        const user = result.user;
+        // const credential = GoogleAuthProvider.credentialFromResult(result);
+        // const token = credential?.accessToken;
+        // const user = result.user;
       })
       .catch((error) => {
         console.log("or heree");
-        const errorCode = error.code;
-        const errorMessage = error.message;
+        // const errorCode = error.code;
+        // const errorMessage = error.message;
 
-        const email = error.customData.email;
-        const credential = GoogleAuthProvider.credentialFromError(error);
+        // const email = error.customData.email;
+        // const credential = GoogleAuthProvider.credentialFromError(error);
       });
   }
 

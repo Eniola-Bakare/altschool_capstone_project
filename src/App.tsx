@@ -4,7 +4,6 @@ import SignUpPage from "./pages/SignUpPage";
 import LandingPage from "./pages/LandingPage";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import AuthContextProvider from "./components/contexts/AuthContext";
-import AppLayout from "./components/AppLayout";
 import FeedScreen from "./pages/FeedScreen";
 
 function App() {

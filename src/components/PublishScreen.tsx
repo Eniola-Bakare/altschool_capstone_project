@@ -1,15 +1,8 @@
-import { useRef, useState, ChangeEvent, useId } from "react";
+import { useRef, useState } from "react";
 import Button from "./Button";
 import { useAuthContext } from "./contexts/AuthContext";
 import { db, storageRef } from "../firebase/config";
-import {
-  Timestamp,
-  addDoc,
-  collection,
-  doc,
-  onSnapshot,
-  serverTimestamp,
-} from "firebase/firestore";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 type PublishProps = {
@@ -19,8 +12,7 @@ type PublishProps = {
 };
 
 function PublishScreen({ closePublish }: PublishProps) {
-  const { currentUser, published, upDatePosts, setPublished } =
-    useAuthContext();
+  const { currentUser } = useAuthContext();
   const [screenTwo, setScreenTwo] = useState(false);
   const [screenOne, setScreenOne] = useState(true);
   const [screenThree, setScreenThree] = useState(false);
