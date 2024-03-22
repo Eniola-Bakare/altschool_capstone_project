@@ -1,13 +1,31 @@
 import { useEffect, useState } from "react";
 import { useAuthContext } from "./contexts/AuthContext";
-import { doc, onSnapshot, updateDoc } from "firebase/firestore";
+import { Timestamp, doc, onSnapshot, updateDoc } from "firebase/firestore";
 import { db } from "../firebase/config";
 
 type EachPostProps = {
   post: {
-    postText: string;
-    postData: object;
+    userData: {
+      photoURL: string;
+      fName: string;
+      lName: string;
+      category: string;
+      userDocRef: string;
+    };
+    postData: {
+      likes: number;
+      postDocRef: string;
+      datePublished: Timestamp;
+      postText: string;
+      attachment: string;
+      bookmark: boolean;
+    };
   };
+};
+
+type CurrentUser = {
+  currentUser?: object;
+  userDocRef?: string;
 };
 function EachPost({ post }: EachPostProps) {
   const { currentUser, setCurrentUser, likedLocalItems, setLikedLocalItems } =
@@ -17,7 +35,8 @@ function EachPost({ post }: EachPostProps) {
   const userDetails = post.userData;
   const { postDocRef, likes } = post.postData;
   const postDetails = post.postData;
-  const date = post.postData?.datePublished?.toDate();
+  const datePublished = post.postData?.datePublished as Timestamp;
+  const date = datePublished?.toDate();
   const monthNames = [
     "January",
     "February",
@@ -35,7 +54,8 @@ function EachPost({ post }: EachPostProps) {
   const monthName = monthNames[date?.getMonth()];
 
   const [likesNoLocal, setLikesNoLocal] = useState(likes);
-  const currentUserDocRef = currentUser?.userDocRef;
+  const currentUserLocal: CurrentUser = currentUser;
+  const currentUserDocRef = currentUserLocal?.userDocRef;
 
   useEffect(() => {
     const alreadyLiked = likedLocalItems?.findIndex(
@@ -67,16 +87,16 @@ function EachPost({ post }: EachPostProps) {
         updateDoc(doc(db, "users", userDocRef, "posts", postDocRef), {
           likes: likesNoLocal + 1,
         })
-          .then((ref) => {
+          .then(() => {
             onSnapshot(
               doc(db, "users", userDocRef, "posts", postDocRef),
               (doc) => setLikesNoLocal(doc?.data().likes)
             );
-            updateDoc(doc(db, "users", currentUser?.userDocRef), {
+            updateDoc(doc(db, "users", currentUserDocRef), {
               likedItems: updated,
-            }).then((ref) => {
+            }).then(() => {
               return onSnapshot(
-                doc(db, "users", currentUser?.userDocRef),
+                doc(db, "users", currentUserDocRef),
                 (doc) =>
                   setCurrentUser({
                     ...doc?.data(),
@@ -99,16 +119,16 @@ function EachPost({ post }: EachPostProps) {
         updateDoc(doc(db, "users", userDocRef, "posts", postDocRef), {
           likes: likesNoLocal - 1,
         })
-          .then((ref) => {
+          .then(() => {
             onSnapshot(
               doc(db, "users", userDocRef, "posts", postDocRef),
               (doc) => setLikesNoLocal(doc?.data().likes)
             );
-            return updateDoc(doc(db, "users", currentUser?.userDocRef), {
+            return updateDoc(doc(db, "users", currentUserDocRef), {
               likedItems: updated,
-            }).then((ref) => {
+            }).then(() => {
               return onSnapshot(
-                doc(db, "users", currentUser?.userDocRef),
+                doc(db, "users", currentUserDocRef),
                 (doc) =>
                   setCurrentUser({
                     ...doc?.data(),
@@ -129,7 +149,7 @@ function EachPost({ post }: EachPostProps) {
 
   return (
     <section
-      key={post?.id}
+      key={postDetails.postDocRef}
       className="flex w-full flex-col pl-[50px] pr-[190px] pb-8 border-x border-t border-b-borderGrey"
     >
       <div className="profile-details flex items-center gap-5 py-[30px] ">
@@ -146,7 +166,7 @@ function EachPost({ post }: EachPostProps) {
           </p>
           <p className="text-lg text-grey">
             {userDetails.category}{" "}
-            <strong className="text-grey text-borderGrey">|</strong>{" "}
+            <strong className=" text-borderGrey">|</strong>{" "}
             <span>
               {monthName} {date?.getDate()},{date?.getFullYear()}
             </span>

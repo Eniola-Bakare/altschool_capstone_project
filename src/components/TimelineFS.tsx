@@ -4,9 +4,12 @@ import { useAuthContext } from "./contexts/AuthContext";
 type TimelineFSProps = {
   setMakeAPostBtn: (makeAPostBtn: boolean) => void;
 };
+type CurrentUser = {
+  fName?: string;
+};
 
 function TimelineFS({ setMakeAPostBtn }: TimelineFSProps) {
-  const { currentUser } = useAuthContext();
+  const { currentUser }: { currentUser: CurrentUser } = useAuthContext();
 
   return (
     <section className="timeline w-[95%] h-screen  overflow-hidden border-x border-y border-borderGrey flex justify-center  ">

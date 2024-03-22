@@ -49,6 +49,11 @@ type likedLocalItems = {
   postDocRef: any;
 };
 
+type currentUser = {
+  likedItems: [];
+  userDocRef: string;
+};
+
 const AuthContext = createContext<AuthContextTYPE | undefined>(undefined);
 
 export default function AuthContextProvider({
@@ -70,7 +75,7 @@ export default function AuthContextProvider({
     setPublished(true);
   };
 
-  const [currentUser, setCurrentUser] = useState<object | null>(null);
+  const [currentUser, setCurrentUser] = useState<currentUser | null>(null);
   // console.log(currentUser, "current user");
   const [likedLocalItems, setLikedLocalItems] = useState<likedLocalItems[]>([]);
   console.log(

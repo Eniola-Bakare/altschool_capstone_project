@@ -10,7 +10,10 @@ type PublishProps = {
   // screenTwo: boolean;
   // setScreenTwo: (screenTwo: boolean) => void;
 };
-
+type CurrentUser = {
+  currentUser?: object;
+  userDocRef?: string;
+};
 function PublishScreen({ closePublish }: PublishProps) {
   const { currentUser } = useAuthContext();
   const [screenTwo, setScreenTwo] = useState(false);
@@ -28,7 +31,8 @@ function PublishScreen({ closePublish }: PublishProps) {
     console.log(currentUser);
     console.log(attachment);
     if (postText.trim() && attachment && currentUser) {
-      const userID = currentUser?.userDocRef;
+      const userIDRef: CurrentUser = currentUser;
+      const userID = userIDRef.userDocRef;
       const userRef = collection(db, "users", userID, "posts");
       console.log(attachment);
       const newPost = { attachment, postText, likes: 0, bookmark: false };
@@ -57,19 +61,19 @@ function PublishScreen({ closePublish }: PublishProps) {
             datePublished: serverTimestamp(),
           });
         })
-        .then((docRef) => {
+        .then(() => {
           closePublish();
         })
         .catch((err) => console.log("error adding doc", err));
     }
   };
 
-  const openScreenOne = (e: React.MouseEvent<HTMLElement>) => {
-    // e.stopPropagation();
-    setScreenOne(true);
-    setScreenTwo(false);
-    setScreenThree(false);
-  };
+  // const openScreenOne = (e: React.MouseEvent<HTMLElement>) => {
+  //   // e.stopPropagation();
+  //   setScreenOne(true);
+  //   setScreenTwo(false);
+  //   setScreenThree(false);
+  // };
   const openFileInputImg = () => {
     console.log("here now");
     if (fileInputRefImg.current) {

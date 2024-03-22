@@ -1,11 +1,25 @@
-import { collection, getDocs } from "firebase/firestore";
+import { Timestamp, collection, getDocs } from "firebase/firestore";
 import { db } from "../firebase/config";
 import { useEffect, useState } from "react";
 import EachPost from "./EachPost";
 
 type UserAndPost = {
-  postData: { postDocRef: string };
-  userData: { userDocRef: string };
+  userData: {
+    photoURL: string;
+    fName: string;
+    lName: string;
+    category: string;
+    userDocRef: string;
+  };
+  postData: {
+    likes: number;
+    postDocRef: string;
+    datePublished: Timestamp;
+    postText: string;
+    attachment: string;
+    bookmark: boolean;
+  };
+  // postDocRef:string
 };
 
 function AllPosts() {
@@ -44,7 +58,7 @@ function AllPosts() {
   return (
     <div className="all-posts tab flex flex-col justify-between items-center h-screen overflow-y-auto">
       {allPosts.map((post) => (
-        <EachPost key={post?.id} post={post} />
+        <EachPost key={post.postData.postDocRef} post={post} />
       ))}
     </div>
   );

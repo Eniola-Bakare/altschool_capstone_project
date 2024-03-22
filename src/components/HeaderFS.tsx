@@ -1,7 +1,11 @@
 import { useAuthContext } from "./contexts/AuthContext";
 
+type CurrentUser = {
+  photoURL?: string;
+};
+
 function HeaderFS() {
-  const { currentUser } = useAuthContext();
+  const { currentUser }: { currentUser: CurrentUser } = useAuthContext();
   return (
     <section className="w-full flex justify-end items-center border-borderGrey border-x border-b py-[15px] pr-[129px] pl-[310px] ">
       <div className="serch+profile flex justify-end gap-56 w-full">
