@@ -4,7 +4,7 @@ import LogoText from "./LogoText";
 import { useState } from "react";
 
 function Header() {
-  const [openBurger, setOpenBurger] = useState(true);
+  const [openBurger, setOpenBurger] = useState(false);
 
   function handleScroll() {
     const section: any = document.getElementById("about");
