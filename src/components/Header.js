@@ -4,7 +4,7 @@ import Button from "./Button";
 import LogoText from "./LogoText";
 import { useState } from "react";
 function Header() {
-    const [openBurger, setOpenBurger] = useState(true);
+    const [openBurger, setOpenBurger] = useState(false);
     function handleScroll() {
         const section = document.getElementById("about");
         section.scrollIntoView({ behavior: "smooth" });
