@@ -2,23 +2,84 @@ import {
   signInWithPopup,
   GoogleAuthProvider,
   TwitterAuthProvider,
+  onAuthStateChanged,
 } from "firebase/auth";
 
-import { auth } from "../firebase/config";
+import { auth, db } from "../firebase/config";
+import { useAuthContext } from "./contexts/AuthContext";
+import { useEffect } from "react";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
+
 
 function SignUpPortals() {
+  const navigate = useNavigate();
+  const { currentUser, setCurrentUser } =
+    useAuthContext();
+
+  useEffect(() => {
+    const listen = onAuthStateChanged(auth, (user) => {
+      if (!user) return;
+      if (user) {
+        console.log(user);
+        getDocs(query(collection(db, "users"), where("uid", "==", user.uid)))
+          .then((resp) =>
+            resp.forEach((currentUser) => {
+              console.log(user);
+              console.log("current user");
+              const likedItems = currentUser.data()?.likedItems;
+              const {
+                displayName,
+                photoURL: photoUrl,
+                tenantId,
+                uid,
+                email,
+              } = user;
+              const names = displayName?.split(' ') || []
+              const fName = names[0] || ''
+              const lName = names[1].toLocaleUpperCase() || ''
+
+              const newUser = {
+                displayName,
+                photoURL: currentUser.data().photoURL || photoUrl,
+                likedItems: likedItems,
+                tenantId,
+                fName,
+                lName,
+                email,
+                category: "Reader",
+                uid,
+              };
+              console.log(currentUser.data());
+              console.log(likedItems);
+              setCurrentUser({ ...newUser, userDocRef: currentUser.id });
+            })
+          )
+          .catch((err) => console.log(err));
+
+        navigate(`/app/feed/:${user.uid}`);
+      }
+    });
+    return () => {
+      listen();
+    };
+  }, [setCurrentUser, currentUser, navigate]);
+
   function handleGoogleSDK() {
     const provider = new GoogleAuthProvider();
     console.log("im up and running");
     signInWithPopup(auth, provider)
       .then((result) => {
         console.log("entered here");
-        console.log(result);
-        // const credential = GoogleAuthProvider.credentialFromResult(result);
-        // const token = credential?.accessToken;
-        // const user = result.user;
+        console.log(result.user);
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        const token = credential?.accessToken;
+        const user = result.user;
+
+        // return setCurrentUser(user);
       })
       .catch((error) => {
+        console.log(error.code);
         console.log("or heree");
         // const errorCode = error.code;
         // const errorMessage = error.message;

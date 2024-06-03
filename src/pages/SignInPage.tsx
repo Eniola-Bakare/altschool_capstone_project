@@ -63,6 +63,7 @@ function SignInPage() {
       listen();
     };
   }, [authUser, setCurrentUser, currentUser, navigate]);
+  
   const handleSignIn = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
 
@@ -78,6 +79,8 @@ function SignInPage() {
           setTimeout(() => {
             navigate("/signup");
           }, 2000);
+        } else if (error.code === "auth/wrong-password") {
+          setErrorMessageSignIn("Wrong email/password");
         }
       });
   };
