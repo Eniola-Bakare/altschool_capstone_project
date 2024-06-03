@@ -35,11 +35,10 @@ function AllPosts() {
             });
           });
         });
-        console.log(allPosts);
       });
     };
     fetchData();
-  });
+  },[allPosts]);
 
   return (
     <div className="all-posts tab flex flex-col justify-between items-center h-screen overflow-y-auto">

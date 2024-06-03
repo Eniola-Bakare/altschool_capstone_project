@@ -71,17 +71,11 @@ export default function AuthContextProvider({
   };
 
   const [currentUser, setCurrentUser] = useState<object | null>(null);
-  // console.log(currentUser, "current user");
   const [likedLocalItems, setLikedLocalItems] = useState<likedLocalItems[]>([]);
-  console.log(
-    likedLocalItems,
-    "from auth context ++++++++++++++++++++++++++++++++++++++++++"
-  );
 
   useEffect(() => {
     setLikedLocalItems(currentUser?.likedItems);
   }, [currentUser?.likedItems]);
-  // console.log(likedLocalItems, currentUser);
 
   const [newUser, setNewUser] = useState(null);
 

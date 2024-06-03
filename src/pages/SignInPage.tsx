@@ -49,8 +49,6 @@ function SignInPage() {
                 category,
                 uid,
               };
-              console.log(currentUser.data());
-              console.log(likedItems);
               setCurrentUser({ ...newUser, userDocRef: currentUser.id });
             })
           )
@@ -63,7 +61,7 @@ function SignInPage() {
       listen();
     };
   }, [authUser, setCurrentUser, currentUser, navigate]);
-  
+
   const handleSignIn = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
 
