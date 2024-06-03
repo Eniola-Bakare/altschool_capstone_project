@@ -69,7 +69,7 @@ function SignUpPage() {
             setErrorMessageSignUp(true);
             setTimeout(() => {
               navigate("/signin");
-            }, 3000);
+            }, 1500);
           } else {
             setErrorMessageSignUp(false);
             emailjs
