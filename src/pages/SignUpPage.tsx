@@ -67,6 +67,9 @@ function SignUpPage() {
           if (SignInMethod && SignInMethod.length > 0) {
             console.log("user exist");
             setErrorMessageSignUp(true);
+            setTimeout(() => {
+              navigate("/signin");
+            }, 3000);
           } else {
             setErrorMessageSignUp(false);
             emailjs
