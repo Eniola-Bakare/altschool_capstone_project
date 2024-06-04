@@ -11,7 +11,7 @@ function SidebarFS() {
     signOut(auth)
       .then(() => {
         setSignedIn(false);
-        navigate("/");
+        navigate("/signin");
       })
       .catch((error) => console.log("an error occured", error));
   }

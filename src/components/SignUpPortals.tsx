@@ -4,8 +4,6 @@ import {
   TwitterAuthProvider,
   onAuthStateChanged,
   getAuth,
-  EmailAuthProvider,
-  linkWithCredential,
 } from "firebase/auth";
 
 import { auth, db } from "../firebase/config";
@@ -34,84 +32,55 @@ function SignUpPortals() {
         console.log(user);
         const userRef = collection(db, "users");
 
+        const { displayName, photoURL: photoUrl, tenantId, uid, email } = user;
+        const names = displayName?.split(" ") || [];
+        const fName = names[0] || "";
+        const lName = names[1].toLocaleUpperCase() || "";
+
+        const newUser = {
+          displayName,
+          photoURL: photoUrl,
+          tenantId,
+          email,
+          uid,
+        };
+
         //   // this should be the correct, once you have read access
         getDocs(query(collection(db, "users"), where("uid", "==", user?.uid)))
           .then((resp) => {
-            console.log(resp);
             if (resp.docs.length === 0) {
-              const credential = EmailAuthProvider.credential(
-                window.prompt("Your email"),
-                window.prompt("Your password")
-              );
-
-              linkWithCredential(auth.currentUser, credential).then(
-                (usercred) => {
-                  const user = usercred.user;
-                  const {
-                    displayName,
-                    photoURL: photoUrl,
-                    tenantId,
-                    uid,
-                    email,
-                  } = user;
-                  const newUser = {
-                    displayName,
-                    photoURL: photoUrl,
-                    tenantId,
-                    email,
-                    uid,
-                  };
-                  const names = displayName?.split(" ") || [];
-                  const fName = names[0] || "";
-                  const lName = names[1]?.toLocaleUpperCase() || "";
-
-                  return addDoc(userRef, {
-                    ...newUser,
-                    category: "Reader",
-                    likedItems: [],
-                    fName: fName,
-                    lName,
-                  })
-                    .then((res) => {
-                      // res is the user document id that was just created
-                      getDoc(doc(db, "users", res.id))
-                        .then(() => {
-                          setCurrentUser({ ...newUser, userDocRef: res.id });
-                        })
-                        .catch((err) => console.log("now, this errorr", err));
+              console.log("new user");
+              return addDoc(userRef, {
+                ...newUser,
+                category: "Reader",
+                likedItems: [],
+                fName,
+                lName,
+              })
+                .then((res) => {
+                  // res is the user document id that was just created
+                  getDoc(doc(db, "users", res.id))
+                    .then(() => {
+                      setCurrentUser({ ...newUser, userDocRef: res.id });
                     })
-                    .catch((err) => {
-                      console.log(err, "unsuccessfulll");
-                    });
-                }
-              );
+                    .catch((err) => console.log("now, this errorr", err));
+                })
+                .catch((err) => {
+                  console.log(err, "unsuccessfulll");
+                });
             } else {
               console.log("old user");
 
               const oldUser = resp.docs[0].data();
               const oldUserId = resp.docs[0].id;
-              const {
-                fName,
-                category,
-                lName,
-                likedItems,
-                otp,
-                displayName,
-                photoURL: photoUrl,
-                tenantId,
-                email,
-                uid,
-              } = oldUser;
+              const { fName, category, lName, likedItems, otp, photoURL } =
+                oldUser;
               console.log(otp);
-
               const oldUserObj = {
-                displayName,
-                photoURL: photoUrl,
-                tenantId,
-                email,
-                uid,
+                ...newUser,
                 category,
                 likedItems,
+                photoURL,
                 fName,
                 lName,
               };
@@ -136,11 +105,12 @@ function SignUpPortals() {
       .then((result) => {
         console.log(result);
         // const credential = GoogleAuthProvider.credentialFromResult(result);
+        console.log(credential);
         // const token = credential?.accessToken;
         // const user = result.user;
       })
       .catch((error) => {
-        console.log(error);
+        console.log(error.code);
         // const errorCode = error.code;
         // const errorMessage = error.message;
 
@@ -149,13 +119,13 @@ function SignUpPortals() {
       });
   }
 
-  function handleTwitterSDK() {
+  function handleFBSDK() {
     const provider = new TwitterAuthProvider();
     signInWithPopup(auth, provider)
       .then((result) => {
-        // const credential = TwitterAuthProvider.credentialFromResult(result);
-        // const token = credential.accessToken;
-        // const secret = credential.secret;
+        const credential = TwitterAuthProvider.credentialFromResult(result);
+        const token = credential.accessToken;
+        const secret = credential.secret;
         // IdP data available using getAdditionalUserInfo(result)
         const user = result.user;
       })
@@ -186,7 +156,7 @@ function SignUpPortals() {
       </div>
       <div
         className="linked-auth flex w-full md:w-[85%] lg:w-[50%] justify-center items-center gap-11 rounded-lg py-2 px-4 shadow-md border border-[#CED4DA] cursor-pointer"
-        onClick={handleTwitterSDK}
+        onClick={handleFBSDK}
       >
         <img src="/twitterLogo.avif" alt="twitter logo" className="w-[6%]" />
         <p>Sign in with Twitter</p>

@@ -7,7 +7,7 @@ type TimelineFSProps = {
 
 function TimelineFS({ setMakeAPostBtn }: TimelineFSProps) {
   const { currentUser } = useAuthContext();
-  console.log(currentUser, 'from her}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}')
+  console.log(currentUser, "from her}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}");
 
   return (
     <section className="timeline w-[95%] h-screen  overflow-hidden border-x border-y border-borderGrey flex justify-center  ">
@@ -17,7 +17,7 @@ function TimelineFS({ setMakeAPostBtn }: TimelineFSProps) {
             <p className="text-3xl font-medium">
               {" "}
               {currentUser
-                ? `Welcome, ${currentUser?.displayName} !`
+                ? `Welcome, ${currentUser?.displayName?.split(" ")[0]} !`
                 : "FEED"}
             </p>
             <p className="text-lg text-grey">

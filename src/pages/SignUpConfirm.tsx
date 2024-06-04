@@ -9,6 +9,7 @@ import React, {
 } from "react";
 import {
   GoogleAuthProvider,
+  TwitterAuthProvider,
   createUserWithEmailAndPassword,
   getAuth,
   linkWithPopup,
@@ -71,11 +72,21 @@ function SignUpConfirm() {
     // ebakare343@stu.ui.edu.org
 
     const googleProvider = new GoogleAuthProvider();
+    const twitterProvider = new TwitterAuthProvider();
 
+    linkWithPopup(user, twitterProvider)
+      .then((result) => {
+        const credentials = TwitterAuthProvider.credential();
+        const user = result.user;
+      })
+      .catch((error) =>
+        console.log(error, "erorrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr")
+      );
     linkWithPopup(user, googleProvider).then((result) => {
       const credentials = GoogleAuthProvider.credential();
       const user = result.user;
     });
+
     addDoc(userRef, { ...newUser })
       .then((res) => {
         navigate(`/app/feed/:${newUser.uid}`);
