@@ -4,6 +4,7 @@ import {
   TwitterAuthProvider,
   onAuthStateChanged,
   getAuth,
+  linkWithPopup,
 } from "firebase/auth";
 
 import { auth, db } from "../firebase/config";
@@ -105,12 +106,31 @@ function SignUpPortals() {
       .then((result) => {
         console.log(result);
         // const credential = GoogleAuthProvider.credentialFromResult(result);
-        console.log(credential);
+        // console.log(credential);
         // const token = credential?.accessToken;
-        // const user = result.user;
+        const user = result.user;
+        return user;
+      })
+      .then((user) => {
+        if (
+          user.providerData[0].providerId == "twitter.com" ||
+          user.providerData[2].providerId == "twitter.com" ||
+          user.providerData[1].providerId == "twitter.com"
+        )
+          return;
+        // Prompt to link with Twitter
+        const twitterProvider = new TwitterAuthProvider();
+        linkWithPopup(user, twitterProvider)
+          .then((result) => {
+            console.log(user);
+            const credential = TwitterAuthProvider.credentialFromResult(result);
+            const linkedUser = result.user;
+            console.log("Account linked with Twitter!");
+          })
+          .catch((error) => console.log(error));
       })
       .catch((error) => {
-        console.log(error.code);
+        console.log(error);
         // const errorCode = error.code;
         // const errorMessage = error.message;
 
@@ -119,7 +139,7 @@ function SignUpPortals() {
       });
   }
 
-  function handleFBSDK() {
+  function handleTwitter() {
     const provider = new TwitterAuthProvider();
     signInWithPopup(auth, provider)
       .then((result) => {
@@ -128,6 +148,23 @@ function SignUpPortals() {
         const secret = credential.secret;
         // IdP data available using getAdditionalUserInfo(result)
         const user = result.user;
+        console.log(user);
+        return user;
+      })
+      .then((user) => {
+        // Prompt to link with Twitter
+        if (user.emailVerified) return;
+        const googleProvider = new GoogleAuthProvider();
+        linkWithPopup(user, googleProvider)
+          .then((result) => {
+            console.log(user);
+            const credential = GoogleAuthProvider.credentialFromResult(result);
+            const linkedUser = result.user;
+            console.log("Account linked with Google!!!!!!!");
+            console.log(linkedUser);
+            return linkedUser;
+          })
+          .catch((error) => console.log(error));
       })
       .catch((error) => {
         // Handle Errors here.
@@ -156,7 +193,7 @@ function SignUpPortals() {
       </div>
       <div
         className="linked-auth flex w-full md:w-[85%] lg:w-[50%] justify-center items-center gap-11 rounded-lg py-2 px-4 shadow-md border border-[#CED4DA] cursor-pointer"
-        onClick={handleFBSDK}
+        onClick={handleTwitter}
       >
         <img src="/twitterLogo.avif" alt="twitter logo" className="w-[6%]" />
         <p>Sign in with Twitter</p>
