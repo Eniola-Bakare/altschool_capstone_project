@@ -28,7 +28,6 @@ function SignUpPortals() {
       if (!user) return;
 
       if (user) {
-        console.log(user);
         const { displayName, photoURL: photoUrl, tenantId, uid, email } = user;
         const names = displayName?.split(" ") || [];
         const fName = names[0] || "";
@@ -37,93 +36,48 @@ function SignUpPortals() {
         const newUser = {
           displayName,
           photoURL: photoUrl,
-          likedItems: [],
           tenantId,
           fName,
           lName,
           email,
-          category: "Reader",
           uid,
         };
-        setCurrentUser({ ...newUser, userDocRef: user?.id });
-        navigate(`/app/feed/:${user.uid}`);
 
-        // to add a firestore data for the user(i'll have to make it dependent on no one existing before)
+        // // to add a firestore data for the user(i'll have to make it dependent on no one existing before)
         const userRef = collection(db, "users");
-        addDoc(userRef, { ...newUser })
-          .then((res) => {
-            console.log(res, "user created successfully");
-            console.log(res.id);
-            getDoc(doc(db, "users", res.id))
-              .then((resp) => {
-                console.log("in this block now", resp);
-                setCurrentUser({ ...newUser, userDocRef: res.id });
+
+        //   // this should be the correct, once you have read access
+        getDocs(query(collection(db, "users"), where("uid", "==", user?.uid)))
+          .then((resp) => {
+            if (resp.docs.length === 0) {
+              return addDoc(userRef, {
+                ...newUser,
+                category: "Reader",
+                likedItems: [],
               })
-              .catch((err) => console.log("now, this errorr", err));
+                .then((res) => {
+                  // res is the user document id that was just created
+                  getDoc(doc(db, "users", res.id))
+                    .then(() => {
+                      setCurrentUser({ ...newUser, userDocRef: res.id });
+                    })
+                    .catch((err) => console.log("now, this errorr", err));
+                })
+                .catch((err) => {
+                  console.log(err, "unsuccessfulll");
+                });
+            } else {
+              const oldUser = resp.docs[0].data();
+              const oldUserId = resp.docs[0].id;
+              const likedItems = oldUser?.likedItems;
+              const category = oldUser?.category;
+              const oldUserObj = { ...newUser, category, likedItems };
+              setCurrentUser({ ...oldUserObj, userDocRef: oldUserId });
+            }
           })
-          .catch((err) => {
-            console.log(err, "unsuccessfulll");
-          });
-        return newUser;
-
-      //   // this should be the correct, once you have read access
-      //   // getDocs(query(collection(db, "users"), where("uid", "==", user?.uid)))
-      //   //   .then((resp) =>
-      //   //     resp.forEach((currentUser) => {
-      //   //       console.log(resp.docs.length);
-      //   //       console.log(user);
-      //   //       console.log("current user");
-
-      //   //       const likedItems = currentUser.data()?.likedItems;
-      //   //       const {
-      //   //         displayName,
-      //   //         photoURL: photoUrl,
-      //   //         tenantId,
-      //   //         uid,
-      //   //         email,
-      //   //       } = user;
-      //   //       const names = displayName?.split(" ") || [];
-      //   //       const fName = names[0] || "";
-      //   //       const lName = names[1].toLocaleUpperCase() || "";
-
-      //   //       const newUser = {
-      //   //         displayName,
-      //   //         photoURL: currentUser.data().photoURL || photoUrl,
-      //   //         likedItems: likedItems,
-      //   //         tenantId,
-      //   //         fName,
-      //   //         lName,
-      //   //         email,
-      //   //         category: "Reader",
-      //   //         uid,
-      //   //       };
-      //   //       console.log(currentUser.data());
-      //   //       console.log(likedItems);
-
-      //   //       if (resp.docs.length > 0) {
-      //   //         return addDoc(userRef, { ...newUser })
-      //   //           .then((res) => {
-      //   //             console.log(res, "user created successfully");
-      //   //             console.log(res.id);
-      //   //             getDoc(doc(db, "users", res.id))
-      //   //               .then((resp) => {
-      //   //                 console.log("in this block now", resp);
-      //   //                 setCurrentUser({ ...newUser, userDocRef: res.id });
-      //   //               })
-      //   //               .catch((err) => console.log("now, this errorr", err));
-      //   //           })
-      //   //           .catch((err) => {
-      //   //             console.log(err, "unsuccessfulll");
-      //   //           });
-      //   //       } else {
-      //   //         setCurrentUser({ ...newUser, userDocRef: currentUser.id });
-      //   //       }
-
-      //   //       return navigate(`/app/feed/:${user?.uid}`);
-      //   //     })
-      //   //   )
-      //   //   .catch((err) => console.log(err));
+          .catch((err) => console.log(err));
       }
+      navigate(`/app/feed/:${user?.uid}`);
     });
     return () => {
       listen();
@@ -132,18 +86,14 @@ function SignUpPortals() {
 
   function handleGoogleSDK() {
     const provider = new GoogleAuthProvider();
-    console.log("im up and running");
     signInWithPopup(auth, provider)
       .then((result) => {
-        console.log("entered here");
-        console.log(result.user);
-        const credential = GoogleAuthProvider.credentialFromResult(result);
-        const token = credential?.accessToken;
-        const user = result.user;
+        // const credential = GoogleAuthProvider.credentialFromResult(result);
+        // const token = credential?.accessToken;
+        // const user = result.user;
       })
       .catch((error) => {
         console.log(error.code);
-        console.log("or heree");
         // const errorCode = error.code;
         // const errorMessage = error.message;
 
@@ -156,8 +106,6 @@ function SignUpPortals() {
     const provider = new TwitterAuthProvider();
     signInWithPopup(auth, provider)
       .then((result) => {
-        console.log(" heree");
-
         const credential = TwitterAuthProvider.credentialFromResult(result);
         const token = credential.accessToken;
         const secret = credential.secret;
@@ -166,7 +114,6 @@ function SignUpPortals() {
       })
       .catch((error) => {
         // Handle Errors here.
-        console.log("or heree");
         console.log(error);
 
         const errorCode = error.code;
