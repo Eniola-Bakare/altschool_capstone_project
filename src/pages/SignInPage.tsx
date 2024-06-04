@@ -4,7 +4,11 @@ import Button from "../components/Button";
 import LoginSignUpTab from "../components/LoginSignUpTab";
 import { useAuthContext } from "../components/contexts/AuthContext";
 import { auth, db } from "../firebase/config";
-import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
+import {
+  onAuthStateChanged,
+  sendPasswordResetEmail,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import SignUpPortals from "../components/SignUpPortals";
 import { collection, getDocs, query, where } from "firebase/firestore";
@@ -78,8 +82,21 @@ function SignInPage() {
             navigate("/signup");
           }, 2000);
         } else if (error.code === "auth/wrong-password") {
-          setErrorMessageSignIn("Invalid credentials/signin method");
+          setErrorMessageSignIn("Invalid credentials");
         }
+      });
+  };
+
+  const handleForgotPassword = () => {
+    sendPasswordResetEmail(auth, email)
+      .then(() => {
+        // toast to notify should be here
+        console.log("Password email sent!");
+      })
+      .catch((error) => {
+        // toast errror here
+        console.log(error.message);
+        console.log(error.code);
       });
   };
   return (
@@ -135,8 +152,11 @@ function SignInPage() {
 
           <Button type="primary" name="Log in" width="w-full" />
           {errorMessageSignIn.trim() && (
-            <h1 className="text-xl font-bold text-center text-danger ">
-              {errorMessageSignIn}
+            <h1 className="flex justify-between text-md font-semibold text-center text-danger ">
+              {errorMessageSignIn}{" "}
+              <span className=" text-slate-500 cursor-pointer" onClick={handleForgotPassword}>
+                Forgot password?
+              </span>
             </h1>
           )}
         </form>
