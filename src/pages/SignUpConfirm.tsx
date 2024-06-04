@@ -7,7 +7,12 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  GoogleAuthProvider,
+  createUserWithEmailAndPassword,
+  getAuth,
+  linkWithPopup,
+} from "firebase/auth";
 import { useAuthContext } from "../components/contexts/AuthContext";
 import { auth, db, storageRef } from "../firebase/config";
 import { addDoc, collection, doc, getDoc } from "firebase/firestore";
@@ -64,6 +69,13 @@ function SignUpConfirm() {
     };
     // eebakare@gmail.com
     // ebakare343@stu.ui.edu.org
+
+    const googleProvider = new GoogleAuthProvider();
+
+    linkWithPopup(user, googleProvider).then((result) => {
+      const credentials = GoogleAuthProvider.credential();
+      const user = result.user;
+    });
     addDoc(userRef, { ...newUser })
       .then((res) => {
         navigate(`/app/feed/:${newUser.uid}`);
@@ -77,6 +89,7 @@ function SignUpConfirm() {
       .catch((err) => {
         console.log(err, "unsuccessfulll");
       });
+
     return newUser;
   }
   useEffect(() => {
@@ -93,6 +106,8 @@ function SignUpConfirm() {
           // setAuthUser(userCredentials.user);
           // navigate(`/app/feed/:${userCredentials.user.uid}`);
           newUserFunc(userCredentials.user);
+
+          // to link to google auth
         })
         .catch((error) => {
           if (error.code === "auth/email-already-in-use") {

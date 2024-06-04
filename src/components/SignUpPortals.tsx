@@ -136,7 +136,6 @@ function SignUpPortals() {
       .then((result) => {
         console.log(result);
         // const credential = GoogleAuthProvider.credentialFromResult(result);
-        console.log(credential);
         // const token = credential?.accessToken;
         // const user = result.user;
       })
