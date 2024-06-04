@@ -86,8 +86,6 @@ function SignUpPage() {
           }
         })
         .catch((error) => console.log(error));
-
-      console.log("entered herre");
     } else {
       console.log("well");
       setconfirmPasswordError("Passwords do not match");

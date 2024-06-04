@@ -71,14 +71,14 @@ function SignInPage() {
         setErrorMessageSignIn("");
       })
       .catch((error) => {
-        console.log(error.code);
+        console.log(error.message);
         if (error.code === "auth/user-not-found") {
           setErrorMessageSignIn("User not found");
           setTimeout(() => {
             navigate("/signup");
           }, 2000);
         } else if (error.code === "auth/wrong-password") {
-          setErrorMessageSignIn("Wrong email/password");
+          setErrorMessageSignIn("Invalid credentials/signin method");
         }
       });
   };

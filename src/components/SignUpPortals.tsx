@@ -3,6 +3,9 @@ import {
   GoogleAuthProvider,
   TwitterAuthProvider,
   onAuthStateChanged,
+  getAuth,
+  EmailAuthProvider,
+  linkWithCredential,
 } from "firebase/auth";
 
 import { auth, db } from "../firebase/config";
@@ -28,55 +31,96 @@ function SignUpPortals() {
       if (!user) return;
 
       if (user) {
-        const { displayName, photoURL: photoUrl, tenantId, uid, email } = user;
-        const names = displayName?.split(" ") || [];
-        const fName = names[0] || "";
-        const lName = names[1].toLocaleUpperCase() || "";
-
-        const newUser = {
-          displayName,
-          photoURL: photoUrl,
-          tenantId,
-          fName,
-          lName,
-          email,
-          uid,
-        };
-
-        // // to add a firestore data for the user(i'll have to make it dependent on no one existing before)
+        console.log(user);
         const userRef = collection(db, "users");
 
         //   // this should be the correct, once you have read access
         getDocs(query(collection(db, "users"), where("uid", "==", user?.uid)))
           .then((resp) => {
+            console.log(resp);
             if (resp.docs.length === 0) {
-              return addDoc(userRef, {
-                ...newUser,
-                category: "Reader",
-                likedItems: [],
-              })
-                .then((res) => {
-                  // res is the user document id that was just created
-                  getDoc(doc(db, "users", res.id))
-                    .then(() => {
-                      setCurrentUser({ ...newUser, userDocRef: res.id });
+              const credential = EmailAuthProvider.credential(
+                window.prompt("Your email"),
+                window.prompt("Your password")
+              );
+
+              linkWithCredential(auth.currentUser, credential).then(
+                (usercred) => {
+                  const user = usercred.user;
+                  const {
+                    displayName,
+                    photoURL: photoUrl,
+                    tenantId,
+                    uid,
+                    email,
+                  } = user;
+                  const newUser = {
+                    displayName,
+                    photoURL: photoUrl,
+                    tenantId,
+                    email,
+                    uid,
+                  };
+                  const names = displayName?.split(" ") || [];
+                  const fName = names[0] || "";
+                  const lName = names[1].toLocaleUpperCase() || "";
+
+                  return addDoc(userRef, {
+                    ...newUser,
+                    category: "Reader",
+                    likedItems: [],
+                    fName,
+                    lName,
+                  })
+                    .then((res) => {
+                      // res is the user document id that was just created
+                      getDoc(doc(db, "users", res.id))
+                        .then(() => {
+                          setCurrentUser({ ...newUser, userDocRef: res.id });
+                        })
+                        .catch((err) => console.log("now, this errorr", err));
                     })
-                    .catch((err) => console.log("now, this errorr", err));
-                })
-                .catch((err) => {
-                  console.log(err, "unsuccessfulll");
-                });
+                    .catch((err) => {
+                      console.log(err, "unsuccessfulll");
+                    });
+                }
+              );
             } else {
+              console.log("old user");
+
               const oldUser = resp.docs[0].data();
               const oldUserId = resp.docs[0].id;
-              const likedItems = oldUser?.likedItems;
-              const category = oldUser?.category;
-              const oldUserObj = { ...newUser, category, likedItems };
+              const {
+                fName,
+                category,
+                lName,
+                likedItems,
+                otp,
+                displayName,
+                photoURL: photoUrl,
+                tenantId,
+                email,
+                uid,
+              } = oldUser;
+              console.log(otp);
+
+              const oldUserObj = {
+                displayName,
+                photoURL: photoUrl,
+                tenantId,
+                email,
+                uid,
+                category,
+                likedItems,
+                fName,
+                lName,
+              };
               setCurrentUser({ ...oldUserObj, userDocRef: oldUserId });
             }
           })
           .catch((err) => console.log(err));
       }
+
       navigate(`/app/feed/:${user?.uid}`);
     });
     return () => {
@@ -86,14 +130,18 @@ function SignUpPortals() {
 
   function handleGoogleSDK() {
     const provider = new GoogleAuthProvider();
+    const auth = getAuth();
+
     signInWithPopup(auth, provider)
       .then((result) => {
+        console.log(result);
         // const credential = GoogleAuthProvider.credentialFromResult(result);
+        console.log(credential);
         // const token = credential?.accessToken;
         // const user = result.user;
       })
       .catch((error) => {
-        console.log(error.code);
+        console.log(error);
         // const errorCode = error.code;
         // const errorMessage = error.message;
 

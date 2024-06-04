@@ -51,7 +51,7 @@ function SignUpConfirm() {
     // then adds new user to firestore db - collection (users)
     const { displayName, tenantId, uid } = user;
     const newUser = {
-      displayName,
+      displayName: fName + " " + lName,
       photoURL: profileURL,
       tenantId,
       fName,
@@ -66,8 +66,6 @@ function SignUpConfirm() {
     // ebakare343@stu.ui.edu.org
     addDoc(userRef, { ...newUser })
       .then((res) => {
-        console.log(res, "user created successfully");
-        console.log(res.id);
         navigate(`/app/feed/:${newUser.uid}`);
         getDoc(doc(db, "users", res.id))
           .then((resp) => {
