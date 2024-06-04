@@ -63,13 +63,13 @@ function SignUpPortals() {
                   };
                   const names = displayName?.split(" ") || [];
                   const fName = names[0] || "";
-                  const lName = names[1].toLocaleUpperCase() || "";
+                  const lName = names[1]?.toLocaleUpperCase() || "";
 
                   return addDoc(userRef, {
                     ...newUser,
                     category: "Reader",
                     likedItems: [],
-                    fName,
+                    fName: fName,
                     lName,
                   })
                     .then((res) => {
@@ -149,13 +149,13 @@ function SignUpPortals() {
       });
   }
 
-  function handleFBSDK() {
+  function handleTwitterSDK() {
     const provider = new TwitterAuthProvider();
     signInWithPopup(auth, provider)
       .then((result) => {
-        const credential = TwitterAuthProvider.credentialFromResult(result);
-        const token = credential.accessToken;
-        const secret = credential.secret;
+        // const credential = TwitterAuthProvider.credentialFromResult(result);
+        // const token = credential.accessToken;
+        // const secret = credential.secret;
         // IdP data available using getAdditionalUserInfo(result)
         const user = result.user;
       })
@@ -186,7 +186,7 @@ function SignUpPortals() {
       </div>
       <div
         className="linked-auth flex w-full md:w-[85%] lg:w-[50%] justify-center items-center gap-11 rounded-lg py-2 px-4 shadow-md border border-[#CED4DA] cursor-pointer"
-        onClick={handleFBSDK}
+        onClick={handleTwitterSDK}
       >
         <img src="/twitterLogo.avif" alt="twitter logo" className="w-[6%]" />
         <p>Sign in with Twitter</p>

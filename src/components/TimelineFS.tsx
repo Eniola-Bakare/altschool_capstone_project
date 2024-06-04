@@ -16,7 +16,9 @@ function TimelineFS({ setMakeAPostBtn }: TimelineFSProps) {
           <div className="flex flex-col gap-2">
             <p className="text-3xl font-medium">
               {" "}
-              {currentUser ? `Welcome, ${currentUser?.fName} !` : "FEED"}
+              {currentUser
+                ? `Welcome, ${currentUser?.displayName} !`
+                : "FEED"}
             </p>
             <p className="text-lg text-grey">
               Explore different content you love
