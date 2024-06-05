@@ -3,18 +3,24 @@ import { auth } from "../firebase/config";
 import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "./contexts/AuthContext";
+import { useLocalStorage } from "./actions/LocalStorage";
 
 function SidebarFS() {
   const { setSignedIn } = useAuthContext();
   const navigate = useNavigate();
+  const { removeUserLocalStorage } = useLocalStorage("currentUser");
+
   function handleLogOut() {
     signOut(auth)
       .then(() => {
         setSignedIn(false);
+        console.log("removing stored user");
+        removeUserLocalStorage();
         navigate("/signin");
       })
       .catch((error) => console.log("an error occured", error));
   }
+
   return (
     <aside className="w-[24%] h-screen flex flex-col justify-evenly items-center border-r border-borderGrey">
       <LogoText />
@@ -155,7 +161,10 @@ function SidebarFS() {
             </svg>
             Notification
           </li>
-          <li className="text-lg text-danger cursor-pointer" onClick={handleLogOut}>
+          <li
+            className="text-lg text-danger cursor-pointer"
+            onClick={handleLogOut}
+          >
             Log out
           </li>
         </ul>

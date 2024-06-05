@@ -12,6 +12,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import SignUpPortals from "../components/SignUpPortals";
 import { collection, getDocs, query, where } from "firebase/firestore";
+import { useLocalStorage } from "../components/actions/LocalStorage";
 
 function SignInPage() {
   const navigate = useNavigate();
@@ -29,6 +30,8 @@ function SignInPage() {
     setErrorMessageSignIn,
     currentUser,
   } = useAuthContext();
+
+  const { setUserLocalStorage } = useLocalStorage("currentUser");
 
   useEffect(() => {
     const listen = onAuthStateChanged(auth, (user) => {
@@ -54,10 +57,10 @@ function SignInPage() {
                 uid,
               };
               setCurrentUser({ ...newUser, userDocRef: currentUser.id });
+              setUserLocalStorage({ ...newUser, userDocRef: currentUser.id });
             })
           )
           .catch((err) => console.log(err));
-
         navigate(`/app/feed/:${user.uid}`);
       }
     });
@@ -154,7 +157,10 @@ function SignInPage() {
           {errorMessageSignIn.trim() && (
             <h1 className="flex justify-between text-md font-semibold text-center text-danger ">
               {errorMessageSignIn}{" "}
-              <span className=" text-slate-500 cursor-pointer" onClick={handleForgotPassword}>
+              <span
+                className=" text-slate-500 cursor-pointer"
+                onClick={handleForgotPassword}
+              >
                 Forgot password?
               </span>
             </h1>

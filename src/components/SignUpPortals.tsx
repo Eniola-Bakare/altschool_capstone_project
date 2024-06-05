@@ -20,17 +20,19 @@ import {
   where,
 } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
+import { useLocalStorage } from "./actions/LocalStorage";
 
 function SignUpPortals() {
   const navigate = useNavigate();
   const { currentUser, setCurrentUser } = useAuthContext();
+  const { setUserLocalStorage } = useLocalStorage("currentUser");
 
   useEffect(() => {
     const listen = onAuthStateChanged(auth, (user) => {
       if (!user) return;
 
       if (user) {
-        console.log(user);
+        // console.log(user);
         const userRef = collection(db, "users");
 
         const { displayName, photoURL: photoUrl, tenantId, uid, email } = user;
@@ -50,7 +52,6 @@ function SignUpPortals() {
         getDocs(query(collection(db, "users"), where("uid", "==", user?.uid)))
           .then((resp) => {
             if (resp.docs.length === 0) {
-              console.log("new user");
               return addDoc(userRef, {
                 ...newUser,
                 category: "Reader",
@@ -62,7 +63,12 @@ function SignUpPortals() {
                   // res is the user document id that was just created
                   getDoc(doc(db, "users", res.id))
                     .then(() => {
-                      setCurrentUser({ ...newUser, userDocRef: res.id });
+                      const currentUser = {
+                        ...newUser,
+                        userDocRef: res.id,
+                      };
+                      setCurrentUser({ ...currentUser });
+                      setUserLocalStorage(currentUser);
                     })
                     .catch((err) => console.log("now, this errorr", err));
                 })
@@ -70,13 +76,9 @@ function SignUpPortals() {
                   console.log(err, "unsuccessfulll");
                 });
             } else {
-              console.log("old user");
-
               const oldUser = resp.docs[0].data();
               const oldUserId = resp.docs[0].id;
-              const { fName, category, lName, likedItems, otp, photoURL } =
-                oldUser;
-              console.log(otp);
+              const { fName, category, lName, likedItems, photoURL } = oldUser;
               const oldUserObj = {
                 ...newUser,
                 category,
@@ -85,12 +87,13 @@ function SignUpPortals() {
                 fName,
                 lName,
               };
-              setCurrentUser({ ...oldUserObj, userDocRef: oldUserId });
+              const currentUser = { ...oldUserObj, userDocRef: oldUserId };
+              setCurrentUser({ ...currentUser });
+              setUserLocalStorage(currentUser);
             }
           })
           .catch((err) => console.log(err));
       }
-
       navigate(`/app/feed/:${user?.uid}`);
     });
     return () => {
@@ -104,7 +107,7 @@ function SignUpPortals() {
 
     signInWithPopup(auth, provider)
       .then((result) => {
-        console.log(result);
+        // console.log(result);
         // const credential = GoogleAuthProvider.credentialFromResult(result);
         // console.log(credential);
         // const token = credential?.accessToken;
@@ -122,10 +125,10 @@ function SignUpPortals() {
         const twitterProvider = new TwitterAuthProvider();
         linkWithPopup(user, twitterProvider)
           .then((result) => {
-            console.log(user);
+            // console.log(user);
             const credential = TwitterAuthProvider.credentialFromResult(result);
             const linkedUser = result.user;
-            console.log("Account linked with Twitter!");
+            // console.log("Account linked with Twitter!");
           })
           .catch((error) => console.log(error));
       })
@@ -148,7 +151,7 @@ function SignUpPortals() {
         const secret = credential.secret;
         // IdP data available using getAdditionalUserInfo(result)
         const user = result.user;
-        console.log(user);
+        // console.log(user);
         return user;
       })
       .then((user) => {
@@ -157,10 +160,10 @@ function SignUpPortals() {
         const googleProvider = new GoogleAuthProvider();
         linkWithPopup(user, googleProvider)
           .then((result) => {
-            console.log(user);
+            // console.log(user);
             const credential = GoogleAuthProvider.credentialFromResult(result);
             const linkedUser = result.user;
-            console.log("Account linked with Google!!!!!!!");
+            // console.log("Account linked with Google!!!!!!!");
             console.log(linkedUser);
             return linkedUser;
           })
@@ -177,8 +180,6 @@ function SignUpPortals() {
         const email = error.customData.email;
         // The AuthCredential type that was used.
         const credential = TwitterAuthProvider.credentialFromError(error);
-
-        // ...
       });
   }
 

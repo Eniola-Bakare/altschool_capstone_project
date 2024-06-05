@@ -1,4 +1,4 @@
-import { User } from "firebase/auth";
+import { User, onAuthStateChanged } from "firebase/auth";
 import {
   Dispatch,
   ReactNode,
@@ -8,6 +8,8 @@ import {
   useEffect,
   useState,
 } from "react";
+import { auth } from "../../firebase/config";
+import { useLocalStorage } from "../actions/LocalStorage";
 
 type AuthContextTYPE = {
   email: string;
@@ -56,6 +58,9 @@ export default function AuthContextProvider({
 }: {
   children: ReactNode;
 }) {
+  const { getUserLocalStorage } =
+    useLocalStorage("currentUser");
+
   const [email, setEmail] = useState("eebakare@gmail.com");
   const [password, setPassword] = useState("123Ab!");
   const [fName, setFName] = useState("eniola");
@@ -72,6 +77,10 @@ export default function AuthContextProvider({
 
   const [currentUser, setCurrentUser] = useState<object | null>(null);
   const [likedLocalItems, setLikedLocalItems] = useState<likedLocalItems[]>([]);
+
+  useEffect(() => {
+    setCurrentUser(getUserLocalStorage());
+  }, []);
 
   useEffect(() => {
     setLikedLocalItems(currentUser?.likedItems);
