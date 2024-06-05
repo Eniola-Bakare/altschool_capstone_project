@@ -17,7 +17,7 @@ function TimelineFS({ setMakeAPostBtn }: TimelineFSProps) {
             <p className="text-3xl font-medium">
               {" "}
               {currentUser
-                ? `Welcome, ${currentUser?.displayName?.split(" ")[0]} !`
+                ? `Welcome, ${currentUser?.displayName?.split(" ")[0] || currentUser?.fName} !`
                 : "FEED"}
             </p>
             <p className="text-lg text-grey">

@@ -36,7 +36,7 @@ function SignUpPortals() {
         const { displayName, photoURL: photoUrl, tenantId, uid, email } = user;
         const names = displayName?.split(" ") || [];
         const fName = names[0] || "";
-        const lName = names[1].toLocaleUpperCase() || "";
+        const lName = names[1]?.toLowerCase() || "";
 
         const newUser = {
           displayName,
@@ -113,9 +113,9 @@ function SignUpPortals() {
       })
       .then((user) => {
         if (
-          user.providerData[0].providerId == "twitter.com" ||
-          user.providerData[2].providerId == "twitter.com" ||
-          user.providerData[1].providerId == "twitter.com"
+          user.providerData[0]?.providerId == "twitter.com" ||
+          user.providerData[2]?.providerId == "twitter.com" ||
+          user.providerData[1]?.providerId == "twitter.com"
         )
           return;
         // Prompt to link with Twitter
