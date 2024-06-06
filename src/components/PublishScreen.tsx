@@ -12,7 +12,7 @@ type PublishProps = {
 };
 
 function PublishScreen({ closePublish }: PublishProps) {
-  const { currentUser } = useAuthContext();
+  const { currentUser, setNewPost } = useAuthContext();
   const [screenTwo, setScreenTwo] = useState(false);
   const [screenOne, setScreenOne] = useState(true);
   const [screenThree, setScreenThree] = useState(false);
@@ -58,6 +58,7 @@ function PublishScreen({ closePublish }: PublishProps) {
           });
         })
         .then((docRef) => {
+          setNewPost(true);
           closePublish();
         })
         .catch((err) => console.log("error adding doc", err));

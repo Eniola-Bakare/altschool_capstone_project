@@ -7,7 +7,6 @@ type TimelineFSProps = {
 
 function TimelineFS({ setMakeAPostBtn }: TimelineFSProps) {
   const { currentUser } = useAuthContext();
-  console.log(currentUser, "from her}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}");
 
   return (
     <section className="timeline w-[95%] h-screen  overflow-hidden border-x border-y border-borderGrey flex justify-center  ">

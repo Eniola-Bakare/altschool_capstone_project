@@ -26,6 +26,8 @@ type AuthContextTYPE = {
   setLName: (lName: string) => void;
   signedIn: boolean;
   setSignedIn: (signedIn: boolean) => void;
+  newPost: boolean;
+  setNewPost: (signedIn: boolean) => void;
   authUser: null | object;
   setAuthUser: Dispatch<SetStateAction<User | null>>;
   errorMessageSignIn: string;
@@ -44,11 +46,17 @@ type AuthContextTYPE = {
   published: boolean;
   setPublished: Dispatch<SetStateAction<boolean>>;
   upDatePosts: () => void;
+  allPosts: UserAndPost[];
+  setAllPosts: Dispatch<SetStateAction<UserAndPost[]>>;
 };
 
 type likedLocalItems = {
   userDocRef: any;
   postDocRef: any;
+};
+type UserAndPost = {
+  postData: { postDocRef: string };
+  userData: { userDocRef: string };
 };
 
 const AuthContext = createContext<AuthContextTYPE | undefined>(undefined);
@@ -58,8 +66,7 @@ export default function AuthContextProvider({
 }: {
   children: ReactNode;
 }) {
-  const { getUserLocalStorage } =
-    useLocalStorage("currentUser");
+  const { getUserLocalStorage } = useLocalStorage("currentUser");
 
   const [email, setEmail] = useState("eebakare@gmail.com");
   const [password, setPassword] = useState("123Ab!");
@@ -68,8 +75,10 @@ export default function AuthContextProvider({
   const [category, setCategory] = useState("Reader");
   const [confirmPassword, setConfirmPassword] = useState("123Ab!");
   const [signedIn, setSignedIn] = useState(false);
+  const [newPost, setNewPost] = useState(false);
   const [authUser, setAuthUser] = useState<User | null>(null);
   const [published, setPublished] = useState<boolean>(false);
+  const [allPosts, setAllPosts] = useState<UserAndPost[]>([]);
 
   const upDatePosts = () => {
     setPublished(true);
@@ -100,6 +109,7 @@ export default function AuthContextProvider({
     setOTP(newOTP);
   }
 
+  console.log(allPosts);
   return (
     <AuthContext.Provider
       value={{
@@ -117,6 +127,8 @@ export default function AuthContextProvider({
         setConfirmPassword,
         signedIn,
         setSignedIn,
+        newPost,
+        setNewPost,
         authUser,
         setAuthUser,
         errorMessageSignIn,
@@ -135,6 +147,8 @@ export default function AuthContextProvider({
         published,
         setPublished,
         upDatePosts,
+        allPosts,
+        setAllPosts,
         // likedItems,
         // setLikedItems,
         // liked,

@@ -124,8 +124,8 @@ function EachPost({ post }: EachPostProps) {
     }
   }
 
-  console.log(likedLocalItems);
-  console.log(currentUser);
+  // console.log(likedLocalItems);
+  // console.log(currentUser);
 
   return (
     <section

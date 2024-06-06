@@ -14,7 +14,6 @@ function SidebarFS() {
     signOut(auth)
       .then(() => {
         setSignedIn(false);
-        console.log("removing stored user");
         removeUserLocalStorage();
         navigate("/signin");
       })

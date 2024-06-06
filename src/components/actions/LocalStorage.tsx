@@ -1,7 +1,7 @@
 export const useLocalStorage = (key: string) => {
   const setUserLocalStorage = (value: unknown) => {
     try {
-      window.localStorage.setItem(key, JSON.stringify(value));
+      window.sessionStorage.setItem(key, JSON.stringify(value));
     } catch (error) {
       console.log(error);
     }
@@ -9,7 +9,7 @@ export const useLocalStorage = (key: string) => {
 
   const getUserLocalStorage = () => {
     try {
-      const user = window.localStorage.getItem(key);
+      const user = window.sessionStorage.getItem(key);
       return user ? JSON.parse(user) : undefined;
     } catch (error) {
       console.log(error);
@@ -18,7 +18,7 @@ export const useLocalStorage = (key: string) => {
 
   const removeUserLocalStorage = () => {
     try {
-      window.localStorage.removeItem(key);
+      window.sessionStorage.removeItem(key);
     } catch (error) {
       console.log(error);
     }
