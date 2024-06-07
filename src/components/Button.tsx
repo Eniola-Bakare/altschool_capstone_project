@@ -5,16 +5,28 @@ type ButtonProps = {
   onClick?: () => void;
   type: "primary" | "secondary";
   width?: string;
+  disabled: boolean;
 };
-function Button({ name, onClick, type, width }: ButtonProps): ReactElement {
+function Button({
+  name,
+  onClick,
+  type,
+  width,
+  disabled,
+}: ButtonProps): ReactElement {
   if (type === "primary")
     return (
       <button
+        disabled={disabled}
         onClick={onClick}
         className={
           width
-            ? `${width} h-[56px] py-2 px-4 bg-blue border-2 border-blue text-white rounded-lg font-bold`
-            : "w-[157px] py-2 px-4 bg-blue border-2 border-blue text-white rounded-lg font-bold"
+            ? `${width} ${
+                disabled ? "cursor-pointer" : "cursor-not-allowed"
+              } h-[56px] py-2 px-4 bg-blue border-2 border-blue text-white rounded-lg font-bold`
+            : `${
+                disabled ? "cursor-pointer" : "cursor-not-allowed"
+              } w-[157px] py-2 px-4 bg-blue border-2 border-blue text-white rounded-lg font-bold`
         }
       >
         {name}

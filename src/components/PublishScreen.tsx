@@ -2,7 +2,13 @@ import { useRef, useState } from "react";
 import Button from "./Button";
 import { useAuthContext } from "./contexts/AuthContext";
 import { db, storageRef } from "../firebase/config";
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  doc,
+  serverTimestamp,
+  updateDoc,
+} from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 type PublishProps = {
@@ -15,6 +21,7 @@ function PublishScreen({ closePublish }: PublishProps) {
   const { currentUser, setNewPost } = useAuthContext();
   const [screenTwo, setScreenTwo] = useState(false);
   const [screenOne, setScreenOne] = useState(true);
+  const [post, setPost] = useState(false);
   const [screenThree, setScreenThree] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const fileInputRefImg = useRef<HTMLInputElement>(null);
@@ -26,12 +33,21 @@ function PublishScreen({ closePublish }: PublishProps) {
 
   const handleNewPost = () => {
     console.log(currentUser);
-    console.log(attachment);
-    if (postText.trim() && attachment && currentUser) {
+    if (!postText.trim() || !attachment || !currentUser) {
+      return setPost(false);
+    } else if (postText.trim() && attachment && currentUser) {
+      
       const userID = currentUser?.userDocRef;
       const userRef = collection(db, "users", userID, "posts");
-      console.log(attachment);
-      const newPost = { attachment, postText, likes: 0, bookmark: false };
+      const postDB = collection(db, "posts");
+
+      const newPost = {
+        attachment,
+        postText,
+        likes: 0,
+        bookmark: false,
+        userID,
+      };
       console.log(attachment);
 
       // for attachment uploads first, then we can attach the file's url to the newPost details
@@ -51,15 +67,33 @@ function PublishScreen({ closePublish }: PublishProps) {
           return getDownloadURL(usersPostImages);
         })
         .then((downloadURL) => {
-          return addDoc(userRef, {
+          console.log({
+            ...newPost,
+            attachment: downloadURL,
+            datePublished: serverTimestamp(),
+          });
+
+          // return addDoc(userRef, {
+          //   ...newPost,
+          //   attachment: downloadURL,
+          //   datePublished: serverTimestamp(),
+          // });
+          return addDoc(postDB, {
             ...newPost,
             attachment: downloadURL,
             datePublished: serverTimestamp(),
           });
         })
         .then((docRef) => {
+          const postRef = doc(db, "posts", docRef.id);
+          const updates = { postID: docRef.id };
+
+          return updateDoc(postRef, updates);
+        })
+        .then((ref) => {
           setNewPost(true);
           closePublish();
+          setPost(false);
         })
         .catch((err) => console.log("error adding doc", err));
     }
@@ -116,7 +150,12 @@ function PublishScreen({ closePublish }: PublishProps) {
           <img src="/arrowcircleleft.png" alt="arrow circle" />
           <p className="text-[#55524F] text-sm">Back</p>
         </div>
-        <Button type="primary" name="Publish" onClick={() => handleNewPost()} />
+        <Button
+          disabled={post}
+          type="primary"
+          name="Publish"
+          onClick={() => handleNewPost()}
+        />
       </div>
 
       <div className="input-div h-full flex items-center gap-2">

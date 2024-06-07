@@ -13,8 +13,8 @@ function EachPost({ post }: EachPostProps) {
   const { currentUser, setCurrentUser, likedLocalItems, setLikedLocalItems } =
     useAuthContext();
   const [liked, setLiked] = useState(false);
-  const { userDocRef } = post.userData;
-  const userDetails = post.userData;
+  const { userDocRef } = post?.userData;
+  const userDetails = post?.userData;
   const { postDocRef, likes } = post.postData;
   const postDetails = post.postData;
   const date = post.postData?.datePublished?.toDate();
