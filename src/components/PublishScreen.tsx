@@ -32,11 +32,8 @@ function PublishScreen({ closePublish }: PublishProps) {
   const [postText, setPostText] = useState("");
 
   const handleNewPost = () => {
-    console.log(currentUser);
-    if (!postText.trim() || !attachment || !currentUser) {
-      return setPost(false);
-    } else if (postText.trim() && attachment && currentUser) {
-      
+    if (postText.trim() && attachment && currentUser) {
+      setPost(true);
       const userID = currentUser?.userDocRef;
       const userRef = collection(db, "users", userID, "posts");
       const postDB = collection(db, "posts");

@@ -22,10 +22,10 @@ function Button({
         className={
           width
             ? `${width} ${
-                disabled ? "cursor-pointer" : "cursor-not-allowed"
+                disabled ? "cursor-not-allowed" : " cursor-pointer"
               } h-[56px] py-2 px-4 bg-blue border-2 border-blue text-white rounded-lg font-bold`
             : `${
-                disabled ? "cursor-pointer" : "cursor-not-allowed"
+                disabled ? "cursor-not-allowed" : "cursor-pointer"
               } w-[157px] py-2 px-4 bg-blue border-2 border-blue text-white rounded-lg font-bold`
         }
       >
