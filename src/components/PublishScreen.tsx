@@ -48,6 +48,7 @@ function PublishScreen({ closePublish }: PublishProps) {
       const userRef = collection(db, "users", userID, "posts");
       const postDB = collection(db, "posts");
 
+      
       const newPost = {
         attachment,
         postText,
