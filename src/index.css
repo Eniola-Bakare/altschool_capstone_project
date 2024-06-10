@@ -1,12 +1,14 @@
-/* .all-posts::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Opera */
+.all-posts::-webkit-scrollbar,
+.text-editor::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera*/
+}
 
 .text-editor {
   width: 100%;
   height: 90dvh;
   word-wrap: break-word;
   word-break: break-all;
-  overflow: scroll
+  overflow: scroll;
 }
 
 @tailwind base;

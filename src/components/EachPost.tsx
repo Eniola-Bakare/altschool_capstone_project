@@ -50,12 +50,44 @@ function EachPost({ post }: EachPostProps) {
   }, [likedLocalItems]);
 
   function handleLike() {
+    console.log(postDetails);
+    console.log(likedLocalItems);
     const alreadyLiked = likedLocalItems?.findIndex(
       (items) => items?.postDocRef == postDocRef
     );
 
     console.log(alreadyLiked);
-    if (alreadyLiked < 0) {
+    if (alreadyLiked == undefined) {
+      console.log("adding now, not there beforeeeeeeeeeeeee");
+      setLikedLocalItems((prev) => {
+        const updated = [{ postDocRef: postDocRef, userDocRef: userDocRef }];
+        console.log(updated);
+
+        updateDoc(doc(db, "posts", postDocRef), {
+          likes: likesNoLocal + 1,
+        })
+          .then((ref) => {
+            onSnapshot(doc(db, "posts", postDocRef), (doc) =>
+              setLikesNoLocal(doc?.data().likes)
+            );
+            updateDoc(doc(db, "users", currentUser?.userDocRef), {
+              likedItems: updated,
+            }).then((ref) => {
+              return onSnapshot(
+                doc(db, "users", currentUser?.userDocRef),
+                (doc) =>
+                  setCurrentUser({
+                    ...doc?.data(),
+                    userDocRef: currentUserDocRef,
+                  })
+              );
+            });
+          })
+          .catch((error) => console.log("not updatedddddd+++++++", error));
+
+        return updated;
+      });
+    } else if (alreadyLiked < 0) {
       console.log("adding now, not there beforeeeeeeeeeeeee");
       setLikedLocalItems((prev) => {
         const updated = [
@@ -64,13 +96,12 @@ function EachPost({ post }: EachPostProps) {
         ];
         console.log(updated);
 
-        updateDoc(doc(db, "users", userDocRef, "posts", postDocRef), {
+        updateDoc(doc(db, "posts", postDocRef), {
           likes: likesNoLocal + 1,
         })
           .then((ref) => {
-            onSnapshot(
-              doc(db, "users", userDocRef, "posts", postDocRef),
-              (doc) => setLikesNoLocal(doc?.data().likes)
+            onSnapshot(doc(db, "posts", postDocRef), (doc) =>
+              setLikesNoLocal(doc?.data().likes)
             );
             updateDoc(doc(db, "users", currentUser?.userDocRef), {
               likedItems: updated,
@@ -96,13 +127,12 @@ function EachPost({ post }: EachPostProps) {
         const updated = prev.filter((item) => item.postDocRef !== postDocRef);
         console.log(updated);
 
-        updateDoc(doc(db, "users", userDocRef, "posts", postDocRef), {
+        updateDoc(doc(db, "posts", postDocRef), {
           likes: likesNoLocal - 1,
         })
           .then((ref) => {
-            onSnapshot(
-              doc(db, "users", userDocRef, "posts", postDocRef),
-              (doc) => setLikesNoLocal(doc?.data().likes)
+            onSnapshot(doc(db, "posts", postDocRef), (doc) =>
+              setLikesNoLocal(doc?.data().likes)
             );
             return updateDoc(doc(db, "users", currentUser?.userDocRef), {
               likedItems: updated,
@@ -122,6 +152,35 @@ function EachPost({ post }: EachPostProps) {
         return updated;
       });
     }
+
+    // //  1. check the current user's liked items
+    // console.log(currentUser.likedItems);
+    // console.log(postDetails);
+
+    // const alreadyLiked = likedLocalItems?.findIndex(
+    //   (item) => item?.postDocRef == postDocRef
+    // );
+    // console.log(alreadyLiked, postDocRef);
+    // // 2. if not there, add
+    // if (alreadyLiked == undefined || alreadyLiked < 0) {
+    //   setLikedLocalItems((prev) => [...prev, ...postDocRef]);
+    //   // 3. update the post's likednumbers
+    //   updateDoc(doc(db, "posts", postDocRef), {
+    //     likes: likesNoLocal + 1,
+    //   })
+    //     .then((ref) => {
+    //       onSnapshot(doc(db, "posts", postDocRef), (doc) =>
+    //         setLikesNoLocal(doc?.data().likes)
+    //       )
+
+    //   // update the current user's liked items
+    //   return
+    // })
+    // .catch((err) => console.error(err));
+    // }
+    // 2. if there, remove from the list
+    // 3. update the post's likednumbers
+    // 3. if it is 0, don't go below, return
   }
 
   // console.log(likedLocalItems);
@@ -174,14 +233,16 @@ function EachPost({ post }: EachPostProps) {
           10 mins reaad
         </p>
         <div className="feed-post w-full flex flex-col gap-4 each-post">
-          <div className="postText flex w-full flex-wrap ">
+          <div className="postText flex flex-col w-full flex-wrap ">
             <p
-              className="content text-grey text-lg w-full break-words "
+              className="content text-grey text-lg w-[70%] break-words "
               dangerouslySetInnerHTML={{
-                __html: `${postDetails?.postText.substring(0, 150)}...`,
+                __html: `${postDetails?.postText.substring(0, 200)}...`,
               }}
             />
-            <p className=" underline text-lg font-semibold text-grey">see more</p>
+            <p className=" pt-5 underline text-lg font-semibold text-grey">
+              see more
+            </p>
           </div>
           {/* <div dangerouslySetInnerHTML={{ __html: postDetails.postText }} /> */}
 

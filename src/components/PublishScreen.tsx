@@ -152,7 +152,7 @@ function PublishScreen({ closePublish }: PublishProps) {
     }
   };
   return (
-    <section className="w-[80dvw] h-[90%] border border-borderGrey rounded-lg flex flex-col py-14 mx-12 px-16 gap-16 mt-10 overflow-hidden">
+    <section className="w-[80dvw] h-[90%] border border-borderGrey rounded-lg flex flex-col py-12 mx-1 px-16 gap-16 mt-5 overflow-hidden">
       <div className="publish-buttn-div w-full justify-end self-end flex gap-6">
         <div
           className="back-arrow top-10 flex items-center gap-3 cursor-pointer"
@@ -169,7 +169,7 @@ function PublishScreen({ closePublish }: PublishProps) {
         />
       </div>
 
-      <div className="input-div w-full h-full flex items-center gap-2 ">
+      <div className="input-div w-full flex items-center gap-2 ">
         {/* publish screen 1 */}
 
         {screenOne && (
@@ -249,7 +249,7 @@ function PublishScreen({ closePublish }: PublishProps) {
         {screenThree && (
           <div className="publish-screen-three w-full h-full flex flex-col items-start gap-5 ">
             {imgUrl && (
-              <img src={imgUrl} alt="an attached image" className="w-[15%]" />
+              <img src={imgUrl} alt="an attached image" className="w-[15%] " />
             )}
             {vidUrl && <video src={vidUrl} controls className="h-[35%]" />}
             {/* <textarea
