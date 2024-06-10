@@ -155,9 +155,9 @@ function EachPost({ post }: EachPostProps) {
       </div>
 
       <div className="flex flex-col ">
-        <h1 className="font-bold text-4xl pb-2">
+        {/* <h1 className="font-bold text-4xl pb-2">
           Starting out as a Product designer
-        </h1>
+        </h1> */}
         <p className="est-read-time flex items-center gap-3 pb-6">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -174,11 +174,17 @@ function EachPost({ post }: EachPostProps) {
           10 mins reaad
         </p>
         <div className="feed-post w-full flex flex-col gap-4 each-post">
-          <textarea
-            className="content text-grey text-lg w-[90%] text-wrap overflow-clip outline-none cursor-auto resize-none"
-            readOnly
-            value={postDetails.postText}
-          ></textarea>
+          <div className="postText flex w-full flex-wrap ">
+            <p
+              className="content text-grey text-lg text-wrap w-full "
+              dangerouslySetInnerHTML={{
+                __html: `${postDetails?.postText.substring(0, 150)}...`,
+              }}
+            />
+            <p className=" underline">see more</p>
+          </div>
+          {/* <div dangerouslySetInnerHTML={{ __html: postDetails.postText }} /> */}
+
           <div className="feed-image">
             <img
               src={postDetails.attachment}

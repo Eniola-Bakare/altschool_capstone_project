@@ -1,4 +1,7 @@
 import { useEffect, useRef, useState } from "react";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+
 import Button from "./Button";
 import { useAuthContext } from "./contexts/AuthContext";
 import { db, storageRef } from "../firebase/config";
@@ -42,13 +45,14 @@ function PublishScreen({ closePublish }: PublishProps) {
   }, [attachment, currentUser, postText]);
 
   const handleNewPost = () => {
-    if (postText.trim() && attachment && currentUser) {
+    if (postText && attachment && currentUser) {
       setPost(true);
       const userID = currentUser?.userDocRef;
       const userRef = collection(db, "users", userID, "posts");
       const postDB = collection(db, "posts");
 
-      
+      // const markDownText = <Markdown>{postText}</Markdown>;
+      // setPostText((prev) => );
       const newPost = {
         attachment,
         postText,
@@ -95,7 +99,6 @@ function PublishScreen({ closePublish }: PublishProps) {
         .then((docRef) => {
           const postRef = doc(db, "posts", docRef.id);
           const updates = { postID: docRef.id };
-
           return updateDoc(postRef, updates);
         })
         .then((ref) => {
@@ -166,7 +169,7 @@ function PublishScreen({ closePublish }: PublishProps) {
         />
       </div>
 
-      <div className="input-div h-full flex items-center gap-2">
+      <div className="input-div h-full flex items-center gap-2 w-full">
         {/* publish screen 1 */}
 
         {screenOne && (
@@ -182,16 +185,14 @@ function PublishScreen({ closePublish }: PublishProps) {
               onClick={() => setScreenTwo(true)}
             />
 
-            <div className="input-Text flex flex-col gap-2">
-              <input
-                type="text"
-                placeholder="Title"
-                className="focus:outline-0 px-3 text-5xl font-semibold opacity-50"
-              />
-              <input
-                type="text"
-                placeholder="Write a post..................."
-                className="focus:outline-0 px-3 text-3xl font-normal opacity-50"
+            <div className="input-Text flex flex-col gap-2 w-full">
+              <ReactQuill
+                className="text-editor"
+                style={{ width: "100%" }}
+                theme="snow"
+                placeholder="Write a post"
+                value={postText}
+                onChange={setPostText}
               />
             </div>
           </div>
@@ -252,11 +253,18 @@ function PublishScreen({ closePublish }: PublishProps) {
               <img src={imgUrl} alt="an attached image" className="w-[15%]" />
             )}
             {vidUrl && <video src={vidUrl} controls className="h-[35%]" />}
-            <textarea
+            {/* <textarea
               placeholder="Write a post......"
               value={postText}
               onChange={(e) => setPostText(e.target.value)}
               className="w-full h-full focus:outline-0 text-lg font-medium"
+            /> */}
+
+            <ReactQuill
+              className="text-editor"
+              theme="snow"
+              value={postText}
+              onChange={setPostText}
             />
           </div>
         )}
