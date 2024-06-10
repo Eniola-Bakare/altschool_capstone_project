@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Button from "./Button";
 import { useAuthContext } from "./contexts/AuthContext";
 import { db, storageRef } from "../firebase/config";
@@ -21,7 +21,7 @@ function PublishScreen({ closePublish }: PublishProps) {
   const { currentUser, setNewPost } = useAuthContext();
   const [screenTwo, setScreenTwo] = useState(false);
   const [screenOne, setScreenOne] = useState(true);
-  const [post, setPost] = useState(false);
+  const [post, setPost] = useState(true);
   const [screenThree, setScreenThree] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const fileInputRefImg = useRef<HTMLInputElement>(null);
@@ -30,6 +30,16 @@ function PublishScreen({ closePublish }: PublishProps) {
   const [imgUrl, setimgUrl] = useState("");
   const [vidUrl, setvidUrl] = useState("");
   const [postText, setPostText] = useState("");
+
+  useEffect(() => {
+    const run = function () {
+      if (postText.trim() && attachment && currentUser) {
+        setPost(false);
+      }
+    };
+
+    run();
+  }, [attachment, currentUser, postText]);
 
   const handleNewPost = () => {
     if (postText.trim() && attachment && currentUser) {
