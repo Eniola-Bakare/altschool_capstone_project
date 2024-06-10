@@ -176,12 +176,12 @@ function EachPost({ post }: EachPostProps) {
         <div className="feed-post w-full flex flex-col gap-4 each-post">
           <div className="postText flex w-full flex-wrap ">
             <p
-              className="content text-grey text-lg text-wrap w-full "
+              className="content text-grey text-lg w-full break-words "
               dangerouslySetInnerHTML={{
                 __html: `${postDetails?.postText.substring(0, 150)}...`,
               }}
             />
-            <p className=" underline">see more</p>
+            <p className=" underline text-lg font-semibold text-grey">see more</p>
           </div>
           {/* <div dangerouslySetInnerHTML={{ __html: postDetails.postText }} /> */}
 
