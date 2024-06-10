@@ -152,8 +152,8 @@ function PublishScreen({ closePublish }: PublishProps) {
     }
   };
   return (
-    <section className="w-[90%] h-[80%] border border-borderGrey rounded-lg flex flex-col py-14 px-16 gap-12 overflow-hidden">
-      <div className="publish-buttn-div self-end flex gap-6">
+    <section className="w-[80dvw] h-[90%] border border-borderGrey rounded-lg flex flex-col py-14 mx-12 px-16 gap-16 mt-10 overflow-hidden">
+      <div className="publish-buttn-div w-full justify-end self-end flex gap-6">
         <div
           className="back-arrow top-10 flex items-center gap-3 cursor-pointer"
           onClick={closePublish}
@@ -169,7 +169,7 @@ function PublishScreen({ closePublish }: PublishProps) {
         />
       </div>
 
-      <div className="input-div h-full flex items-center gap-2 w-full">
+      <div className="input-div w-full h-full flex items-center gap-2 ">
         {/* publish screen 1 */}
 
         {screenOne && (
@@ -185,10 +185,9 @@ function PublishScreen({ closePublish }: PublishProps) {
               onClick={() => setScreenTwo(true)}
             />
 
-            <div className="input-Text flex flex-col gap-2 w-full">
+            <div className="input-Text w-full flex flex-col gap-2">
               <ReactQuill
                 className="text-editor"
-                style={{ width: "100%" }}
                 theme="snow"
                 placeholder="Write a post"
                 value={postText}

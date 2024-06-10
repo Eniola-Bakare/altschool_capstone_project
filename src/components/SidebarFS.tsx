@@ -21,7 +21,7 @@ function SidebarFS() {
   }
 
   return (
-    <aside className="w-[24%] h-screen flex flex-col justify-evenly items-center border-r border-borderGrey">
+    <aside className="w-[24%] pr-8 h-screen flex flex-col justify-evenly items-center border-r border-borderGrey">
       <LogoText />
 
       <div className="sidebar-first">

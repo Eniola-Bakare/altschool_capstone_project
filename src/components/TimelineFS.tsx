@@ -10,14 +10,17 @@ function TimelineFS({ setMakeAPostBtn }: TimelineFSProps) {
 
 
   return (
-    <section className="timeline w-[95%] h-screen  overflow-hidden border-x border-y border-borderGrey flex justify-center  ">
+    <section className="timeline w-[80dvw] h-screen overflow-hidden border-x border-y border-borderGrey flex justify-center  ">
       <div className="w-[85%] flex flex-col">
         <div className="feed+post flex justify-between items-center pt-12 pb-8 ">
           <div className="flex flex-col gap-2">
             <p className="text-3xl font-medium">
               {" "}
               {currentUser
-                ? `Welcome, ${currentUser?.displayName?.split(" ")[0] || currentUser?.fName} !`
+                ? `Welcome, ${
+                    currentUser?.displayName?.split(" ")[0] ||
+                    currentUser?.fName
+                  } !`
                 : "FEED"}
             </p>
             <p className="text-lg text-grey">

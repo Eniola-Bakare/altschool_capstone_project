@@ -9,7 +9,7 @@ import './index.css'
 
 function App() {
   return (
-    <>
+    <div>
       <AuthContextProvider>
         <BrowserRouter>
           <Routes>
@@ -38,7 +38,7 @@ function App() {
         </div> */}
         </BrowserRouter>
       </AuthContextProvider>
-    </>
+    </div>
   );
 }
 
