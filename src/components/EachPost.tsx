@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useAuthContext } from "./contexts/AuthContext";
-import { doc, onSnapshot, updateDoc } from "firebase/firestore";
+import { doc, getDoc, onSnapshot, updateDoc } from "firebase/firestore";
 import { db } from "../firebase/config";
+import { useLocalStorage } from "./actions/LocalStorage";
 
 type EachPostProps = {
   post: {
@@ -9,14 +10,18 @@ type EachPostProps = {
     postData: object;
   };
 };
+
 function EachPost({ post }: EachPostProps) {
   const { currentUser, setCurrentUser, likedLocalItems, setLikedLocalItems } =
     useAuthContext();
+  const { setUserLocalStorage } = useLocalStorage("currentUser");
+
   const [liked, setLiked] = useState(false);
-  const { userDocRef } = post?.userData;
-  const userDetails = post?.userData;
-  const { postDocRef, likes } = post.postData;
-  const postDetails = post.postData;
+  const { userDocRef, photoURL, fName, lName, category } = post?.userData;
+  const { postDocRef, postText, likes, attachment, bookmark } = post?.postData;
+  const [likesNoLocal, setLikesNoLocal] = useState(likes);
+  const currentUserDocRef = currentUser?.userDocRef;
+
   const date = post.postData?.datePublished?.toDate();
   const monthNames = [
     "January",
@@ -34,14 +39,11 @@ function EachPost({ post }: EachPostProps) {
   ];
   const monthName = monthNames[date?.getMonth()];
 
-  const [likesNoLocal, setLikesNoLocal] = useState(likes);
-  const currentUserDocRef = currentUser?.userDocRef;
+  const alreadyLiked = likedLocalItems?.findIndex(
+    (items) => items?.postDocRef == postDocRef
+  );
 
   useEffect(() => {
-    const alreadyLiked = likedLocalItems?.findIndex(
-      (items) => items?.postDocRef == postDocRef
-    );
-    console.log(alreadyLiked, liked);
     if (alreadyLiked < 0 || alreadyLiked == undefined) {
       setLiked(false);
     } else {
@@ -50,45 +52,47 @@ function EachPost({ post }: EachPostProps) {
   }, [likedLocalItems]);
 
   function handleLike() {
-    console.log(postDetails);
     console.log(likedLocalItems);
-    const alreadyLiked = likedLocalItems?.findIndex(
-      (items) => items?.postDocRef == postDocRef
-    );
 
     console.log(alreadyLiked);
-    if (alreadyLiked == undefined) {
-      console.log("adding now, not there beforeeeeeeeeeeeee");
-      setLikedLocalItems((prev) => {
-        const updated = [{ postDocRef: postDocRef, userDocRef: userDocRef }];
-        console.log(updated);
+    // if (alreadyLiked == undefined) {
+    //   console.log("adding now, not there beforeeeeeeeeeeeee");
+    //   setLikedLocalItems((prev) => {
+    //     const updated = [{ postDocRef: postDocRef, userDocRef: userDocRef }];
+    //     console.log(updated);
 
-        updateDoc(doc(db, "posts", postDocRef), {
-          likes: likesNoLocal + 1,
-        })
-          .then((ref) => {
-            onSnapshot(doc(db, "posts", postDocRef), (doc) =>
-              setLikesNoLocal(doc?.data().likes)
-            );
-            updateDoc(doc(db, "users", currentUser?.userDocRef), {
-              likedItems: updated,
-            }).then((ref) => {
-              return onSnapshot(
-                doc(db, "users", currentUser?.userDocRef),
-                (doc) =>
-                  setCurrentUser({
-                    ...doc?.data(),
-                    userDocRef: currentUserDocRef,
-                  })
-              );
-            });
-          })
-          .catch((error) => console.log("not updatedddddd+++++++", error));
+    //     updateDoc(doc(db, "posts", postDocRef), {
+    //       likes: likesNoLocal + 1,
+    //     })
+    //       .then((ref) => {
+    //         onSnapshot(doc(db, "posts", postDocRef), (doc) =>
+    //           setLikesNoLocal(doc?.data().likes)
+    //         );
+    //         updateDoc(doc(db, "users", currentUser?.userDocRef), {
+    //           likedItems: updated,
+    //         }).then((ref) => {
+    //           return onSnapshot(
+    //             doc(db, "users", currentUser?.userDocRef),
+    //             (doc) => {
+    //               setCurrentUser({
+    //                 ...doc?.data(),
+    //                 userDocRef: currentUserDocRef,
+    //               });
+    //               return setUserLocalStorage({
+    //                 ...doc?.data(),
+    //                 userDocRef: currentUserDocRef,
+    //               });
+    //             }
+    //           );
+    //         });
+    //       })
+    //       .catch((error) => console.log("not updatedddddd+++++++", error));
 
-        return updated;
-      });
-    } else if (alreadyLiked < 0) {
-      console.log("adding now, not there beforeeeeeeeeeeeee");
+    //     return updated;
+    //   });
+    // } else
+    if (alreadyLiked < 0) {
+      console.log("adding now, not there beforeeeeeeeeeeeee 2");
       setLikedLocalItems((prev) => {
         const updated = [
           ...prev,
@@ -96,6 +100,9 @@ function EachPost({ post }: EachPostProps) {
         ];
         console.log(updated);
 
+        // getDoc(doc(db, "posts", postDocRef)).then((post) => {
+        //   console.log(post.data().likes);
+        // });
         updateDoc(doc(db, "posts", postDocRef), {
           likes: likesNoLocal + 1,
         })
@@ -108,11 +115,16 @@ function EachPost({ post }: EachPostProps) {
             }).then((ref) => {
               return onSnapshot(
                 doc(db, "users", currentUser?.userDocRef),
-                (doc) =>
+                (doc) => {
                   setCurrentUser({
                     ...doc?.data(),
                     userDocRef: currentUserDocRef,
-                  })
+                  });
+                  return setUserLocalStorage({
+                    ...doc?.data(),
+                    userDocRef: currentUserDocRef,
+                  });
+                }
               );
             });
           })
@@ -128,7 +140,7 @@ function EachPost({ post }: EachPostProps) {
         console.log(updated);
 
         updateDoc(doc(db, "posts", postDocRef), {
-          likes: likesNoLocal - 1,
+          likes: likesNoLocal == 0 ? 0 : likesNoLocal - 1,
         })
           .then((ref) => {
             onSnapshot(doc(db, "posts", postDocRef), (doc) =>
@@ -139,11 +151,16 @@ function EachPost({ post }: EachPostProps) {
             }).then((ref) => {
               return onSnapshot(
                 doc(db, "users", currentUser?.userDocRef),
-                (doc) =>
+                (doc) => {
                   setCurrentUser({
                     ...doc?.data(),
                     userDocRef: currentUserDocRef,
-                  })
+                  });
+                  return setUserLocalStorage({
+                    ...doc?.data(),
+                    userDocRef: currentUserDocRef,
+                  });
+                }
               );
             });
           })
@@ -152,35 +169,6 @@ function EachPost({ post }: EachPostProps) {
         return updated;
       });
     }
-
-    // //  1. check the current user's liked items
-    // console.log(currentUser.likedItems);
-    // console.log(postDetails);
-
-    // const alreadyLiked = likedLocalItems?.findIndex(
-    //   (item) => item?.postDocRef == postDocRef
-    // );
-    // console.log(alreadyLiked, postDocRef);
-    // // 2. if not there, add
-    // if (alreadyLiked == undefined || alreadyLiked < 0) {
-    //   setLikedLocalItems((prev) => [...prev, ...postDocRef]);
-    //   // 3. update the post's likednumbers
-    //   updateDoc(doc(db, "posts", postDocRef), {
-    //     likes: likesNoLocal + 1,
-    //   })
-    //     .then((ref) => {
-    //       onSnapshot(doc(db, "posts", postDocRef), (doc) =>
-    //         setLikesNoLocal(doc?.data().likes)
-    //       )
-
-    //   // update the current user's liked items
-    //   return
-    // })
-    // .catch((err) => console.error(err));
-    // }
-    // 2. if there, remove from the list
-    // 3. update the post's likednumbers
-    // 3. if it is 0, don't go below, return
   }
 
   // console.log(likedLocalItems);
@@ -194,18 +182,17 @@ function EachPost({ post }: EachPostProps) {
       <div className="profile-details flex items-center gap-5 py-[30px] ">
         <div className="profile-image w-[70px]">
           <img
-            src={userDetails.photoURL}
+            src={photoURL}
             alt="a profile picture"
             className="rounded-full"
           />
         </div>
         <div className="flex flex-col gap-2">
           <p className="font-medium text-2xl">
-            {userDetails.fName} {userDetails.lName}
+            {fName} {lName}
           </p>
           <p className="text-lg text-grey">
-            {userDetails.category}{" "}
-            <strong className="text-grey text-borderGrey">|</strong>{" "}
+            {category} <strong className="text-grey text-borderGrey">|</strong>{" "}
             <span>
               {monthName} {date?.getDate()},{date?.getFullYear()}
             </span>
@@ -237,7 +224,7 @@ function EachPost({ post }: EachPostProps) {
             <p
               className="content text-grey text-lg w-[70%] break-words "
               dangerouslySetInnerHTML={{
-                __html: `${postDetails?.postText.substring(0, 200)}...`,
+                __html: `${postText.substring(0, 200)}...`,
               }}
             />
             <p className=" pt-5 underline text-lg font-semibold text-grey">
@@ -247,11 +234,7 @@ function EachPost({ post }: EachPostProps) {
           {/* <div dangerouslySetInnerHTML={{ __html: postDetails.postText }} /> */}
 
           <div className="feed-image">
-            <img
-              src={postDetails.attachment}
-              alt="an image"
-              className="w-[40%]"
-            />
+            <img src={attachment} alt="an image" className="w-[40%]" />
           </div>
 
           <div
@@ -308,7 +291,7 @@ function EachPost({ post }: EachPostProps) {
                 <path d="M7 12H9V17H7V12ZM15 7H17V17H15V7ZM11 14H13V17H11V14ZM11 10H13V12H11V10Z" />
               </svg>
 
-              <span>{postDetails.bookmark}</span>
+              <span>{bookmark}</span>
             </p>
           </div>
         </div>

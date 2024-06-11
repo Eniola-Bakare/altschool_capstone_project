@@ -66,7 +66,8 @@ export default function AuthContextProvider({
 }: {
   children: ReactNode;
 }) {
-  const { getUserLocalStorage } = useLocalStorage("currentUser");
+  const { getUserLocalStorage, setUserLocalStorage } =
+    useLocalStorage("currentUser");
 
   const [email, setEmail] = useState("eebakare@gmail.com");
   const [password, setPassword] = useState("123Ab!");
@@ -88,7 +89,10 @@ export default function AuthContextProvider({
   const [likedLocalItems, setLikedLocalItems] = useState<likedLocalItems[]>([]);
 
   useEffect(() => {
+    console.log(authUser);
     setCurrentUser(getUserLocalStorage());
+    // setAuthUser(getUserLocalStorage());
+    console.log(currentUser);
   }, []);
 
   useEffect(() => {

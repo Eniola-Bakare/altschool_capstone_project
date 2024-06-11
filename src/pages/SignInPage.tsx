@@ -67,7 +67,7 @@ function SignInPage() {
     return () => {
       listen();
     };
-  }, [authUser, setCurrentUser, currentUser, navigate]);
+  }, []);
 
   const handleSignIn = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();

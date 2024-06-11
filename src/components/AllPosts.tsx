@@ -23,8 +23,6 @@ type UserDetails = {
 
 function AllPosts() {
   const [allPosts, setAllPosts] = useState<UserAndPost[]>([]);
-  // const { setAllPosts, allPosts } = useAuthContext();
-  // const { userDetails, setUserDetails } = useState<any[]>([]);
   let userDetails = [{ text: 2 }];
 
   const fetchData = () => {
