@@ -51,10 +51,11 @@ function EachPost({ post }: EachPostProps) {
     }
   }, [likedLocalItems]);
 
-  function handleLike() {
-    console.log(likedLocalItems);
-
-    console.log(alreadyLiked);
+  async function handleLike() {
+    const getCurrentLike = await getDoc(doc(db, "posts", postDocRef));
+    const getCLike = getCurrentLike.data();
+    const currentLike = await getCLike?.likes;
+    console.log(getCLike, currentLike);
     // if (alreadyLiked == undefined) {
     //   console.log("adding now, not there beforeeeeeeeeeeeee");
     //   setLikedLocalItems((prev) => {
@@ -104,7 +105,7 @@ function EachPost({ post }: EachPostProps) {
         //   console.log(post.data().likes);
         // });
         updateDoc(doc(db, "posts", postDocRef), {
-          likes: likesNoLocal + 1,
+          likes: currentLike + 1,
         })
           .then((ref) => {
             onSnapshot(doc(db, "posts", postDocRef), (doc) =>
@@ -140,7 +141,7 @@ function EachPost({ post }: EachPostProps) {
         console.log(updated);
 
         updateDoc(doc(db, "posts", postDocRef), {
-          likes: likesNoLocal == 0 ? 0 : likesNoLocal - 1,
+          likes: currentLike == 0 ? 0 : currentLike - 1,
         })
           .then((ref) => {
             onSnapshot(doc(db, "posts", postDocRef), (doc) =>

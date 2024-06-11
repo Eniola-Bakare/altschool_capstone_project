@@ -29,29 +29,6 @@ function AllPosts() {
     const usersRef = collection(db, "users");
     const postDB = collection(db, "posts");
 
-    // getDocs(usersRef)
-    //   .then((userData) => {
-    //     const userAndPostPromises = userData.docs.map((eachUser) => {
-    //       const postsRef = collection(db, "users", eachUser.id, "posts");
-    //       return getDocs(postsRef).then((allPostsSnapshot) => {
-    //         return allPostsSnapshot.docs.map((eachPost) => {
-    //           const userDoc = { ...eachUser.data(), userDocRef: eachUser.id };
-    //           const post = { ...eachPost.data(), postDocRef: eachPost.id };
-    //           return { postData: post, userData: userDoc };
-    //         });
-    //       });
-    //     });
-
-    //     return Promise.all(userAndPostPromises);
-    //   })
-    //   .then((userAndPostArray) => {
-    //     const flattenedUserAndPostArray = userAndPostArray.flat();
-    //     setAllPosts(flattenedUserAndPostArray);
-    //   })
-    //   .catch((error) => {
-    //     console.error("Error fetching posts: ", error);
-    //   });
-
     getDocs(postDB).then((postDetails) => {
       console.log(postDetails.forEach((each) => console.log(each.data())));
       let posterDetails = [{}];
@@ -132,9 +109,12 @@ function AllPosts() {
       //   console.error("Error fetching posts: ", error);
     });
   };
+
   useEffect(() => {
     fetchData();
   }, []);
+
+  setInterval(fetchData, 100500);
 
   return (
     <div className="all-posts tab flex flex-col justify-between items-center h-screen overflow-y-auto">
