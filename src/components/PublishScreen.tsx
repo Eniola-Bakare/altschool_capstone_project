@@ -85,11 +85,7 @@ function PublishScreen({ closePublish }: PublishProps) {
             datePublished: serverTimestamp(),
           });
 
-          // return addDoc(userRef, {
-          //   ...newPost,
-          //   attachment: downloadURL,
-          //   datePublished: serverTimestamp(),
-          // });
+
           return addDoc(postDB, {
             ...newPost,
             attachment: downloadURL,

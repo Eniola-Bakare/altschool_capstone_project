@@ -64,49 +64,9 @@ function AllPosts() {
             });
           })
           .catch((err) => console.error(err));
-
-        // posterDetails.map((eachUserDetails) => {
-        //   console.log('eachUserDetails')
-        //   if (eachUserDetails.userID === poster) {
-        //     userNpost.push({ postData: post, uerData: eachUserDetails });
-        //     console.log(userNpost);
-
-        //     return [...posterDetails];
-        //   } else {
-        //     getDocs(collection(db, "users", poster))
-        //       .then((resp) => {
-        //         console.log(userNpost);
-        //         userNpost.push({
-        //           postData: post,
-        //           uerData: resp,
-        //         });
-
-        //         return [...posterDetails, resp];
-        //       })
-        //       .catch((err) => console.error(err));
-        //   }
-        // });
-
         console.log(posterDetails);
       });
 
-      // console.log(eachPost);
-      // return getDocs(postsRef).then((allPostsSnapshot) => {
-      //   return allPostsSnapshot.docs.map((eachPost) => {
-      //     const userDoc = { ...eachUser.data(), userDocRef: eachUser.id };
-      //     const post = { ...eachPost.data(), postDocRef: eachPost.id };
-      //     return { postData: post, userData: userDoc };
-      //   });
-      // });
-
-      //   return Promise.all(userAndPostPromises);
-      // })
-      // .then((userAndPostArray) => {
-      //   const flattenedUserAndPostArray = userAndPostArray.flat();
-      //   setAllPosts(flattenedUserAndPostArray);
-      // })
-      // .catch((error) => {
-      //   console.error("Error fetching posts: ", error);
     });
   };
 

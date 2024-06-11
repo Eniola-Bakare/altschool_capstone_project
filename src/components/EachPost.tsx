@@ -12,15 +12,19 @@ type EachPostProps = {
 };
 
 function EachPost({ post }: EachPostProps) {
+  const { postDocRef, postText, likes, attachment, bookmark } = post?.postData;
+  const { userDocRef, photoURL, fName, lName, category } = post?.userData;
+  const { setUserLocalStorage } = useLocalStorage("currentUser");
   const { currentUser, setCurrentUser, likedLocalItems, setLikedLocalItems } =
     useAuthContext();
-  const { setUserLocalStorage } = useLocalStorage("currentUser");
+
+  const currentUserDocRef = currentUser?.userDocRef;
+  const currentUserBookMarks = currentUser?.bookmarkedItems;
+  // console.log(first)
 
   const [liked, setLiked] = useState(false);
-  const { userDocRef, photoURL, fName, lName, category } = post?.userData;
-  const { postDocRef, postText, likes, attachment, bookmark } = post?.postData;
   const [likesNoLocal, setLikesNoLocal] = useState(likes);
-  const currentUserDocRef = currentUser?.userDocRef;
+  const [bookmarked, setBookmarked] = useState(false);
 
   const date = post.postData?.datePublished?.toDate();
   const monthNames = [
@@ -42,6 +46,9 @@ function EachPost({ post }: EachPostProps) {
   const alreadyLiked = likedLocalItems?.findIndex(
     (items) => items?.postDocRef == postDocRef
   );
+  const alreadyBookMarked = currentUserBookMarks?.findIndex(
+    (items) => items?.postDocRef == postDocRef
+  );
 
   useEffect(() => {
     if (alreadyLiked < 0 || alreadyLiked == undefined) {
@@ -51,59 +58,93 @@ function EachPost({ post }: EachPostProps) {
     }
   }, [likedLocalItems]);
 
+  useEffect(() => {
+    if (alreadyBookMarked < 0) setBookmarked(false);
+    else setBookmarked(true);
+    console.log(alreadyBookMarked);
+  }, []);
+
+  useEffect(() => {
+    setUserLocalStorage(currentUser);
+  }, []);
+
+  async function handleBookmark() {
+    console.log(alreadyBookMarked);
+
+    if (alreadyBookMarked < 0 || alreadyBookMarked == undefined) {
+      getDoc(doc(db, "posts", postDocRef))
+        .then((post) => {
+          return updateDoc(doc(db, "posts", postDocRef), {
+            bookmark: post.data().bookmark + 1,
+          });
+        })
+        .catch((error) => console.error(error));
+      getDoc(doc(db, "users", currentUserDocRef)).then((bookmaker) => {
+        console.log(bookmaker.data().bookmarkedItems);
+        const bookmarkedItemsLocal = bookmaker.data().bookmarkedItems;
+        updateDoc(doc(db, "users", currentUserDocRef), {
+          bookmarkedItems: [
+            // ...bookmarkedItemsLocal,
+            { userDocRef: currentUserDocRef, postDocRef },
+          ],
+        });
+        return onSnapshot(doc(db, "users", userDocRef), (doc) => {
+          setBookmarked(true);
+          const newDetails = {
+            ...doc?.data(),
+            userDocRef: currentUserDocRef,
+          };
+          setCurrentUser(newDetails);
+          return setUserLocalStorage(newDetails);
+        });
+      });
+    } else if (alreadyBookMarked >= 0) {
+      getDoc(doc(db, "posts", postDocRef))
+        .then((post) => {
+          return updateDoc(doc(db, "posts", postDocRef), {
+            bookmark: post.data().bookmark - 1,
+          });
+        })
+        .catch((error) => console.error(error));
+
+      getDoc(doc(db, "users", userDocRef))
+        .then((bookmaker) => {
+          console.log(bookmaker.data().bookmarkedItems);
+
+          const bookmarkedItemsLocal = bookmaker.data().bookmarkedItems;
+
+          updateDoc(doc(db, "users", userDocRef), {
+            bookmarkedItems: bookmarkedItemsLocal.filter(
+              (post) => post.postDocRef === postDocRef
+            ),
+          });
+          return onSnapshot(doc(db, "users", userDocRef), (doc) => {
+            console.log(doc.data());
+            const newDetails = {
+              ...doc?.data(),
+              userDocRef: currentUserDocRef,
+            };
+            setBookmarked(false);
+            setCurrentUser(newDetails);
+            return setUserLocalStorage(newDetails);
+          });
+        })
+        .catch((error) => console.error(error));
+    }
+  }
+
   async function handleLike() {
     const getCurrentLike = await getDoc(doc(db, "posts", postDocRef));
     const getCLike = getCurrentLike.data();
     const currentLike = await getCLike?.likes;
-    console.log(getCLike, currentLike);
-    // if (alreadyLiked == undefined) {
-    //   console.log("adding now, not there beforeeeeeeeeeeeee");
-    //   setLikedLocalItems((prev) => {
-    //     const updated = [{ postDocRef: postDocRef, userDocRef: userDocRef }];
-    //     console.log(updated);
 
-    //     updateDoc(doc(db, "posts", postDocRef), {
-    //       likes: likesNoLocal + 1,
-    //     })
-    //       .then((ref) => {
-    //         onSnapshot(doc(db, "posts", postDocRef), (doc) =>
-    //           setLikesNoLocal(doc?.data().likes)
-    //         );
-    //         updateDoc(doc(db, "users", currentUser?.userDocRef), {
-    //           likedItems: updated,
-    //         }).then((ref) => {
-    //           return onSnapshot(
-    //             doc(db, "users", currentUser?.userDocRef),
-    //             (doc) => {
-    //               setCurrentUser({
-    //                 ...doc?.data(),
-    //                 userDocRef: currentUserDocRef,
-    //               });
-    //               return setUserLocalStorage({
-    //                 ...doc?.data(),
-    //                 userDocRef: currentUserDocRef,
-    //               });
-    //             }
-    //           );
-    //         });
-    //       })
-    //       .catch((error) => console.log("not updatedddddd+++++++", error));
-
-    //     return updated;
-    //   });
-    // } else
     if (alreadyLiked < 0) {
-      console.log("adding now, not there beforeeeeeeeeeeeee 2");
+      // console.log("adding now, not there beforeeeeeeeeeeeee 2");
       setLikedLocalItems((prev) => {
         const updated = [
           ...prev,
           { postDocRef: postDocRef, userDocRef: userDocRef },
         ];
-        console.log(updated);
-
-        // getDoc(doc(db, "posts", postDocRef)).then((post) => {
-        //   console.log(post.data().likes);
-        // });
         updateDoc(doc(db, "posts", postDocRef), {
           likes: currentLike + 1,
         })
@@ -129,16 +170,15 @@ function EachPost({ post }: EachPostProps) {
               );
             });
           })
-          .catch((error) => console.log("not updatedddddd+++++++", error));
+          .catch((error) => console.error("not updatedddddd+++++++", error));
 
         return updated;
       });
     } else if (alreadyLiked >= 0) {
-      console.log("removing now, not there beforeeeeeeeeeeeee");
+      // console.log("removing now, not there befoe");
 
       setLikedLocalItems((prev) => {
         const updated = prev.filter((item) => item.postDocRef !== postDocRef);
-        console.log(updated);
 
         updateDoc(doc(db, "posts", postDocRef), {
           likes: currentLike == 0 ? 0 : currentLike - 1,
@@ -165,15 +205,12 @@ function EachPost({ post }: EachPostProps) {
               );
             });
           })
-          .catch((error) => console.log("not updatedddddd+++++++", error));
+          .catch((error) => console.error("not updatedddddd+++++++", error));
 
         return updated;
       });
     }
   }
-
-  // console.log(likedLocalItems);
-  // console.log(currentUser);
 
   return (
     <section
@@ -280,6 +317,26 @@ function EachPost({ post }: EachPostProps) {
               <span>{likesNoLocal}</span>
             </p>
 
+            <p
+              className="flex items-center text-grey gap-2"
+              onClick={handleBookmark}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                className={` ${
+                  bookmarked
+                    ? "fill-blue active:fill-blue hover:fill-blue"
+                    : "active:fill-black fill-black hover:fill-blue"
+                }`}
+              >
+                <path d="M16.5 7V22.2417L10.197 19.5404L10 19.456L9.80304 19.5404L3.5 22.2417V7C3.5 6.58379 3.64248 6.23962 3.94155 5.94055C4.24061 5.6415 4.58424 5.4995 4.99939 5.5H5H15C15.4162 5.5 15.7604 5.64248 16.0594 5.94155C16.3585 6.24061 16.5005 6.58424 16.5 6.99939V7ZM5 5H15C15.55 5 16.021 5.196 16.413 5.588C16.805 5.98 17.0007 6.45067 17 7L5 5ZM4.5 19.95V20.7093L5.19751 20.4093L10 18.3443L14.8025 20.4093L15.5 20.7093V19.95V7V6.5H15H5H4.5V7V19.95ZM20.5 3V19.5H19.5V3V2.5H19H6.5V1.5H19C19.4162 1.5 19.7604 1.64248 20.0594 1.94155C20.3585 2.24061 20.5005 2.58424 20.5 2.99939V3Z" />
+              </svg>
+
+              {/* <span>{bookmark}</span> */}
+            </p>
             <p className="flex items-center text-grey gap-2">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -292,7 +349,7 @@ function EachPost({ post }: EachPostProps) {
                 <path d="M7 12H9V17H7V12ZM15 7H17V17H15V7ZM11 14H13V17H11V14ZM11 10H13V12H11V10Z" />
               </svg>
 
-              <span>{bookmark}</span>
+              {/* <span>{bookmark}</span> */}
             </p>
           </div>
         </div>
