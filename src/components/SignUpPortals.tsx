@@ -68,7 +68,7 @@ function SignUpPortals() {
                         userDocRef: res.id,
                       };
                       setCurrentUser({ ...currentUser });
-                      setUserLocalStorage(currentUser);
+                      setUserLocalStorage({...currentUser});
                     })
                     .catch((err) => console.log("now, this errorr", err));
                 })

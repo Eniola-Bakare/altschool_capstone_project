@@ -71,7 +71,31 @@ function EachPost({ post }: EachPostProps) {
   async function handleBookmark() {
     console.log(alreadyBookMarked);
 
-    if (alreadyBookMarked < 0 || alreadyBookMarked == undefined) {
+    if (alreadyBookMarked == undefined) {
+      getDoc(doc(db, "posts", postDocRef))
+        .then((post) => {
+          return updateDoc(doc(db, "posts", postDocRef), {
+            bookmark: post.data().bookmark + 1,
+          });
+        })
+        .catch((error) => console.error(error));
+      getDoc(doc(db, "users", currentUserDocRef)).then((bookmaker) => {
+        console.log(bookmaker.data().bookmarkedItems);
+        const bookmarkedItemsLocal = bookmaker.data().bookmarkedItems;
+        updateDoc(doc(db, "users", currentUserDocRef), {
+          bookmarkedItems: [{ userDocRef: currentUserDocRef, postDocRef }],
+        });
+        return onSnapshot(doc(db, "users", userDocRef), (doc) => {
+          setBookmarked(true);
+          const newDetails = {
+            ...doc?.data(),
+            userDocRef: currentUserDocRef,
+          };
+          setCurrentUser(newDetails);
+          return setUserLocalStorage(newDetails);
+        });
+      });
+    } else if (alreadyBookMarked < 0 || alreadyBookMarked == undefined) {
       getDoc(doc(db, "posts", postDocRef))
         .then((post) => {
           return updateDoc(doc(db, "posts", postDocRef), {
@@ -84,7 +108,7 @@ function EachPost({ post }: EachPostProps) {
         const bookmarkedItemsLocal = bookmaker.data().bookmarkedItems;
         updateDoc(doc(db, "users", currentUserDocRef), {
           bookmarkedItems: [
-            // ...bookmarkedItemsLocal,
+            ...bookmarkedItemsLocal,
             { userDocRef: currentUserDocRef, postDocRef },
           ],
         });
@@ -138,6 +162,40 @@ function EachPost({ post }: EachPostProps) {
     const getCLike = getCurrentLike.data();
     const currentLike = await getCLike?.likes;
 
+    if (alreadyLiked == undefined) {
+      // console.log("adding now, not there beforeeeeeeeeeeeee 2");
+      setLikedLocalItems((prev) => {
+        const updated = [{ postDocRef: postDocRef, userDocRef: userDocRef }];
+        updateDoc(doc(db, "posts", postDocRef), {
+          likes: currentLike + 1,
+        })
+          .then((ref) => {
+            onSnapshot(doc(db, "posts", postDocRef), (doc) =>
+              setLikesNoLocal(doc?.data().likes)
+            );
+            updateDoc(doc(db, "users", currentUser?.userDocRef), {
+              likedItems: updated,
+            }).then((ref) => {
+              return onSnapshot(
+                doc(db, "users", currentUser?.userDocRef),
+                (doc) => {
+                  setCurrentUser({
+                    ...doc?.data(),
+                    userDocRef: currentUserDocRef,
+                  });
+                  return setUserLocalStorage({
+                    ...doc?.data(),
+                    userDocRef: currentUserDocRef,
+                  });
+                }
+              );
+            });
+          })
+          .catch((error) => console.error("not updatedddddd+++++++", error));
+
+        return updated;
+      });
+    }
     if (alreadyLiked < 0) {
       // console.log("adding now, not there beforeeeeeeeeeeeee 2");
       setLikedLocalItems((prev) => {
