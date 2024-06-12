@@ -65,6 +65,7 @@ function SignUpConfirm() {
       email,
       category,
       uid,
+      bookmarkedItems: [],
       likedItems: [],
       otp: otpLocal.join(""),
     };

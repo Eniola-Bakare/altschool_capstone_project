@@ -69,7 +69,7 @@ export default function AuthContextProvider({
   const { getUserLocalStorage, setUserLocalStorage } =
     useLocalStorage("currentUser");
 
-  const [email, setEmail] = useState("eebakare@gmail.com");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("123Ab!");
   const [fName, setFName] = useState("eniola");
   const [lName, setLName] = useState("bakare");

@@ -19,6 +19,7 @@ function EachPost({ post }: EachPostProps) {
     useAuthContext();
 
   const currentUserDocRef = currentUser?.userDocRef;
+  console.log(currentUserDocRef);
   const currentUserBookMarks = currentUser?.bookmarkedItems;
   // console.log(first)
 
@@ -59,7 +60,8 @@ function EachPost({ post }: EachPostProps) {
   }, [likedLocalItems]);
 
   useEffect(() => {
-    if (alreadyBookMarked < 0) setBookmarked(false);
+    if (alreadyBookMarked < 0 || alreadyBookMarked == undefined)
+      setBookmarked(false);
     else setBookmarked(true);
     console.log(alreadyBookMarked);
   }, []);
@@ -70,6 +72,7 @@ function EachPost({ post }: EachPostProps) {
 
   async function handleBookmark() {
     console.log(alreadyBookMarked);
+    console.log(currentUserDocRef);
 
     if (alreadyBookMarked == undefined) {
       getDoc(doc(db, "posts", postDocRef))
@@ -80,6 +83,7 @@ function EachPost({ post }: EachPostProps) {
         })
         .catch((error) => console.error(error));
       getDoc(doc(db, "users", currentUserDocRef)).then((bookmaker) => {
+        console.log(bookmaker.data());
         console.log(bookmaker.data().bookmarkedItems);
         const bookmarkedItemsLocal = bookmaker.data().bookmarkedItems;
         updateDoc(doc(db, "users", currentUserDocRef), {
@@ -104,6 +108,8 @@ function EachPost({ post }: EachPostProps) {
         })
         .catch((error) => console.error(error));
       getDoc(doc(db, "users", currentUserDocRef)).then((bookmaker) => {
+        console.log(bookmaker.data());
+
         console.log(bookmaker.data().bookmarkedItems);
         const bookmarkedItemsLocal = bookmaker.data().bookmarkedItems;
         updateDoc(doc(db, "users", currentUserDocRef), {

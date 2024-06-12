@@ -58,6 +58,7 @@ function SignUpPortals() {
                 likedItems: [],
                 fName,
                 lName,
+                bookmarkedItems: [],
               })
                 .then((res) => {
                   // res is the user document id that was just created
@@ -68,7 +69,7 @@ function SignUpPortals() {
                         userDocRef: res.id,
                       };
                       setCurrentUser({ ...currentUser });
-                      setUserLocalStorage({...currentUser});
+                      setUserLocalStorage({ ...currentUser });
                     })
                     .catch((err) => console.log("now, this errorr", err));
                 })
@@ -78,7 +79,16 @@ function SignUpPortals() {
             } else {
               const oldUser = resp.docs[0].data();
               const oldUserId = resp.docs[0].id;
-              const { fName, category, lName, likedItems, photoURL } = oldUser;
+              console.log(oldUserId);
+              const {
+                fName,
+                category,
+                lName,
+                likedItems,
+                photoURL,
+                email,
+                bookmarkedItems,
+              } = oldUser;
               const oldUserObj = {
                 ...newUser,
                 category,
@@ -86,8 +96,11 @@ function SignUpPortals() {
                 photoURL,
                 fName,
                 lName,
+                email,
+                bookmarkedItems,
               };
               const currentUser = { ...oldUserObj, userDocRef: oldUserId };
+              console.log(currentUser);
               setCurrentUser({ ...currentUser });
               setUserLocalStorage(currentUser);
             }

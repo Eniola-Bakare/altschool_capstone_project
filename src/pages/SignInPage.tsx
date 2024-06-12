@@ -55,6 +55,7 @@ function SignInPage() {
                 email,
                 category,
                 uid,
+                bookmarkedItems: currentUser.data().bookmarkedItems,
               };
               setCurrentUser({ ...newUser, userDocRef: currentUser.id });
               setUserLocalStorage({ ...newUser, userDocRef: currentUser.id });
