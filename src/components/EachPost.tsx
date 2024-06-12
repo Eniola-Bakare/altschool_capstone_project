@@ -73,33 +73,7 @@ function EachPost({ post }: EachPostProps) {
   async function handleBookmark() {
     console.log(alreadyBookMarked);
     console.log(currentUserDocRef);
-
-    if (alreadyBookMarked == undefined) {
-      getDoc(doc(db, "posts", postDocRef))
-        .then((post) => {
-          return updateDoc(doc(db, "posts", postDocRef), {
-            bookmark: post.data().bookmark + 1,
-          });
-        })
-        .catch((error) => console.error(error));
-      getDoc(doc(db, "users", currentUserDocRef)).then((bookmaker) => {
-        console.log(bookmaker.data());
-        console.log(bookmaker.data().bookmarkedItems);
-        const bookmarkedItemsLocal = bookmaker.data().bookmarkedItems;
-        updateDoc(doc(db, "users", currentUserDocRef), {
-          bookmarkedItems: [{ userDocRef: currentUserDocRef, postDocRef }],
-        });
-        return onSnapshot(doc(db, "users", userDocRef), (doc) => {
-          setBookmarked(true);
-          const newDetails = {
-            ...doc?.data(),
-            userDocRef: currentUserDocRef,
-          };
-          setCurrentUser(newDetails);
-          return setUserLocalStorage(newDetails);
-        });
-      });
-    } else if (alreadyBookMarked < 0 || alreadyBookMarked == undefined) {
+    if (alreadyBookMarked < 0 || alreadyBookMarked == undefined) {
       getDoc(doc(db, "posts", postDocRef))
         .then((post) => {
           return updateDoc(doc(db, "posts", postDocRef), {
@@ -118,7 +92,7 @@ function EachPost({ post }: EachPostProps) {
             { userDocRef: currentUserDocRef, postDocRef },
           ],
         });
-        return onSnapshot(doc(db, "users", userDocRef), (doc) => {
+        return onSnapshot(doc(db, "users", currentUserDocRef), (doc) => {
           setBookmarked(true);
           const newDetails = {
             ...doc?.data(),
@@ -137,18 +111,18 @@ function EachPost({ post }: EachPostProps) {
         })
         .catch((error) => console.error(error));
 
-      getDoc(doc(db, "users", userDocRef))
+      getDoc(doc(db, "users", currentUserDocRef))
         .then((bookmaker) => {
           console.log(bookmaker.data().bookmarkedItems);
 
           const bookmarkedItemsLocal = bookmaker.data().bookmarkedItems;
 
-          updateDoc(doc(db, "users", userDocRef), {
+          updateDoc(doc(db, "users", currentUserDocRef), {
             bookmarkedItems: bookmarkedItemsLocal.filter(
               (post) => post.postDocRef === postDocRef
             ),
           });
-          return onSnapshot(doc(db, "users", userDocRef), (doc) => {
+          return onSnapshot(doc(db, "users", currentUserDocRef), (doc) => {
             console.log(doc.data());
             const newDetails = {
               ...doc?.data(),

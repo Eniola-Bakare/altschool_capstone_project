@@ -79,7 +79,7 @@ function SignUpPortals() {
             } else {
               const oldUser = resp.docs[0].data();
               const oldUserId = resp.docs[0].id;
-              console.log(oldUserId);
+              console.log(oldUser);
               const {
                 fName,
                 category,
@@ -88,21 +88,15 @@ function SignUpPortals() {
                 photoURL,
                 email,
                 bookmarkedItems,
+                uid,
+                displayName,
+                tenantId,
               } = oldUser;
-              const oldUserObj = {
-                ...newUser,
-                category,
-                likedItems,
-                photoURL,
-                fName,
-                lName,
-                email,
-                bookmarkedItems,
-              };
-              const currentUser = { ...oldUserObj, userDocRef: oldUserId };
+
+              const currentUser = { ...oldUser, userDocRef: oldUserId };
               console.log(currentUser);
               setCurrentUser({ ...currentUser });
-              setUserLocalStorage(currentUser);
+              setUserLocalStorage({ ...currentUser });
             }
           })
           .catch((err) => console.log(err));
