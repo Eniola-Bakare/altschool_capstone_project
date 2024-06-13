@@ -13,12 +13,14 @@ type EachPostProps = {
 };
 
 function EachPost({ post }: EachPostProps) {
-  const { postDocRef, postText, likes, attachment, bookmark } = post?.postData;
+  const { postDocRef, postText, likes, attachment, bookmark, comments } =
+    post?.postData;
   const { userDocRef, photoURL, fName, lName, category } = post?.userData;
   const { setUserLocalStorage } = useLocalStorage("currentUser");
   const { currentUser, setCurrentUser, likedLocalItems, setLikedLocalItems } =
     useAuthContext();
-  const { setShowComments, setCurrentPostID } = useCommentContext();
+  const { setShowComments, setCurrentPostID, setEarlierComments } =
+    useCommentContext();
 
   const currentUserDocRef = currentUser?.userDocRef;
   console.log(currentUserDocRef);
@@ -261,6 +263,7 @@ function EachPost({ post }: EachPostProps) {
   function handleComment() {
     setShowComments((prev) => !prev);
     setCurrentPostID(postDocRef);
+    setEarlierComments(comments);
   }
 
   return (

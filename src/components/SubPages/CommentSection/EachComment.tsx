@@ -1,9 +1,14 @@
-import React from 'react'
+import React from "react";
 
-function EachComment() {
+function EachComment({ commentDetails }) {
+  console.log(commentDetails);
+  const { commentText } = commentDetails;
   return (
-    <div>EachComment</div>
-  )
+    <div>
+      {/* EachComment */}
+      <p>{commentText}</p>
+    </div>
+  );
 }
 
-export default EachComment
+export default EachComment;
