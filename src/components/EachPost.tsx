@@ -3,6 +3,7 @@ import { useAuthContext } from "./contexts/AuthContext";
 import { doc, getDoc, onSnapshot, updateDoc } from "firebase/firestore";
 import { db } from "../firebase/config";
 import { useLocalStorage } from "./actions/LocalStorage";
+import { useCommentContext } from "./SubPages/CommentSection/CommentsContext";
 
 type EachPostProps = {
   post: {
@@ -17,6 +18,7 @@ function EachPost({ post }: EachPostProps) {
   const { setUserLocalStorage } = useLocalStorage("currentUser");
   const { currentUser, setCurrentUser, likedLocalItems, setLikedLocalItems } =
     useAuthContext();
+  const { setShowComments } = useCommentContext();
 
   const currentUserDocRef = currentUser?.userDocRef;
   console.log(currentUserDocRef);
@@ -323,7 +325,10 @@ function EachPost({ post }: EachPostProps) {
             className="interactions w-[50%] flex justify-between items-center"
             onClick={(e) => e.stopPropagation()}
           >
-            <p className="flex items-center text-grey gap-2">
+            <p
+              className="flex items-center text-grey gap-2"
+              onClick={() => setShowComments((prev) => !prev)}
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"

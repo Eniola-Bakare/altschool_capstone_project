@@ -1,4 +1,8 @@
 import AllPosts from "./AllPosts";
+import CommentUI from "./SubPages/CommentSection/CommentUI";
+import CommentContextProvider, {
+  useCommentContext,
+} from "./SubPages/CommentSection/CommentsContext";
 import { useAuthContext } from "./contexts/AuthContext";
 
 type TimelineFSProps = {
@@ -7,7 +11,7 @@ type TimelineFSProps = {
 
 function TimelineFS({ setMakeAPostBtn }: TimelineFSProps) {
   const { currentUser } = useAuthContext();
-
+  const { showComments } = useCommentContext();
 
   return (
     <section className="timeline w-[80dvw] h-screen overflow-hidden border-x border-y border-borderGrey flex justify-center  ">
@@ -80,7 +84,7 @@ function TimelineFS({ setMakeAPostBtn }: TimelineFSProps) {
             Recent
           </p>
         </div>
-        <AllPosts />
+        {showComments ? <AllPosts /> : <CommentUI />}
       </div>
     </section>
   );
