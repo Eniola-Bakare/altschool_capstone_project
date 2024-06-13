@@ -11,6 +11,7 @@ const CommentContext = createContext<CommentProps | undefined>(undefined);
 
 type CommentProps = {
   commentText: string;
+  setCommentText: Dispatch<SetStateAction<string>>;
   showComments: boolean;
   setShowComments: Dispatch<SetStateAction<boolean>>;
   currentPost: object;
@@ -24,14 +25,13 @@ export default function CommentContextProvider({
 }) {
   const [showComments, setShowComments] = useState(false);
   const [currentPost, setCurrentPost] = useState({});
-  console.log(showComments);
+  const [commentText, setCommentText] = useState("");
 
-  console.log(children);
-  const commentText = "ghghhghg";
   return (
     <CommentContext.Provider
       value={{
         commentText,
+        setCommentText,
         showComments,
         setShowComments,
         currentPost,

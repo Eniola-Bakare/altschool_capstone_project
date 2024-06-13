@@ -24,10 +24,10 @@ function Button({
           width
             ? `${width} ${
                 disabled ? "cursor-not-allowed" : " cursor-pointer"
-              } h-[56px] py-2 px-4 bg-blue border-2 border-blue text-white rounded-lg font-bold`
+              } h-[56px] py-2 px-4 bg-blue border-2 border-blue text-white rounded-lg font-bold outline-black`
             : `${
                 disabled ? "cursor-not-allowed" : "cursor-pointer"
-              } w-[157px] py-2 px-4 bg-blue border-2 border-blue text-white rounded-lg font-bold`
+              } w-[157px] py-2 px-4 bg-blue border-2 border-blue text-white rounded-lg font-bold outline-black`
         }
       >
         {name}
@@ -41,10 +41,10 @@ function Button({
         width
           ? `${width} ${
               disabled ? "cursor-not-allowed" : " cursor-pointer"
-            } h-[56px] py-2 px-4 bg-white border-2 border-blue text-black rounded-lg font-bold`
+            } h-[56px] py-2 px-4 bg-white border-2 border-blue text-black rounded-lg font-bold outline-blue`
           : `${
               disabled ? "cursor-not-allowed" : "cursor-pointer"
-            } w-[157px] py-2 px-4 bg-white border-2 border-blue text-black rounded-lg font-bold`
+            } w-[157px] py-2 px-4 bg-white border-2 border-blue text-black rounded-lg font-bold outline-blue`
       }
     >
       {name}
