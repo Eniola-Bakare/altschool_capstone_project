@@ -6,6 +6,7 @@ import {
   Timestamp,
   doc,
   getDoc,
+  onSnapshot,
   serverTimestamp,
   updateDoc,
 } from "firebase/firestore";
@@ -13,7 +14,7 @@ import { db } from "../../../firebase/config";
 
 function CommentInput() {
   const { currentUser } = useAuthContext();
-  const { currentPostID } = useCommentContext();
+  const { currentPostID, setEarlierComments } = useCommentContext();
   const [commentText, setCommentText] = useState("");
 
   function handleComment() {
@@ -36,6 +37,11 @@ function CommentInput() {
             ],
           });
         })
+        .then((resp) =>
+          onSnapshot(doc(db, "posts", currentPostID), (doc) => {
+            setEarlierComments(doc?.data().comments);
+          })
+        )
         .catch((err) => console.error(err, "An error occured, try again !"));
     }
     setCommentText("");

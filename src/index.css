@@ -1,5 +1,6 @@
 .all-posts::-webkit-scrollbar,
-.text-editor::-webkit-scrollbar {
+.text-editor::-webkit-scrollbar ,
+.comments::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Opera*/
 }
 

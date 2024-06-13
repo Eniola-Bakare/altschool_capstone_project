@@ -19,8 +19,12 @@ function EachPost({ post }: EachPostProps) {
   const { setUserLocalStorage } = useLocalStorage("currentUser");
   const { currentUser, setCurrentUser, likedLocalItems, setLikedLocalItems } =
     useAuthContext();
-  const { setShowComments, setCurrentPostID, setEarlierComments } =
-    useCommentContext();
+  const {
+    setShowComments,
+    setCurrentPostID,
+    setEarlierComments,
+    setCurrentPost,
+  } = useCommentContext();
 
   const currentUserDocRef = currentUser?.userDocRef;
   console.log(currentUserDocRef);
@@ -264,6 +268,7 @@ function EachPost({ post }: EachPostProps) {
     setShowComments((prev) => !prev);
     setCurrentPostID(postDocRef);
     setEarlierComments(comments);
+    setCurrentPost({ ...post?.postData, ...post?.userData });
   }
 
   return (
@@ -350,7 +355,7 @@ function EachPost({ post }: EachPostProps) {
                 <path d="M10.1484 9.86719C9.60703 9.86719 9.1875 10.2867 9.1875 10.8047C9.1875 11.3227 9.60703 11.7422 10.1484 11.7422C10.643 11.7422 11.0625 11.3227 11.0625 10.8047C11.0625 10.2867 10.643 9.86719 10.1484 9.86719Z" />
               </svg>
 
-              <span>200</span>
+              <span>{comments?.length ? comments?.length : 0}</span>
             </p>
 
             <p

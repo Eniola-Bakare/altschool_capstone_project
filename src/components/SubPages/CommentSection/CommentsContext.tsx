@@ -18,6 +18,8 @@ type CommentProps = {
   setCurrentPostID: Dispatch<SetStateAction<string>>;
   earlierComments: object;
   setEarlierComments: Dispatch<SetStateAction<object>>;
+  currentPost: object;
+  setCurrentPost: Dispatch<SetStateAction<object>>;
 };
 
 export default function CommentContextProvider({
@@ -27,6 +29,7 @@ export default function CommentContextProvider({
 }) {
   const [showComments, setShowComments] = useState(false);
   const [currentPostID, setCurrentPostID] = useState("");
+  const [currentPost, setCurrentPost] = useState({});
   const [commentText, setCommentText] = useState("");
   const [earlierComments, setEarlierComments] = useState([]);
 
@@ -41,6 +44,8 @@ export default function CommentContextProvider({
         setCurrentPostID,
         earlierComments,
         setEarlierComments,
+        currentPost,
+        setCurrentPost,
       }}
     >
       {children}
