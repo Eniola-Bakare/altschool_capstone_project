@@ -13,6 +13,19 @@ function EachComment({ commentDetails }) {
       .catch((err) => console.error(err, "unable to load"));
   }
 
+  const date = new Date(datePublished);
+
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1; // Months are zero-based
+  const day = date.getDate();
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+  const seconds = date.getSeconds();
+
+  const formattedDate = `${year}-${month}-${day}`;
+  const formattedTime = `${hours}:${minutes}:${seconds}`;
+  console.log(formattedDate, formattedTime)
+
   getCommenterDetails();
 
   return (
@@ -25,7 +38,9 @@ function EachComment({ commentDetails }) {
           alt="commenter picture"
           className=" rounded-full w-7"
         />
-        <p className=" font-semibold text-lg">{fName} | {datePublished}</p>
+        <p className=" font-semibold text-lg">
+          {fName} | <span className=" text-grey/50 font-medium">{formattedDate} [{formattedTime}] </span> 
+        </p>
       </div>
       <p className="  p-4 rounded-sm">{commentText}</p>
       {/* <p>{datePublished}</p> */}
