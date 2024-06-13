@@ -14,8 +14,8 @@ type CommentProps = {
   setCommentText: Dispatch<SetStateAction<string>>;
   showComments: boolean;
   setShowComments: Dispatch<SetStateAction<boolean>>;
-  currentPost: object;
-  setCurrentPost: Dispatch<SetStateAction<object>>;
+  currentPostID: object;
+  setCurrentPostID: Dispatch<SetStateAction<object>>;
 };
 
 export default function CommentContextProvider({
@@ -24,7 +24,7 @@ export default function CommentContextProvider({
   children: ReactNode;
 }) {
   const [showComments, setShowComments] = useState(false);
-  const [currentPost, setCurrentPost] = useState({});
+  const [currentPostID, setCurrentPostID] = useState('');
   const [commentText, setCommentText] = useState("");
 
   return (
@@ -34,8 +34,8 @@ export default function CommentContextProvider({
         setCommentText,
         showComments,
         setShowComments,
-        currentPost,
-        setCurrentPost,
+        currentPostID,
+        setCurrentPostID,
       }}
     >
       {children}

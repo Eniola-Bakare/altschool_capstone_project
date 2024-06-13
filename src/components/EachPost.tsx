@@ -18,7 +18,7 @@ function EachPost({ post }: EachPostProps) {
   const { setUserLocalStorage } = useLocalStorage("currentUser");
   const { currentUser, setCurrentUser, likedLocalItems, setLikedLocalItems } =
     useAuthContext();
-  const { setShowComments } = useCommentContext();
+  const { setShowComments, setCurrentPostID } = useCommentContext();
 
   const currentUserDocRef = currentUser?.userDocRef;
   console.log(currentUserDocRef);
@@ -258,6 +258,11 @@ function EachPost({ post }: EachPostProps) {
     }
   }
 
+  function handleComment() {
+    setShowComments((prev) => !prev);
+    setCurrentPostID(postDocRef);
+  }
+
   return (
     <section
       key={post?.id}
@@ -327,7 +332,7 @@ function EachPost({ post }: EachPostProps) {
           >
             <p
               className="flex items-center text-grey gap-2"
-              onClick={() => setShowComments((prev) => !prev)}
+              onClick={handleComment}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"

@@ -2,17 +2,42 @@ import { useState } from "react";
 import Button from "../../Button";
 import { useAuthContext } from "../../contexts/AuthContext";
 import { useCommentContext } from "./CommentsContext";
+import {
+  Timestamp,
+  doc,
+  getDoc,
+  serverTimestamp,
+  updateDoc,
+} from "firebase/firestore";
+import { db } from "../../../firebase/config";
 
 function CommentInput() {
   const { currentUser } = useAuthContext();
+  const { currentPostID } = useCommentContext();
   const [commentText, setCommentText] = useState("");
 
   function handleComment() {
     console.log(commentText);
+    if (commentText.trim() && currentUser) {
+      getDoc(doc(db, "posts", currentPostID))
+        .then((post) => {
+          console.log(post.data());
+          const commentsArr = post?.data().comments || [];
+          const timeStamp = Date.now();
 
-    // handle coment upload
-
-    // clear comment input field
+          return updateDoc(doc(db, "posts", currentPostID), {
+            comments: [
+              ...commentsArr,
+              {
+                commentText: commentText,
+                commenterRef: currentUser?.userDocRef,
+                datePublished: timeStamp,
+              },
+            ],
+          });
+        })
+        .catch((err) => console.error(err, "An error occured, try again !"));
+    }
     setCommentText("");
   }
 
