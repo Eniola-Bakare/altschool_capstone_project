@@ -106,7 +106,7 @@ function EachPost({ post }: EachPostProps) {
       getDoc(doc(db, "posts", postDocRef))
         .then((post) => {
           return updateDoc(doc(db, "posts", postDocRef), {
-            bookmark: post.data().bookmark - 1,
+            bookmark: post.data().bookmark == 0 ? 0 : post.data().bookmark - 1,
           });
         })
         .catch((error) => console.error(error));
@@ -116,10 +116,16 @@ function EachPost({ post }: EachPostProps) {
           console.log(bookmaker.data().bookmarkedItems);
 
           const bookmarkedItemsLocal = bookmaker.data().bookmarkedItems;
+          console.log(bookmarkedItemsLocal);
+          console.log(
+            bookmarkedItemsLocal.filter(
+              (each) => each.postDocRef !== postDocRef
+            )
+          );
 
           updateDoc(doc(db, "users", currentUserDocRef), {
             bookmarkedItems: bookmarkedItemsLocal.filter(
-              (post) => post.postDocRef === postDocRef
+              (post) => post.postDocRef !== postDocRef
             ),
           });
           return onSnapshot(doc(db, "users", currentUserDocRef), (doc) => {
