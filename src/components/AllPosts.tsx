@@ -10,7 +10,7 @@ type UserAndPost = {
 };
 
 type UserDetails = {
-  category: string; 
+  category: string;
   displayName: string;
   email: string;
   fName: string;
@@ -22,7 +22,7 @@ type UserDetails = {
 };
 
 function AllPosts() {
-  const { showComments } = useCommentContext();
+  const { showComments, setShowComments } = useCommentContext();
   const [allPosts, setAllPosts] = useState<UserAndPost[]>([]);
 
   const fetchData = () => {
@@ -36,7 +36,6 @@ function AllPosts() {
 
         getDoc(doc(db, "users", poster))
           .then((resp) => {
-
             const userDoc = { ...resp.data(), userDocRef: resp.id };
             const post = { ...postI, postDocRef: postI.postID };
             setAllPosts((prev) => {
@@ -60,10 +59,10 @@ function AllPosts() {
     });
   };
 
-  // useEffect(() => { 
+  // useEffect(() => {
   //   fetchData();
   // }, []);
-  fetchData()  
+  fetchData();
 
   setInterval(fetchData, 300500);
 

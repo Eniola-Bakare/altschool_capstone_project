@@ -1,23 +1,25 @@
 import { useState } from "react";
 import HeaderFS from "./HeaderFS";
-// import PostsAnalytics from "./PostsAnalytics";
+import PostsAnalytics from "./PostsAnalytics";
 import PublishScreen from "./PublishScreen";
 import TimelineFS from "./TimelineFS";
 import CommentContextProvider from "./SubPages/CommentSection/CommentsContext";
+import { useAuthContext } from "./contexts/AuthContext";
 
 function AsideFS() {
   const [makeAPostBtn, setMakeAPostBtn] = useState(false);
+  const { showAnalytics, showFeed, setShowFeed } = useAuthContext();
 
   const closePublish = () => {
-    setMakeAPostBtn(false);
+    setShowFeed(true);
   };
   return (
     <section className="w-full h-screen flex flex-col items-center gap-10  ">
       <HeaderFS />
       <CommentContextProvider>
-        {!makeAPostBtn && <TimelineFS setMakeAPostBtn={setMakeAPostBtn} />}
-        {/* <PostsAnalytics /> */}
-        {makeAPostBtn && <PublishScreen closePublish={closePublish} />}
+        {showFeed && <TimelineFS />}
+        {showAnalytics && !showFeed && <PostsAnalytics />}
+        {!showFeed && <PublishScreen closePublish={closePublish} />}
       </CommentContextProvider>
     </section>
   );

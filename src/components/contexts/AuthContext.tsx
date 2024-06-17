@@ -48,6 +48,10 @@ type AuthContextTYPE = {
   upDatePosts: () => void;
   allPosts: UserAndPost[];
   setAllPosts: Dispatch<SetStateAction<UserAndPost[]>>;
+  showAnalytics: boolean;
+  setShowAnalytics: Dispatch<SetStateAction<boolean>>;
+  showFeed: boolean;
+  setShowFeed: Dispatch<SetStateAction<boolean>>;
 };
 
 type likedLocalItems = {
@@ -80,6 +84,8 @@ export default function AuthContextProvider({
   const [authUser, setAuthUser] = useState<User | null>(null);
   const [published, setPublished] = useState<boolean>(false);
   const [allPosts, setAllPosts] = useState<UserAndPost[]>([]);
+  const [showAnalytics, setShowAnalytics] = useState(false);
+  const [showFeed, setShowFeed] = useState(false);
 
   const upDatePosts = () => {
     setPublished(true);
@@ -153,6 +159,10 @@ export default function AuthContextProvider({
         upDatePosts,
         allPosts,
         setAllPosts,
+        showAnalytics,
+        setShowAnalytics,
+        showFeed,
+        setShowFeed,
         // likedItems,
         // setLikedItems,
         // liked,

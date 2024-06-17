@@ -24,7 +24,6 @@ function EachComment({ commentDetails }) {
 
   const formattedDate = `${year}-${month}-${day}`;
   const formattedTime = `${hours}:${minutes}:${seconds}`;
-  console.log(formattedDate, formattedTime)
 
   getCommenterDetails();
 

@@ -1,16 +1,10 @@
 import AllPosts from "./AllPosts";
 import CommentUI from "./SubPages/CommentSection/CommentUI";
-import CommentContextProvider, {
-  useCommentContext,
-} from "./SubPages/CommentSection/CommentsContext";
+import { useCommentContext } from "./SubPages/CommentSection/CommentsContext";
 import { useAuthContext } from "./contexts/AuthContext";
 
-type TimelineFSProps = {
-  setMakeAPostBtn: (makeAPostBtn: boolean) => void;
-};
-
-function TimelineFS({ setMakeAPostBtn }: TimelineFSProps) {
-  const { currentUser } = useAuthContext();
+function TimelineFS() {
+  const { currentUser, setShowFeed } = useAuthContext();
   const { showComments } = useCommentContext();
 
   return (
@@ -34,7 +28,7 @@ function TimelineFS({ setMakeAPostBtn }: TimelineFSProps) {
 
           <button
             className=" h-[56px] py-2 px-4 bg-blue border-2 border-blue text-white rounded-lg font-bold flex gap-3 items-center justify-center"
-            onClick={() => setMakeAPostBtn(true)}
+            onClick={() => setShowFeed(false)}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -84,7 +78,7 @@ function TimelineFS({ setMakeAPostBtn }: TimelineFSProps) {
             Recent
           </p>
         </div>
-        {showComments ? <AllPosts /> : <CommentUI />}
+        {!showComments ? <AllPosts /> : <CommentUI />}
       </div>
     </section>
   );

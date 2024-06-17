@@ -2,6 +2,11 @@ import PostAnalysis from "./PostAnalysis";
 import PostAnlySummary from "./PostAnlySummary";
 
 function PostsAnalytics() {
+function postAnalytics(){
+  
+}
+
+
   return (
     <section className="w-[80%] flex flex-col gap-3 self-start pl-14 ">
       <p className="font-bold text-3xl">Posts analytics</p>

@@ -6,7 +6,7 @@ import { useAuthContext } from "./contexts/AuthContext";
 import { useLocalStorage } from "./actions/LocalStorage";
 
 function SidebarFS() {
-  const { setSignedIn } = useAuthContext();
+  const { setSignedIn, setShowAnalytics, setShowFeed } = useAuthContext();
   const navigate = useNavigate();
   const { removeUserLocalStorage } = useLocalStorage("currentUser");
 
@@ -20,6 +20,15 @@ function SidebarFS() {
       .catch((error) => console.log("an error occured", error));
   }
 
+  function handleShowAnalytics() {
+    setShowAnalytics(true);
+    setShowFeed(false);
+  }
+  function handleFeed() {
+    setShowFeed(true);
+    setShowAnalytics(false)
+  }
+
   return (
     <aside className="w-[24%] pr-8 h-screen flex flex-col justify-evenly items-center border-r border-borderGrey">
       <LogoText />
@@ -27,7 +36,10 @@ function SidebarFS() {
       <div className="sidebar-first">
         <p className="text-lg text-black pb-4 font-medium">Overview</p>
         <ul className="flex flex-col gap-4 pl-7">
-          <li className="flex gap-3 text-grey hover:text-blue ">
+          <li
+            className="flex gap-3 text-grey hover:text-blue "
+            onClick={handleFeed}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
@@ -83,7 +95,10 @@ function SidebarFS() {
             </svg>
             Drafts
           </li>
-          <li className="flex gap-3 text-grey hover:text-blue ">
+          <li
+            className="flex gap-3 text-grey hover:text-blue "
+            onClick={handleShowAnalytics}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
