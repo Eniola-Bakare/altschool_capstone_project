@@ -9,7 +9,7 @@ import {
   startAfter,
 } from "firebase/firestore";
 import { db } from "../firebase/config";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import EachPost from "./EachPost";
 import { useCommentContext } from "./SubPages/CommentSection/CommentsContext";
 
@@ -31,7 +31,6 @@ type UserDetails = {
 };
 
 function AllPosts() {
-  const { showComments, setShowComments } = useCommentContext();
   const [allPosts, setAllPosts] = useState<UserAndPost[]>([]);
 
   let lastDoc = null;

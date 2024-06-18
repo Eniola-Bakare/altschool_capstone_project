@@ -122,7 +122,6 @@ export default function AuthContextProvider({
     setOTP(newOTP);
   }
 
-  console.log(allPosts);
   return (
     <AuthContext.Provider
       value={{

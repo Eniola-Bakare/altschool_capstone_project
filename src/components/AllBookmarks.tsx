@@ -1,9 +1,55 @@
-import React from 'react'
+import { useState } from "react";
+import { useAuthContext } from "./contexts/AuthContext";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../firebase/config";
+import EachPost from "./EachPost";
 
 function AllBookmarks() {
+  const { currentUser } = useAuthContext();
+  const [bookmarkedPosts, setBookmarkedPosts] = useState([]);
+
+  const bookmarkedItems = currentUser?.bookmarkedItems;
+  console.log(bookmarkedItems);
+
+  const getData = () => {
+    bookmarkedItems.forEach((each) => {
+      getDoc(doc(db, "posts", each?.postDocRef)).then((post) => {
+        const postI = post.data();
+        const poster = postI?.userID;
+
+        getDoc(doc(db, "users", poster))
+          .then((resp) => {
+            const userDoc = { ...resp.data(), userDocRef: resp.id };
+            const post = { ...postI, postDocRef: postI?.postID };
+            setBookmarkedPosts((prev) => {
+              if (prev.length === 0) {
+                return [{ userData: userDoc, postData: post }];
+              } else {
+                const postExists = prev.some(
+                  (each) => each.postData?.postDocRef === post.postDocRef
+                );
+
+                if (!postExists) {
+                  return [...prev, { userData: userDoc, postData: post }];
+                }
+
+                return prev;
+              }
+            });
+          })
+          .catch((err) => console.error(err));
+      });
+    });
+  };
+
+  getData();
   return (
-    <div>AllBookmarks</div>
-  )
+    <div className=" overflow-scroll">
+      {bookmarkedPosts.map((each) => (
+        <EachPost post={each} key={each?.postData?.postDocRef} />
+      ))}
+    </div>
+  );
 }
 
-export default AllBookmarks
+export default AllBookmarks;
