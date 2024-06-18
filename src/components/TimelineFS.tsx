@@ -4,7 +4,7 @@ import { useCommentContext } from "./SubPages/CommentSection/CommentsContext";
 import { useAuthContext } from "./contexts/AuthContext";
 
 function TimelineFS() {
-  const { currentUser, setShowFeed } = useAuthContext();
+  const { currentUser, setScreenToShow } = useAuthContext();
   const { showComments } = useCommentContext();
 
   return (
@@ -28,7 +28,7 @@ function TimelineFS() {
 
           <button
             className=" h-[56px] py-2 px-4 bg-blue border-2 border-blue text-white rounded-lg font-bold flex gap-3 items-center justify-center"
-            onClick={() => setShowFeed(false)}
+            onClick={() => setScreenToShow("publish")}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

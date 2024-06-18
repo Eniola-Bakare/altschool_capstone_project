@@ -24,6 +24,8 @@ type AuthContextTYPE = {
   setFName: (name: string) => void;
   lName: string;
   setLName: (lName: string) => void;
+  screenToShow: string;
+  setScreenToShow: (screenToShow: string) => void;
   signedIn: boolean;
   setSignedIn: (signedIn: boolean) => void;
   newPost: boolean;
@@ -86,6 +88,7 @@ export default function AuthContextProvider({
   const [allPosts, setAllPosts] = useState<UserAndPost[]>([]);
   const [showAnalytics, setShowAnalytics] = useState(false);
   const [showFeed, setShowFeed] = useState(true);
+  const [screenToShow, setScreenToShow] = useState("feed");
 
   const upDatePosts = () => {
     setPublished(true);
@@ -163,6 +166,8 @@ export default function AuthContextProvider({
         setShowAnalytics,
         showFeed,
         setShowFeed,
+        screenToShow,
+        setScreenToShow,
         // likedItems,
         // setLikedItems,
         // liked,

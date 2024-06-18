@@ -14,14 +14,8 @@ import {
 } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
-type PublishProps = {
-  closePublish: () => void;
-  // screenTwo: boolean;
-  // setScreenTwo: (screenTwo: boolean) => void;
-};
-
-function PublishScreen({ closePublish }: PublishProps) {
-  const { currentUser, setNewPost } = useAuthContext();
+function PublishScreen() {
+  const { currentUser, setNewPost, setScreenToShow } = useAuthContext();
   const [screenTwo, setScreenTwo] = useState(false);
   const [screenOne, setScreenOne] = useState(true);
   const [post, setPost] = useState(true);
@@ -85,7 +79,6 @@ function PublishScreen({ closePublish }: PublishProps) {
             datePublished: serverTimestamp(),
           });
 
-
           return addDoc(postDB, {
             ...newPost,
             attachment: downloadURL,
@@ -99,19 +92,19 @@ function PublishScreen({ closePublish }: PublishProps) {
         })
         .then((ref) => {
           setNewPost(true);
-          closePublish();
+          setScreenToShow("feed");
           setPost(false);
         })
         .catch((err) => console.log("error adding doc", err));
     }
   };
 
-  const openScreenOne = (e: React.MouseEvent<HTMLElement>) => {
-    // e.stopPropagation();
-    setScreenOne(true);
-    setScreenTwo(false);
-    setScreenThree(false);
-  };
+  // const openScreenOne = (e: React.MouseEvent<HTMLElement>) => {
+  //   // e.stopPropagation();
+  //   setScreenOne(true);
+  //   setScreenTwo(false);
+  //   setScreenThree(false);
+  // };
   const openFileInputImg = () => {
     console.log("here now");
     if (fileInputRefImg.current) {
@@ -152,7 +145,7 @@ function PublishScreen({ closePublish }: PublishProps) {
       <div className="publish-buttn-div w-full justify-end self-end flex gap-6">
         <div
           className="back-arrow top-10 flex items-center gap-3 cursor-pointer"
-          onClick={closePublish}
+          onClick={() => setScreenToShow("feed")}
         >
           <img src="/arrowcircleleft.png" alt="arrow circle" />
           <p className="text-[#55524F] text-sm">Back</p>

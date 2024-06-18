@@ -5,21 +5,21 @@ import PublishScreen from "./PublishScreen";
 import TimelineFS from "./TimelineFS";
 import CommentContextProvider from "./SubPages/CommentSection/CommentsContext";
 import { useAuthContext } from "./contexts/AuthContext";
+import AllBookmarks from "./AllBookmarks";
 
 function AsideFS() {
   const [makeAPostBtn, setMakeAPostBtn] = useState(false);
-  const { showAnalytics, showFeed, setShowFeed } = useAuthContext();
+  const { showAnalytics, showFeed, setShowFeed, screenToShow } =
+    useAuthContext();
 
-  const closePublish = () => {
-    setShowFeed(true);
-  };
   return (
     <section className="w-full h-screen flex flex-col items-center gap-10  ">
       <HeaderFS />
       <CommentContextProvider>
-        {showFeed && <TimelineFS />}
-        {showAnalytics && !showFeed && <PostsAnalytics />}
-        {!showFeed && !showAnalytics && <PublishScreen closePublish={closePublish} />}
+        {screenToShow == "feed" && <TimelineFS />}
+        {screenToShow == "analytics" && <PostsAnalytics />}
+        {screenToShow == "bookmarks" && <AllBookmarks />}
+        {screenToShow == "publish" && <PublishScreen />}
       </CommentContextProvider>
     </section>
   );
