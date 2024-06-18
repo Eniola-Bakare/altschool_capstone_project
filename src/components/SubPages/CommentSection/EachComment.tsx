@@ -1,9 +1,15 @@
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 import React, { useState } from "react";
 import { db } from "../../../firebase/config";
+import { useAuthContext } from "../../contexts/AuthContext";
+import { useCommentContext } from "./CommentsContext";
+import { update } from "firebase/database";
 
-function EachComment({ commentDetails }) {
+function EachComment({ commentDetails, userID }) {
   const { commentText, commenterRef, datePublished } = commentDetails;
+  const { currentUser } = useAuthContext();
+  const { currentPost, earlierComments, setEarlierComments } =
+    useCommentContext();
   const [commenterDetails, setcommenterDetails] = useState({});
   const { photoURL, fName } = commenterDetails;
 
@@ -27,22 +33,44 @@ function EachComment({ commentDetails }) {
 
   getCommenterDetails();
 
+  function handleCommentDelete(commentDetails) {
+    if (confirm("Do you want to delete your comment?")) {
+      setEarlierComments((prev) => {
+        const updated = prev.filter(
+          (each) => each.commentID !== commentDetails?.commentID
+        );
+        updateDoc(doc(db, "posts", currentPost?.postID), {
+          comments: updated,
+        });
+        console.log(updated);
+        return updated;
+      });
+    }
+  }
+
   return (
     <div className=" mt-10">
       {/* EachComment */}
 
-      <div className="commenter-details bg-borderGrey/10 p-5 rounded-lg flex items-center gap-1 w-full">
-        <img
-          src={photoURL}
-          alt="commenter picture"
-          className=" rounded-full w-7"
-        />
-        <p className=" font-semibold text-lg">
-          {fName} | <span className=" text-grey/50 font-medium">{formattedDate} [{formattedTime}] </span> 
-        </p>
+      <div className="commenter-details bg-borderGrey/10 p-5 rounded-lg flex justify-between items-center gap-1 w-full">
+        <div className=" flex gap-3">
+          <img
+            src={photoURL}
+            alt="commenter picture"
+            className=" rounded-full w-7"
+          />
+          <p className=" font-semibold text-lg">
+            {fName} |{" "}
+            <span className=" text-grey/50 font-medium">
+              {formattedDate} [{formattedTime}]{" "}
+            </span>
+          </p>
+        </div>
+        {currentUser?.userDocRef == commenterRef && (
+          <p onClick={() => handleCommentDelete(commentDetails)}>DELETE</p>
+        )}
       </div>
       <p className="  p-4 rounded-sm">{commentText}</p>
-      {/* <p>{datePublished}</p> */}
     </div>
   );
 }

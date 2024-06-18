@@ -2,15 +2,9 @@ import { useState } from "react";
 import Button from "../../Button";
 import { useAuthContext } from "../../contexts/AuthContext";
 import { useCommentContext } from "./CommentsContext";
-import {
-  Timestamp,
-  doc,
-  getDoc,
-  onSnapshot,
-  serverTimestamp,
-  updateDoc,
-} from "firebase/firestore";
+import { doc, getDoc, onSnapshot, updateDoc } from "firebase/firestore";
 import { db } from "../../../firebase/config";
+import { v4 as uuidv4 } from "uuid";
 
 function CommentInput() {
   const { currentUser } = useAuthContext();
@@ -18,7 +12,6 @@ function CommentInput() {
   const [commentText, setCommentText] = useState("");
 
   function handleComment() {
-    console.log(commentText);
     if (commentText.trim() && currentUser) {
       getDoc(doc(db, "posts", currentPostID))
         .then((post) => {
@@ -33,6 +26,7 @@ function CommentInput() {
                 commentText: commentText,
                 commenterRef: currentUser?.userDocRef,
                 datePublished: timeStamp,
+                commentID: uuidv4(),
               },
             ],
           });
