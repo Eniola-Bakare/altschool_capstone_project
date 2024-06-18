@@ -329,7 +329,10 @@ function EachPost({ post }: EachPostProps) {
                 __html: `${postText.substring(0, 200)}...`,
               }}
             />
-            <p className=" pt-5 underline text-lg font-semibold text-grey">
+            <p
+              className=" pt-5 underline text-lg font-semibold text-grey"
+              onClick={handleComment}
+            >
               see more
             </p>
           </div>

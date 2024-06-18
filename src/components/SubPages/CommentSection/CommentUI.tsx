@@ -7,8 +7,6 @@ function CommentUI() {
   const { setShowComments, earlierComments, currentPost } = useCommentContext();
   const { postText, attachment, fName, photoURL, lName, userID } = currentPost;
 
-  console.log(currentPost);
-  console.log(earlierComments);
   return (
     <div className="comments w-[100%] mt-16 h-full flex flex-col overflow-scroll ">
       <div className="currentPost">

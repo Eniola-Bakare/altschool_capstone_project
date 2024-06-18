@@ -1,7 +1,25 @@
+import { useEffect, useState } from "react";
 import { useAuthContext } from "./contexts/AuthContext";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { db } from "../firebase/config";
 
 function HeaderFS() {
   const { currentUser } = useAuthContext();
+  const [searchText, setSearchText] = useState("");
+
+  useEffect(() => {
+    getDocs(
+      query(
+        collection(db, "posts"),
+        where("keywords", "array-contains-any", searchText.split(" "))
+      )
+    ).then((response) => console.log(response.size));
+  }, [searchText]);
+
+  useEffect(() => {
+    setSearchText("");
+  }, []);
+
   return (
     <section className="w-full flex justify-end items-center border-borderGrey border-x border-b py-[15px] pr-[129px] pl-[310px] ">
       <div className="serch+profile flex justify-end gap-56 w-full">
@@ -20,8 +38,10 @@ function HeaderFS() {
           </svg>
           <input
             type="text"
-            placeholder="seach chatter"
+            placeholder="search chatter"
             className="text-lg h-full w-full focus:outline-0"
+            value={searchText}
+            onChange={(e) => setSearchText(e?.target?.value)}
           />
         </div>
 

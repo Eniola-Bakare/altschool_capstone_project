@@ -47,12 +47,14 @@ function PublishScreen() {
 
       // const markDownText = <Markdown>{postText}</Markdown>;
       // setPostText((prev) => );
+      const keywords = postText.split(/[\W_]+/);
       const newPost = {
         attachment,
         postText,
         likes: 0,
         bookmark: false,
         userID,
+        keywords,
       };
       console.log(attachment);
 
