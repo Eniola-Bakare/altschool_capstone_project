@@ -17,8 +17,13 @@ function EachPost({ post }: EachPostProps) {
     post?.postData;
   const { userDocRef, photoURL, fName, lName, category } = post?.userData;
   const { setUserLocalStorage } = useLocalStorage("currentUser");
-  const { currentUser, setCurrentUser, likedLocalItems, setLikedLocalItems } =
-    useAuthContext();
+  const {
+    currentUser,
+    setCurrentUser,
+    likedLocalItems,
+    setLikedLocalItems,
+    setScreenToShow,
+  } = useAuthContext();
   const {
     setShowComments,
     setCurrentPostID,
@@ -27,7 +32,6 @@ function EachPost({ post }: EachPostProps) {
   } = useCommentContext();
 
   const currentUserDocRef = currentUser?.userDocRef;
-  console.log(currentUserDocRef);
   const currentUserBookMarks = currentUser?.bookmarkedItems;
   // console.log(first)
 
@@ -265,8 +269,8 @@ function EachPost({ post }: EachPostProps) {
   }
 
   function handleComment() {
-    console.log("first");
-    setShowComments((prev) => !prev);
+    setScreenToShow("feed");
+    setShowComments("comments");
     setCurrentPostID(postDocRef);
     setEarlierComments(comments);
     setCurrentPost({ ...post?.postData, ...post?.userData });

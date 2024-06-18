@@ -12,8 +12,8 @@ const CommentContext = createContext<CommentProps | undefined>(undefined);
 type CommentProps = {
   commentText: string;
   setCommentText: Dispatch<SetStateAction<string>>;
-  showComments: boolean;
-  setShowComments: Dispatch<SetStateAction<boolean>>;
+  showComments: string;
+  setShowComments: Dispatch<SetStateAction<string>>;
   currentPostID: string;
   setCurrentPostID: Dispatch<SetStateAction<string>>;
   earlierComments: object;
@@ -27,7 +27,7 @@ export default function CommentContextProvider({
 }: {
   children: ReactNode;
 }) {
-  const [showComments, setShowComments] = useState(false);
+  const [showComments, setShowComments] = useState("allPosts");
   const [currentPostID, setCurrentPostID] = useState("");
   const [currentPost, setCurrentPost] = useState({});
   const [commentText, setCommentText] = useState("");

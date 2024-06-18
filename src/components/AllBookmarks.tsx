@@ -1,17 +1,17 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuthContext } from "./contexts/AuthContext";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../firebase/config";
 import EachPost from "./EachPost";
+import { useCommentContext } from "./SubPages/CommentSection/CommentsContext";
 
 function AllBookmarks() {
   const { currentUser } = useAuthContext();
   const [bookmarkedPosts, setBookmarkedPosts] = useState([]);
 
-  const bookmarkedItems = currentUser?.bookmarkedItems;
-  console.log(bookmarkedItems);
-
   const getData = () => {
+    const bookmarkedItems = currentUser?.bookmarkedItems;
+    console.log(bookmarkedItems);
     bookmarkedItems.forEach((each) => {
       getDoc(doc(db, "posts", each?.postDocRef)).then((post) => {
         const postI = post.data();
@@ -42,10 +42,13 @@ function AllBookmarks() {
     });
   };
 
-  getData();
+  useEffect(() => {
+    getData();
+  }, []);
+
   return (
     <div className=" overflow-scroll">
-      {bookmarkedPosts.map((each) => (
+      {bookmarkedPosts?.map((each) => (
         <EachPost post={each} key={each?.postData?.postDocRef} />
       ))}
     </div>

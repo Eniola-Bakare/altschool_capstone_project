@@ -78,7 +78,8 @@ function TimelineFS() {
             Recent
           </p>
         </div>
-        {!showComments ? <AllPosts /> : <CommentUI />}
+        {showComments == "comments" && <CommentUI />}
+        {showComments == "allPosts" && <AllPosts />}
       </div>
     </section>
   );

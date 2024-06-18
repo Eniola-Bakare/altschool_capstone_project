@@ -83,9 +83,7 @@ function AllPosts() {
     fetchData();
   };
 
-  // useEffect(() => {
-  //   fetchData();
-  // }, []);
+
   fetchData();
 
   setInterval(fetchData, 300500);
