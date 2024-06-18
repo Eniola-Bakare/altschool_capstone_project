@@ -1,11 +1,12 @@
 import AllPosts from "./AllPosts";
 import CommentUI from "./SubPages/CommentSection/CommentUI";
 import { useCommentContext } from "./SubPages/CommentSection/CommentsContext";
+import YourPosts from "./YourPosts";
 import { useAuthContext } from "./contexts/AuthContext";
 
 function TimelineFS() {
   const { currentUser, setScreenToShow } = useAuthContext();
-  const { showComments } = useCommentContext();
+  const { showComments, setShowComments } = useCommentContext();
 
   return (
     <section className="timeline w-[80dvw] h-screen overflow-hidden border-x border-y border-borderGrey flex justify-center  ">
@@ -68,18 +69,25 @@ function TimelineFS() {
         </div>
 
         <div className="tab border border-borderGrey h-[58px] px-[50px] py-7 flex justify-between rounded-lg items-center ">
-          <p className="font-semibold text-lg cursor-pointer hover:pb-[30px] hover:border-b-2 hover:border-blue">
-            For you
+          <p
+            className="font-semibold text-lg cursor-pointer hover:pb-[10px] hover:border-b-2 hover:border-blue"
+            onClick={() => setShowComments("allPosts")}
+          >
+            All Posts
           </p>
-          <p className="font-semibold text-lg cursor-pointer hover:pb-[30px] hover:border-b-2 hover:border-blue">
+          <p className="font-semibold text-lg cursor-pointer hover:pb-[10px] hover:border-b-2 hover:border-blue  ">
             Featured
           </p>
-          <p className="font-semibold text-lg cursor-pointer hover:pb-[30px] hover:border-b-2 hover:border-blue">
-            Recent
+          <p
+            className="font-semibold text-lg cursor-pointer hover:pb-[10px] hover:border-b-2 hover:border-blue"
+            onClick={() => setShowComments("yourPosts")}
+          >
+            Your posts
           </p>
         </div>
         {showComments == "comments" && <CommentUI />}
         {showComments == "allPosts" && <AllPosts />}
+        {showComments == "yourPosts" && <AllPosts currentUser={currentUser} />}
       </div>
     </section>
   );

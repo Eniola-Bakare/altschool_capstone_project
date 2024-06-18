@@ -7,6 +7,7 @@ import {
   orderBy,
   query,
   startAfter,
+  where,
 } from "firebase/firestore";
 import { db } from "../firebase/config";
 import { useState } from "react";
@@ -30,23 +31,28 @@ type UserDetails = {
   uid: string;
 };
 
-function AllPosts() {
+type CurrentUserProp = {
+  currentUser?: object | null;
+};
+
+function AllPosts({ currentUser }: CurrentUserProp) {
   const [allPosts, setAllPosts] = useState<UserAndPost[]>([]);
 
   let lastDoc = null;
+  let postDB = collection(db, "posts");
 
-  const postDB = collection(db, "posts");
   const fetchData = () => {
-    let queryy = query(postDB, orderBy("datePublished", "desc"), limit(10));
+    let queryConstraints = [orderBy("datePublished", "desc"), limit(10)];
 
     if (lastDoc) {
-      queryy = query(
-        postDB,
-        orderBy("datePublished", "desc"),
-        startAfter(lastDoc),
-        limit(10)
-      );
+      queryConstraints.push(startAfter(lastDoc));
     }
+
+    if (currentUser) {
+      queryConstraints.push(where("userID", "==", currentUser?.userDocRef));
+    }
+
+    const queryy = query(postDB, ...queryConstraints);
     getDocs(queryy).then((postDetails) => {
       postDetails.forEach((eachPost) => {
         // poster details
@@ -82,7 +88,6 @@ function AllPosts() {
   const fetchMorePost = () => {
     fetchData();
   };
-
 
   fetchData();
 
