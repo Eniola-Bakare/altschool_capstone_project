@@ -1,4 +1,13 @@
-import { collection, doc, getDoc, getDocs } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  limit,
+  orderBy,
+  query,
+  startAfter,
+} from "firebase/firestore";
 import { db } from "../firebase/config";
 import { useEffect, useState } from "react";
 import EachPost from "./EachPost";
@@ -25,10 +34,21 @@ function AllPosts() {
   const { showComments, setShowComments } = useCommentContext();
   const [allPosts, setAllPosts] = useState<UserAndPost[]>([]);
 
-  const fetchData = () => {
-    const postDB = collection(db, "posts");
+  let lastDoc = null;
 
-    getDocs(postDB).then((postDetails) => {
+  const postDB = collection(db, "posts");
+  const fetchData = () => {
+    let queryy = query(postDB, orderBy("datePublished", "desc"), limit(10));
+
+    if (lastDoc) {
+      queryy = query(
+        postDB,
+        orderBy("datePublished", "desc"),
+        startAfter(lastDoc),
+        limit(10)
+      );
+    }
+    getDocs(queryy).then((postDetails) => {
       postDetails.forEach((eachPost) => {
         // poster details
         const postI = eachPost.data();
@@ -56,7 +76,12 @@ function AllPosts() {
           })
           .catch((err) => console.error(err));
       });
+      lastDoc = postDetails.docs[postDetails.docs.length - 1];
     });
+  };
+
+  const fetchMorePost = () => {
+    fetchData();
   };
 
   // useEffect(() => {
@@ -67,10 +92,17 @@ function AllPosts() {
   setInterval(fetchData, 300500);
 
   return (
-    <div className="all-posts tab flex flex-col justify-between items-center h-screen overflow-y-auto">
+    <div className="all-posts tab flex flex-col justify-between items-center h-screen overflow-y-auto relative">
       {allPosts.map((post) => (
         <EachPost key={post?.id} post={post} />
       ))}
+
+      <p
+        className=" mb-4 pb-4 bg-blue px-5 pt-4 rounded-full text-white font-semibold text-lg "
+        onClick={fetchMorePost}
+      >
+        Fetch More posts
+      </p>
     </div>
   );
 }

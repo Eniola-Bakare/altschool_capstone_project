@@ -19,7 +19,7 @@ function AsideFS() {
       <CommentContextProvider>
         {showFeed && <TimelineFS />}
         {showAnalytics && !showFeed && <PostsAnalytics />}
-        {!showFeed && <PublishScreen closePublish={closePublish} />}
+        {!showFeed && !showAnalytics && <PublishScreen closePublish={closePublish} />}
       </CommentContextProvider>
     </section>
   );

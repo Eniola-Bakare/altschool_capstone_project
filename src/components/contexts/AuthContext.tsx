@@ -85,7 +85,7 @@ export default function AuthContextProvider({
   const [published, setPublished] = useState<boolean>(false);
   const [allPosts, setAllPosts] = useState<UserAndPost[]>([]);
   const [showAnalytics, setShowAnalytics] = useState(false);
-  const [showFeed, setShowFeed] = useState(false);
+  const [showFeed, setShowFeed] = useState(true);
 
   const upDatePosts = () => {
     setPublished(true);

@@ -292,7 +292,7 @@ function EachPost({ post }: EachPostProps) {
           <p className="text-lg text-grey">
             {category} <strong className="text-grey text-borderGrey">|</strong>{" "}
             <span>
-              {monthName} {date?.getDate()},{date?.getFullYear()}
+              {monthName} {date?.getDate()}, {date?.getFullYear()}
             </span>
           </p>
         </div>
