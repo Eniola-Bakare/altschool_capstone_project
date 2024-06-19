@@ -58,8 +58,6 @@ function AllPosts({ currentUser }: CurrentUserProp) {
     const queryy = query(postDB, ...queryConstraints);
     getDocs(queryy).then((postDetails) => {
       postDetails.forEach((eachPost) => {
-        const newPosts = [];
-
         // poster details
         const postI = eachPost.data();
         const poster = postI.userID;
@@ -68,10 +66,21 @@ function AllPosts({ currentUser }: CurrentUserProp) {
           .then((resp) => {
             const userDoc = { ...resp.data(), userDocRef: resp.id };
             const post = { ...postI, postDocRef: postI.postID };
-            newPosts.push({ userData: userDoc, postData: post });
-            if (newPosts.length === postDetails.size) {
-              setAllPosts(newPosts);
-            }
+            setAllPosts((prev) => {
+              if (prev.length === 0) {
+                return [{ userData: userDoc, postData: post }];
+              } else {
+                const postExists = prev.some(
+                  (each) => each.postData.postDocRef === post.postDocRef
+                );
+
+                if (!postExists) {
+                  return [...prev, { userData: userDoc, postData: post }];
+                }
+
+                return prev;
+              }
+            });
           })
           .catch((err) => console.error(err));
       });
