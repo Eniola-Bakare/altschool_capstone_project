@@ -75,7 +75,6 @@ function EachPost({ post }: EachPostProps) {
     if (alreadyBookMarked < 0 || alreadyBookMarked == undefined)
       setBookmarked(false);
     else setBookmarked(true);
-    console.log(alreadyBookMarked);
   }, []);
 
   useEffect(() => {

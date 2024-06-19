@@ -54,6 +54,8 @@ type AuthContextTYPE = {
   setShowAnalytics: Dispatch<SetStateAction<boolean>>;
   showFeed: boolean;
   setShowFeed: Dispatch<SetStateAction<boolean>>;
+  searchText: string;
+  setSearchText: Dispatch<SetStateAction<string>>;
 };
 
 type likedLocalItems = {
@@ -89,6 +91,7 @@ export default function AuthContextProvider({
   const [showAnalytics, setShowAnalytics] = useState(false);
   const [showFeed, setShowFeed] = useState(true);
   const [screenToShow, setScreenToShow] = useState("feed");
+  const [searchText, setSearchText] = useState("");
 
   const upDatePosts = () => {
     setPublished(true);
@@ -167,6 +170,8 @@ export default function AuthContextProvider({
         setShowFeed,
         screenToShow,
         setScreenToShow,
+        searchText,
+        setSearchText
         // likedItems,
         // setLikedItems,
         // liked,

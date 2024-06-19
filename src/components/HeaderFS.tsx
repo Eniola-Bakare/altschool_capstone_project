@@ -1,24 +1,19 @@
 import { useEffect, useState } from "react";
 import { useAuthContext } from "./contexts/AuthContext";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  where,
+} from "firebase/firestore";
 import { db } from "../firebase/config";
 
 function HeaderFS() {
-  const { currentUser } = useAuthContext();
-  const [searchText, setSearchText] = useState("");
+  const { currentUser, searchText, setSearchText } = useAuthContext();
 
-  useEffect(() => {
-    getDocs(
-      query(
-        collection(db, "posts"),
-        where("keywords", "array-contains-any", searchText.split(" "))
-      )
-    ).then((response) => console.log(response.size));
-  }, [searchText]);
-
-  useEffect(() => {
-    setSearchText("");
-  }, []);
+  
 
   return (
     <section className="w-full flex justify-end items-center border-borderGrey border-x border-b py-[15px] pr-[129px] pl-[310px] ">

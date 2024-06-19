@@ -42,9 +42,9 @@ function PostsAnalytics() {
         return userPosts.docs
           .map((each) => {
             const dataEach = each.data();
-            return (
-              dataEach.bookmark + dataEach.comments.length * 2 + dataEach.likes
-            );
+            return dataEach.bookmark + dataEach?.comments?.length * 2 > 0
+              ? dataEach.comments?.length * 2
+              : 0 + dataEach.likes;
           })
           .reduce((total, acc) => {
             return total + acc;
@@ -55,9 +55,9 @@ function PostsAnalytics() {
         (highestPost, currentPost) => {
           const currentPoste = currentPost.data();
           const currentScore =
-            currentPoste.bookmark +
-            currentPoste.comments.length * 2 +
-            currentPoste.likes;
+            currentPoste.bookmark + currentPoste?.comments?.length * 2 > 0
+              ? currentPoste?.comments?.length * 2
+              : 0 + currentPoste.likes;
           const highestScore = highestPost.score || 0;
 
           if (currentScore > highestScore) {
@@ -71,6 +71,7 @@ function PostsAnalytics() {
 
       setHighestScore(highestScorePost);
       console.log("post with highest score", highestScorePost);
+      console.log(totalImpression);
     });
   }
   const dateNow = new Date();
@@ -83,7 +84,7 @@ function PostsAnalytics() {
   }, []);
 
   return (
-    <section className="w-[80%] flex flex-col gap-3 self-start pl-14 ">
+    <section className="w-[80%] flex flex-col gap-3 self-start pl-14  overflow-scroll">
       <p className="font-bold text-3xl">Posts analytics</p>
 
       <div className="post-date-details">
