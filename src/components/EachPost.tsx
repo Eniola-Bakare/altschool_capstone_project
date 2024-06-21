@@ -82,9 +82,20 @@ function EachPost({ post }: EachPostProps) {
   }, []);
 
   async function handleBookmark() {
-    console.log(alreadyBookMarked);
-    console.log(currentUserDocRef);
+    const recentNotif1 = await getDoc(doc(db, "users", userDocRef));
+    const recentNotif = recentNotif1?.data().recentNotification;
+
     if (alreadyBookMarked < 0 || alreadyBookMarked == undefined) {
+      updateDoc(doc(db, "users", userDocRef), {
+        recentNotification: [
+          ...(recentNotif || []),
+          {
+            postDocRef,
+            userDocRef,
+            type: "bookmark",
+          },
+        ],
+      });
       getDoc(doc(db, "posts", postDocRef))
         .then((post) => {
           return updateDoc(doc(db, "posts", postDocRef), {
@@ -114,6 +125,11 @@ function EachPost({ post }: EachPostProps) {
         });
       });
     } else if (alreadyBookMarked >= 0) {
+      updateDoc(doc(db, "users", userDocRef), {
+        recentNotification: recentNotif.filter(
+          (post) => !(post?.type == "bookmark" && post.postDocRef == postDocRef)
+        ),
+      });
       getDoc(doc(db, "posts", postDocRef))
         .then((post) => {
           return updateDoc(doc(db, "posts", postDocRef), {
@@ -159,8 +175,21 @@ function EachPost({ post }: EachPostProps) {
     const getCLike = getCurrentLike.data();
     const currentLike = await getCLike?.likes;
 
+    const recentNotif1 = (await getDoc(doc(db, "users", userDocRef))) || [];
+    const recentNotif = recentNotif1?.data().recentNotification;
+
     if (alreadyLiked == undefined) {
       // console.log("adding now, not there beforeeeeeeeeeeeee 2");
+      updateDoc(doc(db, "users", userDocRef), {
+        recentNotification: [
+          ...(recentNotif || []),
+          {
+            postDocRef,
+            userDocRef,
+            type: "like",
+          },
+        ],
+      });
       setLikedLocalItems((prev) => {
         const updated = [{ postDocRef: postDocRef, userDocRef: userDocRef }];
         updateDoc(doc(db, "posts", postDocRef), {
@@ -195,6 +224,16 @@ function EachPost({ post }: EachPostProps) {
     }
     if (alreadyLiked < 0) {
       // console.log("adding now, not there beforeeeeeeeeeeeee 2");
+      updateDoc(doc(db, "users", userDocRef), {
+        recentNotification: [
+          ...recentNotif,
+          {
+            postDocRef,
+            userDocRef,
+            type: "like",
+          },
+        ],
+      });
       setLikedLocalItems((prev) => {
         const updated = [
           ...prev,
@@ -231,6 +270,11 @@ function EachPost({ post }: EachPostProps) {
       });
     } else if (alreadyLiked >= 0) {
       // console.log("removing now, not there befoe");
+      updateDoc(doc(db, "users", userDocRef), {
+        recentNotification: recentNotif.filter(
+          (post) => !(post?.type == "like" && post.postDocRef == postDocRef)
+        ),
+      });
 
       setLikedLocalItems((prev) => {
         const updated = prev.filter((item) => item.postDocRef !== postDocRef);

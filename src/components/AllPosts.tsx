@@ -88,7 +88,7 @@ function AllPosts({ currentUser }: CurrentUserProp) {
     });
   };
   useEffect(() => {
-    if (searchText.trim()) {
+    if (searchText.length >= 3) {
       const keywords = searchText
         .split(" ")
         .filter((word) => word.trim() !== "");
