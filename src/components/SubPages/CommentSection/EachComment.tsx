@@ -33,8 +33,19 @@ function EachComment({ commentDetails, userID }) {
 
   getCommenterDetails();
 
-  function handleCommentDelete(commentDetails) {
+  async function handleCommentDelete(commentDetails) {
     if (confirm("Do you want to delete your comment?")) {
+      const recentNotif1 = await getDoc(
+        doc(db, "users", currentPost?.userDocRef)
+      );
+      const recentNotif = recentNotif1?.data().recentNotification;
+
+      updateDoc(doc(db, "users", currentPost?.userDocRef), {
+        recentNotification: recentNotif.filter(
+          (comment) => comment.commentID !== commentDetails?.commentID
+        ),
+      });
+
       setEarlierComments((prev) => {
         const updated = prev.filter(
           (each) => each.commentID !== commentDetails?.commentID
@@ -42,7 +53,6 @@ function EachComment({ commentDetails, userID }) {
         updateDoc(doc(db, "posts", currentPost?.postID), {
           comments: updated,
         });
-        console.log(updated);
         return updated;
       });
     }

@@ -8,35 +8,53 @@ import { v4 as uuidv4 } from "uuid";
 
 function CommentInput() {
   const { currentUser } = useAuthContext();
-  const { currentPostID, setEarlierComments } = useCommentContext();
+  const { currentPostID, setEarlierComments, currentPost } =
+    useCommentContext();
   const [commentText, setCommentText] = useState("");
 
-  function handleComment() {
+  async function handleComment() {
     if (commentText.trim() && currentUser) {
-      getDoc(doc(db, "posts", currentPostID))
-        .then((post) => {
-          console.log(post.data());
-          const commentsArr = post?.data().comments || [];
-          const timeStamp = Date.now();
+      const ID = uuidv4();
+      const recentNotif1 = await getDoc(
+        doc(db, "users", currentPost?.userDocRef)
+      );
+      const recentNotif = recentNotif1?.data().recentNotification;
+      updateDoc(doc(db, "users", currentPost?.userDocRef), {
+        recentNotification: [
+          ...(recentNotif || []),
+          {
+            postDocRef: currentPostID,
+            poster: currentPost?.userDocRef,
+            commenterRef: currentUser?.userDocRef,
+            type: "comment",
+            commentID: ID,
+          },
+        ],
+      }).then(() => {
+        getDoc(doc(db, "posts", currentPostID))
+          .then((post) => {
+            const commentsArr = post?.data().comments || [];
+            const timeStamp = Date.now();
 
-          return updateDoc(doc(db, "posts", currentPostID), {
-            comments: [
-              ...commentsArr,
-              {
-                commentText: commentText,
-                commenterRef: currentUser?.userDocRef,
-                datePublished: timeStamp,
-                commentID: uuidv4(),
-              },
-            ],
-          });
-        })
-        .then((resp) =>
-          onSnapshot(doc(db, "posts", currentPostID), (doc) => {
-            setEarlierComments(doc?.data().comments);
+            return updateDoc(doc(db, "posts", currentPostID), {
+              comments: [
+                ...commentsArr,
+                {
+                  commentText: commentText,
+                  commenterRef: currentUser?.userDocRef,
+                  datePublished: timeStamp,
+                  commentID: ID,
+                },
+              ],
+            });
           })
-        )
-        .catch((err) => console.error(err, "An error occured, try again !"));
+          .then((resp) =>
+            onSnapshot(doc(db, "posts", currentPostID), (doc) => {
+              setEarlierComments(doc?.data().comments);
+            })
+          )
+          .catch((err) => console.error(err, "An error occured, try again !"));
+      });
     }
     setCommentText("");
   }
