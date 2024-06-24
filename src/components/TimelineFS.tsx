@@ -1,4 +1,4 @@
-import AllNotifications from "./AllNotifications";
+import AllNotifications from "./SubPages/Notification/AllNotifications";
 import AllPosts from "./AllPosts";
 import CommentUI from "./SubPages/CommentSection/CommentUI";
 import { useCommentContext } from "./SubPages/CommentSection/CommentsContext";

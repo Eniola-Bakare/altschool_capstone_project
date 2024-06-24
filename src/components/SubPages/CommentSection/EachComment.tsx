@@ -6,7 +6,7 @@ import { useCommentContext } from "./CommentsContext";
 import { update } from "firebase/database";
 
 function EachComment({ commentDetails, userID }) {
-  const { commentText, commenterRef, datePublished } = commentDetails;
+  const { commentText, engagerRef, datePublished } = commentDetails;
   const { currentUser } = useAuthContext();
   const { currentPost, earlierComments, setEarlierComments } =
     useCommentContext();
@@ -14,7 +14,7 @@ function EachComment({ commentDetails, userID }) {
   const { photoURL, fName } = commenterDetails;
 
   function getCommenterDetails() {
-    getDoc(doc(db, "users", commenterRef))
+    getDoc(doc(db, "users", engagerRef))
       .then((commenter) => setcommenterDetails(commenter.data()))
       .catch((err) => console.error(err, "unable to load"));
   }
@@ -76,7 +76,7 @@ function EachComment({ commentDetails, userID }) {
             </span>
           </p>
         </div>
-        {currentUser?.userDocRef == commenterRef && (
+        {currentUser?.userDocRef == engagerRef && (
           <p onClick={() => handleCommentDelete(commentDetails)}>DELETE</p>
         )}
       </div>

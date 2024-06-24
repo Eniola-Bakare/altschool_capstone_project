@@ -1,4 +1,4 @@
-import NotificationBtn from "./NotificationBtn";
+import NotificationBtn from "./SubPages/Notification/NotificationBtn";
 import { useAuthContext } from "./contexts/AuthContext";
 
 function HeaderFS() {
@@ -31,7 +31,7 @@ function HeaderFS() {
         </div>
 
         <div className="profile-notification flex gap-3 items-center">
-         <NotificationBtn />
+          <NotificationBtn />
 
           {/* <div className="headerImage flex gap-3 "> */}
           <img

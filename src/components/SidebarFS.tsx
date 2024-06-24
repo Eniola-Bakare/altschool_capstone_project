@@ -4,7 +4,7 @@ import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "./contexts/AuthContext";
 import { useLocalStorage } from "./actions/LocalStorage";
-import NotificationBtn from "./NotificationBtn";
+import NotificationBtn from "./SubPages/Notification/NotificationBtn";
 
 function SidebarFS() {
   const {

@@ -25,7 +25,7 @@ function CommentInput() {
           {
             postDocRef: currentPostID,
             poster: currentPost?.userDocRef,
-            commenterRef: currentUser?.userDocRef,
+            engagerRef: currentUser?.userDocRef,
             type: "comment",
             commentID: ID,
           },
@@ -41,7 +41,7 @@ function CommentInput() {
                 ...commentsArr,
                 {
                   commentText: commentText,
-                  commenterRef: currentUser?.userDocRef,
+                  engagerRef: currentUser?.userDocRef,
                   datePublished: timeStamp,
                   commentID: ID,
                 },
