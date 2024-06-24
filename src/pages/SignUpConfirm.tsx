@@ -67,6 +67,7 @@ function SignUpConfirm() {
       uid,
       bookmarkedItems: [],
       recentNotification: [],
+      olderNotification: [],
       likedItems: [],
       otp: otpLocal.join(""),
     };

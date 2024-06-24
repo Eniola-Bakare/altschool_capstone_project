@@ -1,13 +1,42 @@
 import { useEffect, useRef } from "react";
 import { useAuthContext } from "../../contexts/AuthContext";
+import { doc, onSnapshot, updateDoc } from "firebase/firestore";
+import { db } from "../../../firebase/config";
+import { useLocalStorage } from "../../actions/LocalStorage";
 
 function NotificationBtn() {
-  const { notificationAlert, setShowNotification, notifRef } = useAuthContext();
+  const {
+    notificationAlert,
+    setNotificationAlert,
+    setShowNotification,
+    notifRef,
+    olderNotifications,
+    setOlderNotifications,
+    recentNotifications,
+    setRecentNotifications,
+    currentUser,
+    setCurrentUser,
+  } = useAuthContext();
+  const { setUserLocalStorage } = useLocalStorage("currentUser");
   const notifBtnRef = useRef(null);
 
   function handleShowNotification(e) {
     e.stopPropagation();
     setShowNotification(true);
+
+    // set recent notifs to older notifs
+    updateDoc(doc(db, "users", currentUser?.userDocRef), {
+      olderNotification: recentNotifications,
+      recentNotifications: [],
+    }).then((ref) => {
+      setRecentNotifications([]);
+      setNotificationAlert(false);
+      onSnapshot(doc(db, "users", currentUser?.userDocRef), (doc) => {
+        const currentUser = doc?.data();
+        setCurrentUser(currentUser);
+        setUserLocalStorage(currentUser);
+      });
+    });
   }
 
   useEffect(() => {

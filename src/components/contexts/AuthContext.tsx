@@ -59,6 +59,10 @@ type AuthContextTYPE = {
   setNotificationAlert: Dispatch<SetStateAction<boolean>>;
   showNotification: boolean;
   setShowNotification: Dispatch<SetStateAction<boolean>>;
+  olderNotifications: Engagements[];
+  setOlderNotifications: Dispatch<SetStateAction<Engagements[]>>;
+  recentNotifications: Engagements[];
+  setRecentNotifications: Dispatch<SetStateAction<Engagements[]>>;
   searchText: string;
   setSearchText: Dispatch<SetStateAction<string>>;
   notifRef: React.MutableRefObject<null>;
@@ -73,6 +77,14 @@ type UserAndPost = {
   userData: { userDocRef: string };
 };
 
+type Engagements = {
+  engagerFName: string;
+  engagerPhotoURL: string;
+  engagerRef: string;
+  message: string;
+  postDocRef: string;
+  type: string;
+};
 const AuthContext = createContext<AuthContextTYPE | undefined>(undefined);
 
 export default function AuthContextProvider({
@@ -100,8 +112,13 @@ export default function AuthContextProvider({
   const [searchText, setSearchText] = useState("");
   const [notificationAlert, setNotificationAlert] = useState(false);
   const [showNotification, setShowNotification] = useState(false);
-
   const notifRef = useRef(null);
+  const [olderNotifications, setOlderNotifications] = useState<Engagements[]>(
+    []
+  );
+  const [recentNotifications, setRecentNotifications] = useState<Engagements[]>(
+    []
+  );
 
   const upDatePosts = () => {
     setPublished(true);
@@ -113,6 +130,12 @@ export default function AuthContextProvider({
   useEffect(() => {
     setCurrentUser(getUserLocalStorage());
   }, []);
+
+  useEffect(() => {
+    if (currentUser?.olderNotifications > 0) {
+      setOlderNotifications(currentUser?.olderNotifications);
+    }
+  }, [currentUser]);
 
   useEffect(() => {
     setLikedLocalItems(currentUser?.likedItems);
@@ -180,6 +203,10 @@ export default function AuthContextProvider({
         showNotification,
         setShowNotification,
         notifRef,
+        olderNotifications,
+        setOlderNotifications,
+        recentNotifications,
+        setRecentNotifications,
         screenToShow,
         setScreenToShow,
         searchText,

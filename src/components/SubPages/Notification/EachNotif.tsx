@@ -10,8 +10,11 @@ function EachNotif({ notifDetails }) {
     type,
   } = notifDetails;
   return (
-    <div>
-      <p>{engagerFName} {message}</p>
+    <div className="flex gap-3 pb-3">
+      <img src={engagerPhotoURL} className="w-7" />
+      <p className="text-lg">
+        {engagerFName} {message}
+      </p>
     </div>
   );
 }

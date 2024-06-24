@@ -11,9 +11,10 @@ function AllNotifications() {
     showNotification,
     notifRef,
     setShowNotification,
+    recentNotifications,
+    setRecentNotifications,
+    olderNotifications,
   } = useAuthContext();
-  const [notifications, setNotifications] = useState([]);
-  const [olderNotifications, setOlderNotifications] = useState([])
 
   // fetch engagers profile
   async function fetchEngager(enagerID) {
@@ -57,11 +58,12 @@ function AllNotifications() {
             return eachNotif;
           })
         );
-        setNotifications(updatedNotifications);
+        setRecentNotifications(updatedNotifications);
       }
     };
     fetchNotifications();
-  }, [currentUser, setNotificationAlert]);
+  }, [currentUser, setNotificationAlert, olderNotifications]);
+  console.log(recentNotifications);
   return (
     <div
       ref={notifRef}
@@ -76,7 +78,10 @@ function AllNotifications() {
         X
       </p>
       <div className="">
-        {notifications.map((each, index) => {
+        {recentNotifications?.map((each, index) => {
+          return <EachNotif notifDetails={each} key={index} />;
+        })}
+        {olderNotifications?.map((each, index) => {
           return <EachNotif notifDetails={each} key={index} />;
         })}
       </div>

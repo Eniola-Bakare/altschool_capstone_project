@@ -60,6 +60,7 @@ function SignUpPortals() {
                 lName,
                 bookmarkedItems: [],
                 recentNotificaion: [],
+                olderNotification: [],
               })
                 .then((res) => {
                   // res is the user document id that was just created
@@ -92,6 +93,7 @@ function SignUpPortals() {
                 displayName,
                 tenantId,
                 recentNotification,
+                olderNotification,
               } = oldUser;
 
               const currentUser = { ...oldUser, userDocRef: oldUserId };
