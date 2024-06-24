@@ -37,12 +37,10 @@ function SignInPage() {
     const listen = onAuthStateChanged(auth, (user) => {
       if (!user) return;
       if (user) {
-        console.log(user);
         getDocs(query(collection(db, "users"), where("uid", "==", user.uid)))
           .then((resp) =>
             resp.forEach((currentUser) => {
               // console.log(user);
-              console.log("current user");
               const likedItems = currentUser.data()?.likedItems;
               const { displayName, photoURL: photoUrl, tenantId, uid } = user;
               const newUser = {
@@ -56,6 +54,7 @@ function SignInPage() {
                 category,
                 uid,
                 bookmarkedItems: currentUser.data().bookmarkedItems,
+                recentNotification: currentUser.data().recentNotification,
               };
               setCurrentUser({ ...newUser, userDocRef: currentUser.id });
               setUserLocalStorage({ ...newUser, userDocRef: currentUser.id });

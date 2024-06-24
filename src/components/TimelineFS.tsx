@@ -1,3 +1,4 @@
+import AllNotifications from "./AllNotifications";
 import AllPosts from "./AllPosts";
 import CommentUI from "./SubPages/CommentSection/CommentUI";
 import { useCommentContext } from "./SubPages/CommentSection/CommentsContext";
@@ -85,6 +86,7 @@ function TimelineFS() {
             Your posts
           </p>
         </div>
+        <AllNotifications />
         {showComments == "comments" && <CommentUI />}
         {showComments == "allPosts" && <AllPosts />}
         {showComments == "yourPosts" && <AllPosts currentUser={currentUser} />}

@@ -59,6 +59,7 @@ function SignUpPortals() {
                 fName,
                 lName,
                 bookmarkedItems: [],
+                recentNotificaion: [],
               })
                 .then((res) => {
                   // res is the user document id that was just created
@@ -79,7 +80,6 @@ function SignUpPortals() {
             } else {
               const oldUser = resp.docs[0].data();
               const oldUserId = resp.docs[0].id;
-              console.log(oldUser);
               const {
                 fName,
                 category,
@@ -91,10 +91,10 @@ function SignUpPortals() {
                 uid,
                 displayName,
                 tenantId,
+                recentNotification,
               } = oldUser;
 
               const currentUser = { ...oldUser, userDocRef: oldUserId };
-              console.log(currentUser);
               setCurrentUser({ ...currentUser });
               setUserLocalStorage({ ...currentUser });
             }

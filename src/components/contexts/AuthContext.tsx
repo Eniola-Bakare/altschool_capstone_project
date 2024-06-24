@@ -54,6 +54,8 @@ type AuthContextTYPE = {
   setShowAnalytics: Dispatch<SetStateAction<boolean>>;
   showFeed: boolean;
   setShowFeed: Dispatch<SetStateAction<boolean>>;
+  notificationAlert: boolean;
+  setNotificationAlert: Dispatch<SetStateAction<boolean>>;
   searchText: string;
   setSearchText: Dispatch<SetStateAction<string>>;
 };
@@ -92,6 +94,7 @@ export default function AuthContextProvider({
   const [showFeed, setShowFeed] = useState(true);
   const [screenToShow, setScreenToShow] = useState("feed");
   const [searchText, setSearchText] = useState("");
+  const [notificationAlert, setNotificationAlert] = useState(false);
 
   const upDatePosts = () => {
     setPublished(true);
@@ -101,10 +104,7 @@ export default function AuthContextProvider({
   const [likedLocalItems, setLikedLocalItems] = useState<likedLocalItems[]>([]);
 
   useEffect(() => {
-    console.log(authUser);
     setCurrentUser(getUserLocalStorage());
-    // setAuthUser(getUserLocalStorage());
-    console.log(currentUser);
   }, []);
 
   useEffect(() => {
@@ -168,10 +168,12 @@ export default function AuthContextProvider({
         setShowAnalytics,
         showFeed,
         setShowFeed,
+        notificationAlert,
+        setNotificationAlert,
         screenToShow,
         setScreenToShow,
         searchText,
-        setSearchText
+        setSearchText,
         // likedItems,
         // setLikedItems,
         // liked,
