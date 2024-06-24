@@ -6,6 +6,7 @@ import {
   createContext,
   useContext,
   useEffect,
+  useRef,
   useState,
 } from "react";
 import { auth } from "../../firebase/config";
@@ -56,8 +57,11 @@ type AuthContextTYPE = {
   setShowFeed: Dispatch<SetStateAction<boolean>>;
   notificationAlert: boolean;
   setNotificationAlert: Dispatch<SetStateAction<boolean>>;
+  showNotification: boolean;
+  setShowNotification: Dispatch<SetStateAction<boolean>>;
   searchText: string;
   setSearchText: Dispatch<SetStateAction<string>>;
+  notifRef: React.MutableRefObject<null>;
 };
 
 type likedLocalItems = {
@@ -95,6 +99,9 @@ export default function AuthContextProvider({
   const [screenToShow, setScreenToShow] = useState("feed");
   const [searchText, setSearchText] = useState("");
   const [notificationAlert, setNotificationAlert] = useState(false);
+  const [showNotification, setShowNotification] = useState(false);
+
+  const notifRef = useRef(null);
 
   const upDatePosts = () => {
     setPublished(true);
@@ -170,6 +177,9 @@ export default function AuthContextProvider({
         setShowFeed,
         notificationAlert,
         setNotificationAlert,
+        showNotification,
+        setShowNotification,
+        notifRef,
         screenToShow,
         setScreenToShow,
         searchText,

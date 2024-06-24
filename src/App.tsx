@@ -3,14 +3,12 @@ import SignUpConfirm from "./pages/SignUpConfirm";
 import SignUpPage from "./pages/SignUpPage";
 import LandingPage from "./pages/LandingPage";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import AuthContextProvider from "./components/contexts/AuthContext";
 import FeedScreen from "./pages/FeedScreen";
 import './index.css'
 
 function App() {
   return (
     <div>
-      <AuthContextProvider>
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<LandingPage />} />
@@ -37,7 +35,6 @@ function App() {
           <FeedScreen />
         </div> */}
         </BrowserRouter>
-      </AuthContextProvider>
     </div>
   );
 }

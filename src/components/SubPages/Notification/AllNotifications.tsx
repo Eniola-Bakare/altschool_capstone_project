@@ -5,15 +5,20 @@ import { useEffect, useState } from "react";
 import EachNotif from "./EachNotif";
 
 function AllNotifications() {
-  const { currentUser, setNotificationAlert } = useAuthContext();
+  const {
+    currentUser,
+    setNotificationAlert,
+    showNotification,
+    notifRef,
+    setShowNotification,
+  } = useAuthContext();
   const [notifications, setNotifications] = useState([]);
+  const [olderNotifications, setOlderNotifications] = useState([])
 
   // fetch engagers profile
-
   async function fetchEngager(enagerID) {
     const fetcher = await getDoc(doc(db, "users", enagerID));
     const enager = fetcher.data();
-    console.log(enager?.fName);
     return enager;
   }
 
@@ -58,10 +63,23 @@ function AllNotifications() {
     fetchNotifications();
   }, [currentUser, setNotificationAlert]);
   return (
-    <div>
-      {notifications.map((each, index) => {
-        return <EachNotif notifDetails={each} key={index} />;
-      })}
+    <div
+      ref={notifRef}
+      className={`${
+        showNotification ? "visible" : "hidden"
+      }  bg-slate-200 p-12 w-4/12 h-full absolute right-0 top-0 `}
+    >
+      <p
+        className=" font-extrabold text-4xl text-blue text-right mb-5"
+        onClick={() => setShowNotification(false)}
+      >
+        X
+      </p>
+      <div className="">
+        {notifications.map((each, index) => {
+          return <EachNotif notifDetails={each} key={index} />;
+        })}
+      </div>
     </div>
   );
 }
