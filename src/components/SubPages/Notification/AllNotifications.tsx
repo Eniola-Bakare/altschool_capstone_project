@@ -14,7 +14,11 @@ function AllNotifications() {
     recentNotifications,
     setRecentNotifications,
     olderNotifications,
+    setOlderNotifications,
   } = useAuthContext();
+
+  console.log(currentUser?.olderNotification);
+  setOlderNotifications(currentUser?.olderNotification);
 
   // fetch engagers profile
   async function fetchEngager(enagerID) {
@@ -66,21 +70,29 @@ function AllNotifications() {
   console.log(recentNotifications);
   return (
     <div
-      ref={notifRef}
+      // ref={notifRef}
       className={`${
         showNotification ? "visible" : "hidden"
-      }  bg-slate-200 p-12 w-4/12 h-full absolute right-0 top-0 `}
+      }  bg-slate-200 p-12 w-4/12 h-full absolute right-0 top-0 flex flex-col `}
     >
       <p
-        className=" font-extrabold text-4xl text-blue text-right mb-5"
+        className=" font-extrabold text-4xl text-blue text-right mb-5 w-fit self-end"
         onClick={() => setShowNotification(false)}
       >
         X
       </p>
       <div className="">
+        {recentNotifications?.length > 0 ? (
+          <p className=" pb-4 font-bold">Recent notifications</p>
+        ) : (
+          <p className=" pb-4 font-bold">All notifications</p>
+        )}
         {recentNotifications?.map((each, index) => {
           return <EachNotif notifDetails={each} key={index} />;
         })}
+        {recentNotifications?.length > 0 && (
+          <p className=" pb-4 font-bold">Older notifications</p>
+        )}
         {olderNotifications?.map((each, index) => {
           return <EachNotif notifDetails={each} key={index} />;
         })}

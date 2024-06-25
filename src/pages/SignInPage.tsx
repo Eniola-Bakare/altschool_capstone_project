@@ -55,6 +55,7 @@ function SignInPage() {
                 uid,
                 bookmarkedItems: currentUser.data().bookmarkedItems,
                 recentNotification: currentUser.data().recentNotification,
+                olderNotification: currentUser.data().olderNotification,
               };
               setCurrentUser({ ...newUser, userDocRef: currentUser.id });
               setUserLocalStorage({ ...newUser, userDocRef: currentUser.id });

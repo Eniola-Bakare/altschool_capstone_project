@@ -80,6 +80,7 @@ function SignUpPortals() {
                 });
             } else {
               const oldUser = resp.docs[0].data();
+              console.log(oldUser);
               const oldUserId = resp.docs[0].id;
               const {
                 fName,
@@ -97,6 +98,7 @@ function SignUpPortals() {
               } = oldUser;
 
               const currentUser = { ...oldUser, userDocRef: oldUserId };
+              console.log(currentUser);
               setCurrentUser({ ...currentUser });
               setUserLocalStorage({ ...currentUser });
             }

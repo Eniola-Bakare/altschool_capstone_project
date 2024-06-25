@@ -132,10 +132,11 @@ export default function AuthContextProvider({
   }, []);
 
   useEffect(() => {
-    if (currentUser?.olderNotifications > 0) {
-      setOlderNotifications(currentUser?.olderNotifications);
-    }
-  }, [currentUser]);
+    console.log(currentUser);
+    if (currentUser?.olderNotification > 0) {
+      setOlderNotifications(currentUser?.olderNotification);
+    }  
+  }, [currentUser]); 
 
   useEffect(() => {
     setLikedLocalItems(currentUser?.likedItems);
