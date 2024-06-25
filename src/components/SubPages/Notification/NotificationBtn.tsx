@@ -21,6 +21,8 @@ function NotificationBtn() {
     useLocalStorage("currentUser");
   const notifBtnRef = useRef(null);
 
+  console.log(notificationAlert);
+
   function handleShowNotification(e) {
     e.stopPropagation();
     setShowNotification(true);
@@ -32,10 +34,11 @@ function NotificationBtn() {
     function handleClickOutside(event) {
       if (
         notifBtnRef.current &&
-        !notifBtnRef.current.contains(event.target)
-        // notifRef.current &&
-        // !notifRef.current.contains(event.target)
+        !notifBtnRef.current.contains(event.target) &&
+        notifRef.current &&
+        !notifRef.current.contains(event.target)
       ) {
+        console.log("mowa!");
         setShowNotification(false);
 
         const currentUserDocRef = currentUser?.userDocRef;

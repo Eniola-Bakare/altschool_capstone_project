@@ -65,15 +65,16 @@ function AllNotifications() {
         setRecentNotifications(updatedNotifications);
       }
     };
+
     fetchNotifications();
   }, [currentUser, setNotificationAlert, olderNotifications]);
   console.log(recentNotifications);
   return (
     <div
-      // ref={notifRef}
+      ref={notifRef}
       className={`${
         showNotification ? "visible" : "hidden"
-      }  bg-slate-200 p-12 w-4/12 h-full absolute right-0 top-0 flex flex-col `}
+      }  bg-slate-200 p-12 w-4/12 h-full absolute right-0 top-0 flex flex-col z-50 `}
     >
       <p
         className=" font-extrabold text-4xl text-blue text-right mb-5 w-fit self-end"
@@ -90,7 +91,7 @@ function AllNotifications() {
         {recentNotifications?.map((each, index) => {
           return <EachNotif notifDetails={each} key={index} />;
         })}
-        {recentNotifications?.length > 0 && (
+        {recentNotifications?.length > 0 && olderNotifications?.length > 0 && (
           <p className=" pb-4 font-bold">Older notifications</p>
         )}
         {olderNotifications?.map((each, index) => {

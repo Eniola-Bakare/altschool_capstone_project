@@ -49,6 +49,7 @@ function SignUpPortals() {
         };
 
         //   // this should be the correct, once you have read access
+
         getDocs(query(collection(db, "users"), where("uid", "==", user?.uid)))
           .then((resp) => {
             if (resp.docs.length === 0) {

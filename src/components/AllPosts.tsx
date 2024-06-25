@@ -87,6 +87,7 @@ function AllPosts({ currentUser }: CurrentUserProp) {
       lastDoc = postDetails.docs[postDetails.docs.length - 1];
     });
   };
+  
   useEffect(() => {
     if (searchText.length >= 3) {
       const keywords = searchText
