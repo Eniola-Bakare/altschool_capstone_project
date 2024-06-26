@@ -19,7 +19,7 @@ function NotificationBtn() {
         height="24"
         viewBox="0 0 24 24"
         fill="none"
-        className="notif-btn fill-grey hover:fill-blue"
+        className="notif-btn fill-grey hover:fill-blue cursor-pointer"
         onClick={handleShowNotification}
       >
         <path

@@ -103,6 +103,7 @@ function AllNotifications() {
       className={`${
         showNotification ? "visible" : "hidden"
       }  bg-slate-200 p-12 w-4/12 h-full absolute right-0 top-0 flex flex-col z-50 `}
+      onClick={(e) => e.stopPropagation()}
     >
       <p
         className=" font-extrabold text-4xl text-blue text-right mb-5 w-fit self-end cursor-pointer"
