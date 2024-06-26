@@ -42,11 +42,9 @@ function PublishScreen() {
     if (postText && attachment && currentUser) {
       setPost(true);
       const userID = currentUser?.userDocRef;
-      const userRef = collection(db, "users", userID, "posts");
       const postDB = collection(db, "posts");
 
-      // const markDownText = <Markdown>{postText}</Markdown>;
-      // setPostText((prev) => );
+
       const keywords = postText.split(/[\W_]+/);
       const newPost = {
         attachment,
@@ -101,12 +99,6 @@ function PublishScreen() {
     }
   };
 
-  // const openScreenOne = (e: React.MouseEvent<HTMLElement>) => {
-  //   // e.stopPropagation();
-  //   setScreenOne(true);
-  //   setScreenTwo(false);
-  //   setScreenThree(false);
-  // };
   const openFileInputImg = () => {
     console.log("here now");
     if (fileInputRefImg.current) {

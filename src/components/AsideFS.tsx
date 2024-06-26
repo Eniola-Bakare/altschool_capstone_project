@@ -6,6 +6,7 @@ import TimelineFS from "./TimelineFS";
 import CommentContextProvider from "./SubPages/CommentSection/CommentsContext";
 import { useAuthContext } from "./contexts/AuthContext";
 import AllBookmarks from "./AllBookmarks";
+import AccountSetting from "./AccountSetting";
 
 function AsideFS() {
   const [makeAPostBtn, setMakeAPostBtn] = useState(false);
@@ -20,6 +21,7 @@ function AsideFS() {
         {screenToShow == "analytics" && <PostsAnalytics />}
         {screenToShow == "bookmarks" && <AllBookmarks />}
         {screenToShow == "publish" && <PublishScreen />}
+        {screenToShow == "setting" && <AccountSetting />}
       </CommentContextProvider>
     </section>
   );

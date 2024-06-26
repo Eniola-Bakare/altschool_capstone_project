@@ -2,7 +2,7 @@ import NotificationBtn from "./SubPages/Notification/NotificationBtn";
 import { useAuthContext } from "./contexts/AuthContext";
 
 function HeaderFS() {
-  const { currentUser, searchText, setSearchText, notificationAlert } =
+  const { currentUser, searchText, setSearchText, setScreenToShow } =
     useAuthContext();
 
   return (
@@ -38,6 +38,7 @@ function HeaderFS() {
             src={currentUser?.photoURL}
             alt="a profile picture"
             className="rounded-full w-12"
+            onClick={() => setScreenToShow("setting")}
           />
           {/* </div> */}
         </div>
