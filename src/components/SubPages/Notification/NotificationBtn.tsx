@@ -1,86 +1,19 @@
-import { useEffect, useRef } from "react";
 import { useAuthContext } from "../../contexts/AuthContext";
-import { doc, getDoc, onSnapshot, updateDoc } from "firebase/firestore";
-import { db } from "../../../firebase/config";
-import { useLocalStorage } from "../../actions/LocalStorage";
 
 function NotificationBtn() {
   const {
     notificationAlert,
-    setNotificationAlert,
     setShowNotification,
-    notifRef,
-    olderNotifications,
-    // setOlderNotifications,
     recentNotifications,
-    setRecentNotifications,
-    currentUser,
-    setCurrentUser,
   } = useAuthContext();
-  const { setUserLocalStorage, removeUserLocalStorage } =
-    useLocalStorage("currentUser");
-  const notifBtnRef = useRef(null);
-
-  console.log(notificationAlert);
 
   function handleShowNotification(e) {
     e.stopPropagation();
     setShowNotification(true);
-    console.log(recentNotifications);
-    console.log(olderNotifications);
   }
-
-  useEffect(() => {
-    function handleClickOutside(event) {
-      if (
-        notifBtnRef.current &&
-        !notifBtnRef.current.contains(event.target) &&
-        notifRef.current &&
-        !notifRef.current.contains(event.target)
-      ) {
-        console.log("mowa!");
-        setShowNotification(false);
-
-        const currentUserDocRef = currentUser?.userDocRef;
-        // set recent notifs to older notifs
-        if (recentNotifications.length > 0) {
-          console.log(currentUser?.recentNotification);
-          getDoc(doc(db, "users", currentUserDocRef))
-            .then((userDoc) => {
-              const olderDoc = userDoc.data();
-              return updateDoc(doc(db, "users", currentUserDocRef), {
-                olderNotification:
-                  olderNotifications?.length > 0
-                    ? [...olderDoc?.olderNotification, ...recentNotifications]
-                    : [...recentNotifications],
-                recentNotification: [],
-              });
-            })
-            .then((ref) => {
-              setRecentNotifications([]);
-              setNotificationAlert(false);
-              onSnapshot(doc(db, "users", currentUserDocRef), (doc) => {
-                const currentUser = doc?.data();
-                console.log(currentUser);
-                console.log(doc.id);
-                setCurrentUser({ ...currentUser, userDocRef: doc?.id });
-                setUserLocalStorage({ ...currentUser, userDocRef: doc?.id });
-              });
-            });
-        }
-      }
-    }
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [setShowNotification]);
-
   return (
     <>
       <svg
-        ref={notifBtnRef}
         xmlns="http://www.w3.org/2000/svg"
         width="24"
         height="24"

@@ -107,6 +107,7 @@ function EachPost({ post }: EachPostProps) {
         .catch((error) => console.error(error));
       getDoc(doc(db, "users", currentUserDocRef)).then((bookmaker) => {
         const bookmarkedItemsLocal = bookmaker.data().bookmarkedItems;
+        console.log(bookmaker.data());
         updateDoc(doc(db, "users", currentUserDocRef), {
           bookmarkedItems: [
             ...bookmarkedItemsLocal,

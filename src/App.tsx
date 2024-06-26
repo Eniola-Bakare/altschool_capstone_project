@@ -13,10 +13,14 @@ import { useLocalStorage } from "./components/actions/LocalStorage";
 
 function App() {
   const { currentUser, setCurrentUser } = useAuthContext();
-  const { setUserLocalStorage } = useLocalStorage("currentUser");
+  const { setUserLocalStorage, getUserLocalStorage } =
+    useLocalStorage("currentUser");
   useEffect(() => {
     function getCurrentUser() {
-      getDoc(doc(db, "users", currentUser?.userDocRef))
+      console.log(currentUser);
+      // console.log();
+      console.log(currentUser?.userDocRef);
+      getDoc(doc(db, "users", getUserLocalStorage("currentUser")?.userDocRef))
         .then((user) => {
           console.log(user);
           const userData = user.data();
