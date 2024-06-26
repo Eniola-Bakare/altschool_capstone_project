@@ -84,7 +84,7 @@ function PostsAnalytics() {
   }, []);
 
   return (
-    <section className="w-[80%] flex flex-col gap-3 self-start pl-14  overflow-scroll">
+    <section className="w-[80dvw] h-[90%] border border-borderGrey rounded-lg flex flex-col py-12 mx-1 px-16 gap-16 mt-5 overflow-scroll">
       <p className="font-bold text-3xl">Posts analytics</p>
 
       <div className="post-date-details">

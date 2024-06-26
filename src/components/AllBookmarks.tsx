@@ -47,7 +47,7 @@ function AllBookmarks() {
   }, []);
 
   return (
-    <div className=" overflow-scroll">
+    <div className="w-[80dvw] h-[90%] border border-borderGrey rounded-lg flex flex-col py-12 mx-1 px-16 gap-16 mt-5 overflow-scroll">
       {bookmarkedPosts?.map((each) => (
         <EachPost post={each} key={each?.postData?.postDocRef} />
       ))}
