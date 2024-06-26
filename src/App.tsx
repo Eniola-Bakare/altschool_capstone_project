@@ -17,12 +17,8 @@ function App() {
     useLocalStorage("currentUser");
   useEffect(() => {
     function getCurrentUser() {
-      console.log(currentUser);
-      // console.log();
-      console.log(currentUser?.userDocRef);
       getDoc(doc(db, "users", getUserLocalStorage("currentUser")?.userDocRef))
         .then((user) => {
-          console.log(user);
           const userData = user.data();
           const userID = user.id;
           setCurrentUser({ ...userData, userDocRef: userID });

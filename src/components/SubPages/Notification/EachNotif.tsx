@@ -1,8 +1,9 @@
 import React from "react";
 import { useAuthContext } from "../../contexts/AuthContext";
 import { useCommentContext } from "../CommentSection/CommentsContext";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, onSnapshot, updateDoc } from "firebase/firestore";
 import { db } from "../../../firebase/config";
+import { useLocalStorage } from "../../actions/LocalStorage";
 
 function EachNotif({ notifDetails }) {
   const {
@@ -20,6 +21,9 @@ function EachNotif({ notifDetails }) {
     showNotification,
     recentNotifications,
     setRecentNotifications,
+    setNotificationAlert,
+    setCurrentUser,
+    olderNotifications,
   } = useAuthContext();
   const {
     setShowComments,
@@ -27,12 +31,34 @@ function EachNotif({ notifDetails }) {
     setEarlierComments,
     setCurrentPost,
   } = useCommentContext();
+  const { setUserLocalStorage } = useLocalStorage("currentUser");
 
   async function handleEachNotif(notifDetails) {
     if (showNotification) setShowNotification(false);
     // if() check if the recent notification.lenght > 0 and handle into recent old transaction
-    console.log(notifDetails);
-
+    const currentUserDocRef = currentUser?.userDocRef;
+    if (recentNotifications.length > 0) {
+      getDoc(doc(db, "users", currentUserDocRef))
+        .then((userDoc) => {
+          const olderDoc = userDoc.data();
+          return updateDoc(doc(db, "users", currentUserDocRef), {
+            olderNotification:
+              olderNotifications?.length > 0
+                ? [...olderDoc?.olderNotification, ...recentNotifications]
+                : [...recentNotifications],
+            recentNotification: [],
+          });
+        })
+        .then((ref) => {
+          setRecentNotifications([]);
+          setNotificationAlert(false);
+          return onSnapshot(doc(db, "users", currentUserDocRef), (doc) => {
+            const currentUser = doc?.data();
+            setCurrentUser({ ...currentUser, userDocRef: doc?.id });
+            setUserLocalStorage({ ...currentUser, userDocRef: doc?.id });
+          });
+        });
+    }
     const postUserData = await getDoc(
       doc(db, "posts", notifDetails?.postDocRef)
     ).then((postData) => {
@@ -47,8 +73,7 @@ function EachNotif({ notifDetails }) {
         })
       );
     });
-    console.log(postUserData);
-    console.log(currentUser);
+
     setScreenToShow("feed");
     setShowComments("comments");
     setCurrentPostID(postUserData?.postDataID);
@@ -60,7 +85,7 @@ function EachNotif({ notifDetails }) {
   return (
     <div
       className="flex gap-3 pb-3 cursor-pointer"
-      onClick={(e) => handleEachNotif(notifDetails)}
+      onClick={() => handleEachNotif(notifDetails)}
     >
       <img src={engagerPhotoURL} className="w-7" />
       <p className="text-lg">
